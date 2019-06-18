@@ -18,14 +18,14 @@ import java.util.Map;
 /**
  * 系统日志
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 @Controller
 @RequestMapping("/sys/log")
 public class SysLogController {
 	@Autowired
 	private SysLogService sysLogService;
-	
+
 	/**
 	 * 列表
 	 */
@@ -37,5 +37,5 @@ public class SysLogController {
 
 		return R.ok().put("page", page);
 	}
-	
+
 }

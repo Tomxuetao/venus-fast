@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package com.venus.modules.sys.service.impl;
 
@@ -27,7 +21,7 @@ import java.util.Date;
 /**
  * 验证码
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 @Service("sysCaptchaService")
 public class SysCaptchaServiceImpl extends ServiceImpl<SysCaptchaDao, SysCaptchaEntity> implements SysCaptchaService {
@@ -62,10 +56,12 @@ public class SysCaptchaServiceImpl extends ServiceImpl<SysCaptchaDao, SysCaptcha
         //删除验证码
         this.removeById(uuid);
 
-        if(captchaEntity.getCode().equalsIgnoreCase(code) && captchaEntity.getExpireTime().getTime() >= System.currentTimeMillis()){
-            return true;
-        }
+        return captchaEntity.getCode().equalsIgnoreCase(code) && captchaEntity.getExpireTime().getTime() >= System.currentTimeMillis();
 
-        return false;
+    }
+
+    @Override
+    public void removeAll() {
+        baseMapper.deleteAll();
     }
 }

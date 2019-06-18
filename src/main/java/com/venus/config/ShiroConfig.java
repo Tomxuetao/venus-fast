@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Shiro配置
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 @Configuration
 public class ShiroConfig {

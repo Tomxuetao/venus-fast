@@ -1,4 +1,4 @@
-package com.renren;
+package com.venus;
 
 import com.venus.modules.app.utils.JwtUtils;
 import org.junit.Test;

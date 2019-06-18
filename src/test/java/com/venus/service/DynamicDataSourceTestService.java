@@ -1,12 +1,6 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
 
-package com.renren.service;
+
+package com.venus.service;
 
 import com.venus.modules.sys.dao.SysUserDao;
 import com.venus.modules.sys.entity.SysUserEntity;
@@ -18,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 测试多数据源
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 @Service
 //@DataSource("slave1")

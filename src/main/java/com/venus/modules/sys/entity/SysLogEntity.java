@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * 系统日志
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 @Data
 @TableName("sys_log")

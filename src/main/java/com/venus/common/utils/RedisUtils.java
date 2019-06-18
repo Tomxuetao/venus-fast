@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package com.venus.common.utils;
 
@@ -18,26 +12,33 @@ import java.util.concurrent.TimeUnit;
 /**
  * Redis工具类
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 @Component
 public class RedisUtils {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
     @Autowired
     private ValueOperations<String, String> valueOperations;
+
     @Autowired
     private HashOperations<String, String, Object> hashOperations;
+
     @Autowired
     private ListOperations<String, Object> listOperations;
+
     @Autowired
     private SetOperations<String, Object> setOperations;
+
     @Autowired
     private ZSetOperations<String, Object> zSetOperations;
+
     /**  默认过期时长，单位：秒 */
-    public final static long DEFAULT_EXPIRE = 60 * 60 * 24;
+    private final static long DEFAULT_EXPIRE = 60 * 60 * 24;
     /**  不设置过期时长 */
-    public final static long NOT_EXPIRE = -1;
+    private final static long NOT_EXPIRE = -1;
+
     private final static Gson gson = new Gson();
 
     public void set(String key, Object value, long expire){

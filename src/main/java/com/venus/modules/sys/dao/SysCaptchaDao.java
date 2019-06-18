@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 验证码
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 @Mapper
 public interface SysCaptchaDao extends BaseMapper<SysCaptchaEntity> {
-
+    void deleteAll();
 }

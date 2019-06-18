@@ -1,4 +1,4 @@
-package com.renren;
+package com.venus;
 
 import com.venus.modules.sys.entity.SysUserEntity;
 import com.venus.common.utils.RedisUtils;

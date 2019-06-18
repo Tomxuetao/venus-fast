@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * 系统配置信息
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 @Mapper
 public interface SysConfigDao extends BaseMapper<SysConfigEntity> {

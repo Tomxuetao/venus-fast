@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package com.venus.modules.sys.service;
 
@@ -18,12 +12,12 @@ import java.util.List;
 /**
  * 用户与角色对应关系
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 public interface SysUserRoleService extends IService<SysUserRoleEntity> {
-	
+
 	void saveOrUpdate(Long userId, List<Long> roleIdList);
-	
+
 	/**
 	 * 根据用户ID，获取角色ID列表
 	 */

@@ -43,5 +43,5 @@ spring:
 #    slave2:
 #      driver-class-name: org.postgresql.Driver
 #      url: jdbc:postgresql://localhost:5432/renren_security
-#      username: renren
+#      username: venus
 #      password: 123456

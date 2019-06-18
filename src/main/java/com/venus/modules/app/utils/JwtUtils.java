@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package com.venus.modules.app.utils;
 
@@ -21,9 +15,9 @@ import java.util.Date;
 /**
  * jwt工具类
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
-@ConfigurationProperties(prefix = "renren.jwt")
+@ConfigurationProperties(prefix = "venus.jwt")
 @Component
 public class JwtUtils {
     private Logger logger = LoggerFactory.getLogger(getClass());

@@ -9,7 +9,7 @@ import org.quartz.*;
 /**
  * 定时任务工具类
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 public class ScheduleUtils {
     private final static String JOB_NAME = "TASK_";
@@ -17,14 +17,14 @@ public class ScheduleUtils {
     /**
      * 获取触发器key
      */
-    public static TriggerKey getTriggerKey(Long jobId) {
+    private static TriggerKey getTriggerKey(Long jobId) {
         return TriggerKey.triggerKey(JOB_NAME + jobId);
     }
 
     /**
      * 获取jobKey
      */
-    public static JobKey getJobKey(Long jobId) {
+    private static JobKey getJobKey(Long jobId) {
         return JobKey.jobKey(JOB_NAME + jobId);
     }
 

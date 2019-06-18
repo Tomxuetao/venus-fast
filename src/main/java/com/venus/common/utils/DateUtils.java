@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package com.venus.common.utils;
 
@@ -20,7 +14,7 @@ import java.util.Date;
 /**
  * 日期处理
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 public class DateUtils {
 	/** 时间格式(yyyy-MM-dd) */

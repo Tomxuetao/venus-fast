@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package com.venus.modules.sys.service;
 
@@ -18,7 +12,7 @@ import java.util.List;
 /**
  * 菜单管理
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 public interface SysMenuService extends IService<SysMenuEntity> {
 
@@ -34,12 +28,12 @@ public interface SysMenuService extends IService<SysMenuEntity> {
 	 * @param parentId 父菜单ID
 	 */
 	List<SysMenuEntity> queryListParentId(Long parentId);
-	
+
 	/**
 	 * 获取不包含按钮的菜单列表
 	 */
 	List<SysMenuEntity> queryNotButtonList();
-	
+
 	/**
 	 * 获取用户菜单列表
 	 */

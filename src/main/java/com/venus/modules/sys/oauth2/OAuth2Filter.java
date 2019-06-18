@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package com.venus.modules.sys.oauth2;
 
@@ -27,7 +21,7 @@ import java.io.IOException;
 /**
  * oauth2过滤器
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 public class OAuth2Filter extends AuthenticatingFilter {
 

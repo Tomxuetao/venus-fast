@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 系统用户
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 @RestController
 @RequestMapping("/sys/user")

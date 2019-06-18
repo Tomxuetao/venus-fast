@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package com.venus.common.validator;
 
@@ -20,7 +14,7 @@ import java.util.Set;
  *
  * 参考文档：http://docs.jboss.org/hibernate/validator/5.4/reference/en-US/html_single/
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Tomxuetao
  */
 public class ValidatorUtils {
     private static Validator validator;
