@@ -19,9 +19,12 @@ public class RedisTest {
 	public void contextLoads() {
 		SysUserEntity user = new SysUserEntity();
 		user.setEmail("qqq@qq.com");
+		user.setMobile("155555030339");
 		redisUtils.set("user", user);
 
 		System.out.println(ToStringBuilder.reflectionToString(redisUtils.get("user", SysUserEntity.class)));
+
+		System.out.println(redisUtils.get("user"));
 	}
 
 }

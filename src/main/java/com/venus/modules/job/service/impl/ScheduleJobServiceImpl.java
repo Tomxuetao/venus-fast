@@ -55,7 +55,6 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobDao, Schedule
 		return new PageUtils(page);
 	}
 
-
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void saveJob(ScheduleJobEntity scheduleJob) {

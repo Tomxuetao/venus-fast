@@ -29,8 +29,7 @@ public class ValidatorUtils {
      * @param groups        待校验的组
      * @throws RRException  校验不通过，则报RRException异常
      */
-    public static void validateEntity(Object object, Class<?>... groups)
-            throws RRException {
+    public static void validateEntity(Object object, Class<?>... groups) throws RRException {
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object, groups);
         if (!constraintViolations.isEmpty()) {
             StringBuilder msg = new StringBuilder();

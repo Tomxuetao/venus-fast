@@ -51,10 +51,10 @@ public class ScheduleJobController {
     @SysLog("保存定时任务")
     @RequestMapping("/save")
     @RequiresPermissions("sys:schedule:save")
-    public R save(@RequestBody ScheduleJobEntity scheduleJob) {
-        ValidatorUtils.validateEntity(scheduleJob);
+    public R save(@RequestBody ScheduleJobEntity scheduleJobEntity) {
+        ValidatorUtils.validateEntity(scheduleJobEntity);
 
-        scheduleJobService.saveJob(scheduleJob);
+        scheduleJobService.saveJob(scheduleJobEntity);
 
         return R.ok();
     }
@@ -65,10 +65,10 @@ public class ScheduleJobController {
     @SysLog("修改定时任务")
     @RequestMapping("/update")
     @RequiresPermissions("sys:schedule:update")
-    public R update(@RequestBody ScheduleJobEntity scheduleJob) {
-        ValidatorUtils.validateEntity(scheduleJob);
+    public R update(@RequestBody ScheduleJobEntity scheduleJobEntity) {
+        ValidatorUtils.validateEntity(scheduleJobEntity);
 
-        scheduleJobService.update(scheduleJob);
+        scheduleJobService.update(scheduleJobEntity);
 
         return R.ok();
     }

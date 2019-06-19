@@ -21,8 +21,8 @@ public class SysCaptchaTask implements ITask {
 
     @Override
     public void run(String params) {
+        logger.debug("清空验证码成功");
         sysCaptchaService.removeAll();
         logger.debug("SysCaptchaTask定时任务正在执行，参数为：{}", params);
-        logger.debug("清空验证码成功");
     }
 }

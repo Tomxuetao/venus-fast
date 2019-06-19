@@ -18,6 +18,7 @@ public class ScheduleConfig {
 
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) {
+
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
         schedulerFactoryBean.setDataSource(dataSource);
 

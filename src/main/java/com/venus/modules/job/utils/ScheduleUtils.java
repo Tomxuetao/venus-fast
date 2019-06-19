@@ -42,26 +42,26 @@ public class ScheduleUtils {
     /**
      * 创建定时任务
      */
-    public static void createScheduleJob(Scheduler scheduler, ScheduleJobEntity scheduleJob) {
+    public static void createScheduleJob(Scheduler scheduler, ScheduleJobEntity scheduleJobEntity) {
         try {
         	//构建job信息
-            JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(scheduleJob.getJobId())).build();
+            JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(scheduleJobEntity.getJobId())).build();
 
             //表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression())
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJobEntity.getCronExpression())
             		.withMisfireHandlingInstructionDoNothing();
 
             //按新的cronExpression表达式构建一个新的trigger
-            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(scheduleJob.getJobId())).withSchedule(scheduleBuilder).build();
+            CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(scheduleJobEntity.getJobId())).withSchedule(scheduleBuilder).build();
 
             //放入参数，运行时的方法可以获取
-            jobDetail.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, scheduleJob);
+            jobDetail.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, scheduleJobEntity);
 
-            scheduler.scheduleJob(jobDetail, trigger);
+            scheduler.scheduleJob(jobDetail, cronTrigger);
 
             //暂停任务
-            if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
-            	pauseJob(scheduler, scheduleJob.getJobId());
+            if(scheduleJobEntity.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
+            	pauseJob(scheduler, scheduleJobEntity.getJobId());
             }
         } catch (SchedulerException e) {
             throw new RRException("创建定时任务失败", e);
@@ -71,27 +71,27 @@ public class ScheduleUtils {
     /**
      * 更新定时任务
      */
-    public static void updateScheduleJob(Scheduler scheduler, ScheduleJobEntity scheduleJob) {
+    public static void updateScheduleJob(Scheduler scheduler, ScheduleJobEntity scheduleJobEntity) {
         try {
-            TriggerKey triggerKey = getTriggerKey(scheduleJob.getJobId());
+            TriggerKey triggerKey = getTriggerKey(scheduleJobEntity.getJobId());
 
             //表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression())
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJobEntity.getCronExpression())
             		.withMisfireHandlingInstructionDoNothing();
 
-            CronTrigger trigger = getCronTrigger(scheduler, scheduleJob.getJobId());
+            CronTrigger cronTrigger = getCronTrigger(scheduler, scheduleJobEntity.getJobId());
 
             //按新的cronExpression表达式重新构建trigger
-            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
+            cronTrigger = cronTrigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
 
             //参数
-            trigger.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, scheduleJob);
+            cronTrigger.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, scheduleJobEntity);
 
-            scheduler.rescheduleJob(triggerKey, trigger);
+            scheduler.rescheduleJob(triggerKey, cronTrigger);
 
             //暂停任务
-            if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
-            	pauseJob(scheduler, scheduleJob.getJobId());
+            if(scheduleJobEntity.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
+            	pauseJob(scheduler, scheduleJobEntity.getJobId());
             }
 
         } catch (SchedulerException e) {
@@ -102,13 +102,13 @@ public class ScheduleUtils {
     /**
      * 立即执行任务
      */
-    public static void run(Scheduler scheduler, ScheduleJobEntity scheduleJob) {
+    public static void run(Scheduler scheduler, ScheduleJobEntity scheduleJobEntity) {
         try {
         	//参数
         	JobDataMap dataMap = new JobDataMap();
-        	dataMap.put(ScheduleJobEntity.JOB_PARAM_KEY, scheduleJob);
+        	dataMap.put(ScheduleJobEntity.JOB_PARAM_KEY, scheduleJobEntity);
 
-            scheduler.triggerJob(getJobKey(scheduleJob.getJobId()), dataMap);
+            scheduler.triggerJob(getJobKey(scheduleJobEntity.getJobId()), dataMap);
         } catch (SchedulerException e) {
             throw new RRException("立即执行定时任务失败", e);
         }
