@@ -39,7 +39,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("人人开源")
+            .title("金星开源")
             .description("venus-fast文档")
             .termsOfServiceUrl("https://www.venus.io")
             .version("3.0.0")

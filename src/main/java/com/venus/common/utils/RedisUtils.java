@@ -1,5 +1,3 @@
-
-
 package com.venus.common.utils;
 
 import com.google.gson.Gson;
