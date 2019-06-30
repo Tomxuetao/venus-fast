@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.venus.modules.geo.dao.GeoJsonDao">
+
+    <select id="getGeoJsonById" parameterType="integer" resultType="string">
+        select row_to_json(geoJson)
+            from (
+                select
+                    'FeatureCollection' as "type",
+                    array_to_json(array_agg(features)) as "features"
+                from (
+                    select
+                        'Feature' as "type",
+			             gid as "id",
+			            'geom' as "geometry_name",
+                        ST_AsGeoJSON(geom, 6) :: json as "geometry",
+                        (
+                            select row_to_json(properties)
+                                from (
+                                    select
+                                        name,
+                                        sheng_name
+                            ) properties
+                        ) as "properties"
+                    from city4326
+                    where gid = #{id}
+                ) as features
+        ) as geoJson
+    </select>
+
+</mapper>
