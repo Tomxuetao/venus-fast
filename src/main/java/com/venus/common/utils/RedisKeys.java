@@ -26,4 +26,24 @@ public class RedisKeys {
     public static String getGeoConfigKey(String key) {
         return "geo:config:" + key;
     }
+
+    /**
+     * 用户菜单缓存Key
+     *
+     * @param key: String
+     * @return String
+     */
+    public static String getUserMenuKey(String key) {
+        return "user:menu:" + key;
+    }
+
+    /**
+     * 用户权限缓存Key
+     *
+     * @param key: String
+     * @return String
+     */
+    public static String getUserPermissionsKey(String key) {
+        return "user:permissions:" + key;
+    }
 }
