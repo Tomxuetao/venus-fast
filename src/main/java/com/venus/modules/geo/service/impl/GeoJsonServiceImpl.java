@@ -1,6 +1,7 @@
 package com.venus.modules.geo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.venus.common.utils.RedisKeys;
 import com.venus.common.utils.RedisUtils;
 import com.venus.modules.geo.dao.GeoJsonDao;
 import com.venus.modules.geo.service.GeoJsonService;
@@ -16,13 +17,14 @@ public class GeoJsonServiceImpl implements GeoJsonService {
 
     @Override
     public String getGeoJsonById(Integer id) {
-        if (redisUtils.get("geoJson:" + id) != null) {
-            return redisUtils.get("geoJson:" + id);
+        String redisKey = RedisKeys.getGeoConfigKey(String.valueOf(id));
+        if (redisUtils.get(redisKey) != null) {
+            return redisUtils.get(redisKey);
         }
         String geoJson = geoJsonDao.getGeoJsonById(id);
         JSONObject geoJsonObject = JSONObject.parseObject(geoJson);
         if (geoJsonObject.get("features") != null) {
-            redisUtils.set("geoJson:" + id, geoJson);
+            redisUtils.set(redisKey, geoJson);
         } else {
             geoJson = null;
         }

@@ -75,8 +75,7 @@ public class SysLoginController extends AbstractController {
         }
 
         //生成token，并保存到数据库
-        R r = sysUserTokenService.createToken(user.getUserId());
-        return r;
+        return sysUserTokenService.createToken(user.getUserId());
     }
 
 

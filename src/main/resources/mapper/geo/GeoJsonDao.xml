@@ -10,9 +10,8 @@
                     array_to_json(array_agg(features)) as "features"
                 from (
                     select
-                        'Feature' as "type",
-			             gid as "id",
-			            'geom' as "geometry_name",
+                        GeometryType(geom) as "type",
+			            gid as "id",
                         ST_AsGeoJSON(geom, 6) :: json as "geometry",
                         (
                             select row_to_json(properties)
