@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.venus.common.utils.RedisKeys;
 import com.venus.common.utils.RedisUtils;
 import com.venus.modules.geo.dao.GeoJsonDao;
+import com.venus.modules.geo.form.BuildingForm;
 import com.venus.modules.geo.service.GeoJsonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("geoJsonService")
 public class GeoJsonServiceImpl implements GeoJsonService {
@@ -29,5 +31,11 @@ public class GeoJsonServiceImpl implements GeoJsonService {
             geoJson = null;
         }
         return geoJson;
+    }
+
+    @Override
+    @Transactional
+    public void saveGeomText(BuildingForm buildingForm) {
+        geoJsonDao.saveGeomText(buildingForm);
     }
 }

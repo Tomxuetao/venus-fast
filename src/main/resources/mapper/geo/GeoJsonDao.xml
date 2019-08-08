@@ -27,4 +27,8 @@
         ) as geoJson
     </select>
 
+    <insert id="saveGeomText" parameterType="java.util.HashMap">
+        INSERT INTO buidings (name, area_code, geom) VALUES (#{name}, #{areaCode}, ST_GeomFromText(#{geomText}, 4326))
+    </insert>
+
 </mapper>
