@@ -1,0 +1,48 @@
+package com.venus.modules.geo.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.venus.common.utils.Constant;
+import com.venus.common.utils.PageUtils;
+import com.venus.common.utils.R;
+import com.venus.modules.geo.entity.GeoBoundaryEntity;
+import com.venus.modules.geo.service.GeoBoundaryService;
+import com.venus.modules.sys.controller.AbstractController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/geo/boundary")
+public class GeoBoundaryController extends AbstractController {
+    @Autowired
+    private GeoBoundaryService geoBoundaryService;
+
+    @PostMapping("/json")
+    public R getGeoJsonById(@RequestBody Map<String, String> param) {
+        Integer id = Integer.valueOf(param.get("id"));
+        JSON geoJson = JSON.parseObject(geoBoundaryService.getGeoJsonById(id));
+        if (geoJson != null) {
+            System.out.println(geoJson);
+            return R.ok().put("geoJson", geoJson);
+        }
+        return R.error("未查询到相关数据");
+    }
+
+    @PostMapping("/save")
+    public R saveGeomText(@RequestBody GeoBoundaryEntity geoBoundaryEntity) {
+        geoBoundaryEntity.setCreateUserId(getUserId().toString());
+        geoBoundaryService.saveGeomText(geoBoundaryEntity);
+        return R.ok();
+    }
+
+    @GetMapping("/list")
+    public R list(@RequestParam Map<String, Object> params) {
+        //只有超级管理员，才能查看所有管理员列表
+        if (getUserId() != Constant.SUPER_ADMIN) {
+            params.put("createUserId", getUserId());
+        }
+        PageUtils page = geoBoundaryService.queryPage(params);
+        return R.ok().put("page", page);
+    }
+}

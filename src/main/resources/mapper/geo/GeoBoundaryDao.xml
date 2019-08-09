@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.venus.modules.geo.dao.GeoJsonDao">
+<mapper namespace="com.venus.modules.geo.dao.GeoBoundaryDao">
 
     <select id="getGeoJsonById" parameterType="integer" resultType="string">
         select row_to_json(geoJson)
@@ -21,14 +21,15 @@
                                         sheng_name
                             ) properties
                         ) as "properties"
-                    from city4326
+                    from geo_boundary
                     where gid = #{id}
                 ) as features
         ) as geoJson
     </select>
 
-    <insert id="saveGeomText" parameterType="java.util.HashMap">
-        INSERT INTO buidings (name, area_code, geom) VALUES (#{name}, #{areaCode}, ST_GeomFromText(#{geomText}, 4326))
+    <insert id="saveGeomText" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="gid">
+        INSERT INTO geo_boundary (name, layer, height, color, selected_color, area_code, create_user_id, create_time, geom)
+        VALUES (#{name}, #{layer}, #{height}, #{color}, #{selectedColor}, #{areaCode}, #{createUserId}, #{createTime}, ST_GeomFromText(#{geomText}, 4326))
     </insert>
 
 </mapper>
