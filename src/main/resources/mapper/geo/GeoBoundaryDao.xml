@@ -18,7 +18,11 @@
                                 from (
                                     select
                                         name,
-                                        sheng_name
+                                        layer,
+                                        height,
+                                        color,
+                                        selected_color,
+                                        area_code
                             ) properties
                         ) as "properties"
                     from geo_boundary

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -51,11 +52,25 @@ public class GeoBoundaryServiceImpl extends ServiceImpl<GeoBoundaryDao, GeoBound
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         String createUserId = (String) params.get("createUserId");
+        String areaCode = (String) params.get("areaCode");
         IPage<GeoBoundaryEntity> page = this.page(
                 new Query<GeoBoundaryEntity>().getPage(params),
                 new QueryWrapper<GeoBoundaryEntity>()
                         .eq(createUserId != null, "create_user_id", createUserId)
+                        .like(areaCode != null, "area_code", areaCode)
         );
         return new PageUtils(page);
     }
+
+    @Override
+    public void deleteBatch(Long[] boundaryIds) {
+        this.removeByIds(Arrays.asList(boundaryIds));
+    }
+
+
+    @Override
+    public void update(GeoBoundaryEntity geoBoundaryEntity) {
+        this.updateById(geoBoundaryEntity);
+    }
+
 }

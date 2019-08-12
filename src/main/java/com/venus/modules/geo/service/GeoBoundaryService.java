@@ -13,4 +13,11 @@ public interface GeoBoundaryService extends IService<GeoBoundaryEntity> {
     void saveGeomText(GeoBoundaryEntity geoBoundaryEntity);
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 删除用户
+     */
+    void deleteBatch(Long[] boundaryIds);
+
+    void update(GeoBoundaryEntity geoBoundaryEntity);
 }
