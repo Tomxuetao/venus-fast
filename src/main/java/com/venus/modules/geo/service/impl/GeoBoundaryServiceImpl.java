@@ -28,7 +28,7 @@ public class GeoBoundaryServiceImpl extends ServiceImpl<GeoBoundaryDao, GeoBound
 
     @Override
     public String getGeoJsonById(Integer id) {
-        String redisKey = RedisKeys.getGeoConfigKey(String.valueOf(id));
+        String redisKey = RedisKeys.getGeoBoundaryKey(String.valueOf(id));
         if (redisUtils.get(redisKey) != null) {
             return redisUtils.get(redisKey);
         }
@@ -51,7 +51,7 @@ public class GeoBoundaryServiceImpl extends ServiceImpl<GeoBoundaryDao, GeoBound
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String createUserId = (String) params.get("createUserId");
+        Long createUserId = (Long) params.get("createUserId");
         String areaCode = (String) params.get("areaCode");
         IPage<GeoBoundaryEntity> page = this.page(
                 new Query<GeoBoundaryEntity>().getPage(params),

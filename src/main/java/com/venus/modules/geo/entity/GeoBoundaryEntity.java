@@ -18,7 +18,7 @@ public class GeoBoundaryEntity {
     private String color;
     private String selectedColor;
     private String areaCode;
-    private String createUserId;
+    private Long createUserId;
     private Date createTime;
     @TableField(exist = false)
     private String geomText;

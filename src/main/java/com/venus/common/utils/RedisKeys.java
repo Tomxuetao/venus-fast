@@ -23,8 +23,8 @@ public class RedisKeys {
      * @param key: String
      * @return String
      */
-    public static String getGeoConfigKey(String key) {
-        return "geo:config:" + key;
+    public static String getGeoBoundaryKey(String key) {
+        return "geo:boundary:" + key;
     }
 
     /**

@@ -33,7 +33,7 @@ public class GeoBoundaryController extends AbstractController {
     @PostMapping("/save")
     @RequiresPermissions("geo:boundary:save")
     public R saveGeomText(@RequestBody GeoBoundaryEntity geoBoundaryEntity) {
-        geoBoundaryEntity.setCreateUserId(getUserId().toString());
+        geoBoundaryEntity.setCreateUserId(getUserId());
         geoBoundaryService.saveGeomText(geoBoundaryEntity);
         return R.ok();
     }
@@ -41,12 +41,17 @@ public class GeoBoundaryController extends AbstractController {
     @GetMapping("/list")
     @RequiresPermissions("geo:boundary:list")
     public R list(@RequestParam Map<String, Object> params) {
-        //只有超级管理员，才能查看所有管理员列表
         if (getUserId() != Constant.SUPER_ADMIN) {
             params.put("createUserId", getUserId());
         }
         PageUtils page = geoBoundaryService.queryPage(params);
         return R.ok().put("page", page);
+    }
+
+    @GetMapping("/info/{gid}")
+    @RequiresPermissions("geo:boundary:info")
+    public R info(@PathVariable("gid") Integer gid){
+        return R.ok().put("boundary", geoBoundaryService.getById(gid));
     }
 
     @SysLog("删除周界")
