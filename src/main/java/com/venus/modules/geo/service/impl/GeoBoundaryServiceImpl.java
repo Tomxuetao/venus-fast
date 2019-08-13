@@ -27,6 +27,7 @@ public class GeoBoundaryServiceImpl extends ServiceImpl<GeoBoundaryDao, GeoBound
     private GeoBoundaryDao geoBoundaryDao;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String getGeoJsonById(Integer id) {
         String redisKey = RedisKeys.getGeoBoundaryKey(String.valueOf(id));
         if (redisUtils.get(redisKey) != null) {
@@ -43,7 +44,6 @@ public class GeoBoundaryServiceImpl extends ServiceImpl<GeoBoundaryDao, GeoBound
     }
 
     @Override
-    @Transactional
     public void saveGeomText(GeoBoundaryEntity geoBoundaryEntity) {
         geoBoundaryEntity.setCreateTime(new Date());
         geoBoundaryDao.saveGeomText(geoBoundaryEntity);
@@ -63,14 +63,22 @@ public class GeoBoundaryServiceImpl extends ServiceImpl<GeoBoundaryDao, GeoBound
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteBatch(Long[] boundaryIds) {
+        for (Long id : boundaryIds) {
+            String redisKey = RedisKeys.getGeoBoundaryKey(String.valueOf(id));
+            redisUtils.delete(redisKey);
+        }
         this.removeByIds(Arrays.asList(boundaryIds));
     }
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void update(GeoBoundaryEntity geoBoundaryEntity) {
         this.updateById(geoBoundaryEntity);
+        String redisKey = RedisKeys.getGeoBoundaryKey(String.valueOf(geoBoundaryEntity.getGid()));
+        redisUtils.delete(redisKey);
     }
 
 }
