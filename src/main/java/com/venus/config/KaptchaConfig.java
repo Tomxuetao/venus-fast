@@ -1,5 +1,3 @@
-
-
 package com.venus.config;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;

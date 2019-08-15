@@ -28,11 +28,9 @@ public class OAuth2Filter extends AuthenticatingFilter {
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
         //获取请求token
         String token = getRequestToken((HttpServletRequest) request);
-
         if(StringUtils.isBlank(token)){
             return null;
         }
-
         return new OAuth2Token(token);
     }
 
@@ -76,7 +74,6 @@ public class OAuth2Filter extends AuthenticatingFilter {
         } catch (IOException e1) {
 
         }
-
         return false;
     }
 
@@ -91,9 +88,6 @@ public class OAuth2Filter extends AuthenticatingFilter {
         if(StringUtils.isBlank(token)){
             token = httpRequest.getParameter("token");
         }
-
         return token;
     }
-
-
 }
