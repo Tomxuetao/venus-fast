@@ -4,6 +4,8 @@ package com.venus.modules.sys.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.venus.common.utils.Constant;
 import com.venus.common.utils.MapUtils;
+import com.venus.common.utils.RedisKeys;
+import com.venus.common.utils.RedisUtils;
 import com.venus.modules.sys.dao.SysMenuDao;
 import com.venus.modules.sys.entity.SysMenuEntity;
 import com.venus.modules.sys.service.SysMenuService;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -22,6 +25,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
     private SysUserService sysUserService;
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Override
     public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {
@@ -51,14 +56,22 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 
     @Override
     public List<SysMenuEntity> getUserMenuList(Long userId) {
+        List<SysMenuEntity> menuList;
+
         //系统管理员，拥有最高权限
         if (userId == Constant.SUPER_ADMIN) {
-            return getAllMenuList(null);
+            menuList = getAllMenuList(null);
+        } else {
+            //用户菜单列表
+            List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+            menuList = getAllMenuList(menuIdList);
         }
+        String redisKey = RedisKeys.getUserMenuKey(String.valueOf(userId));
+        redisUtils.leftPushAll(redisKey, Collections.singletonList(menuList));
 
-        //用户菜单列表
-        List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
-        return getAllMenuList(menuIdList);
+        Long len = redisUtils.size(redisKey);
+        System.out.println(len);
+        return menuList;
     }
 
     @Override
@@ -77,7 +90,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
         List<SysMenuEntity> menuList = queryListParentId(0L, menuIdList);
         //递归获取子菜单
         getMenuTreeList(menuList, menuIdList);
-
         return menuList;
     }
 
@@ -85,7 +97,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
      * 递归
      */
     private List<SysMenuEntity> getMenuTreeList(List<SysMenuEntity> menuList, List<Long> menuIdList) {
-        List<SysMenuEntity> subMenuList = new ArrayList<SysMenuEntity>();
+        List<SysMenuEntity> subMenuList = new ArrayList<>();
 
         for (SysMenuEntity entity : menuList) {
             //目录

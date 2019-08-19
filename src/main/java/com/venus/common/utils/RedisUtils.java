@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,7 +38,7 @@ public class RedisUtils {
     @Autowired
     private ZSetOperations<String, Object> zSetOperations;
 
-    /* String */
+    /*------------------------------------- String -------------------------------------*/
     public void set(String key, Object value, long expire) {
         valueOperations.set(key, toJson(value));
         if (expire != NOT_EXPIRE) {
@@ -75,6 +77,39 @@ public class RedisUtils {
     public void delete(String key) {
         redisTemplate.delete(key);
     }
+
+    /*-------------------------------------List-------------------------------------*/
+    public void leftPushAll(String key, List<Object> values, long expire) {
+        List<Object> list = new ArrayList<>();
+        values.forEach(item->list.add(toJson(item)));
+        listOperations.leftPushAll(key, list);
+        if (expire != NOT_EXPIRE) {
+            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+        }
+    }
+
+    public void leftPushAll(String key, List<Object> values) {
+        leftPushAll(key, values, DEFAULT_EXPIRE);
+    }
+
+
+    public void rightPushAll(String key, List<Object> values, long expire) {
+        List<Object> list = new ArrayList<>();
+        values.forEach(item->list.add(toJson(item)));
+        listOperations.rightPushAll(key, list);
+        if (expire != NOT_EXPIRE) {
+            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+        }
+    }
+
+    public void rightPushAll(String key, List<Object> values) {
+        rightPushAll(key, values, DEFAULT_EXPIRE);
+    }
+
+    public Long size(String key) {
+        return listOperations.size(key);
+    }
+
 
     /**
      * Object转成JSON数据

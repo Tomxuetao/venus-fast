@@ -1,5 +1,3 @@
-
-
 package com.venus.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,17 +24,14 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuDao, SysRoleM
 	public void saveOrUpdate(Long roleId, List<Long> menuIdList) {
 		//先删除角色与菜单关系
 		deleteBatch(new Long[]{roleId});
-
 		if(menuIdList.size() == 0){
 			return ;
 		}
-
 		//保存角色与菜单关系
 		for(Long menuId : menuIdList){
 			SysRoleMenuEntity sysRoleMenuEntity = new SysRoleMenuEntity();
 			sysRoleMenuEntity.setMenuId(menuId);
 			sysRoleMenuEntity.setRoleId(roleId);
-
 			this.save(sysRoleMenuEntity);
 		}
 	}

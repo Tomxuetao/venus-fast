@@ -76,9 +76,9 @@ public class GeoBoundaryServiceImpl extends ServiceImpl<GeoBoundaryDao, GeoBound
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(GeoBoundaryEntity geoBoundaryEntity) {
-        this.updateById(geoBoundaryEntity);
         String redisKey = RedisKeys.getGeoBoundaryKey(String.valueOf(geoBoundaryEntity.getGid()));
         redisUtils.delete(redisKey);
+        this.updateById(geoBoundaryEntity);
     }
 
 }

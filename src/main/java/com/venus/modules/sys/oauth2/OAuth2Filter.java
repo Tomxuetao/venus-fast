@@ -25,7 +25,7 @@ import java.io.IOException;
 public class OAuth2Filter extends AuthenticatingFilter {
 
     @Override
-    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
+    protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
         //获取请求token
         String token = getRequestToken((HttpServletRequest) request);
         if(StringUtils.isBlank(token)){
@@ -72,7 +72,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
             String json = new Gson().toJson(r);
             httpResponse.getWriter().print(json);
         } catch (IOException e1) {
-
+            System.out.println(e1);
         }
         return false;
     }
