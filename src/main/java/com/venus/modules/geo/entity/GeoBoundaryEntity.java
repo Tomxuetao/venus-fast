@@ -12,13 +12,15 @@ import java.util.Date;
 public class GeoBoundaryEntity {
     @TableId
     private Integer gid;
+    private Integer pid;
     private String name;
     private Integer layer;
     private Integer height;
+    private Integer level;
+    private Integer type;
     private String color;
     private String selectedColor;
     private String areaCode;
-    private Integer type;
     private Long createUserId;
     private Date createTime;
     @TableField(exist = false)

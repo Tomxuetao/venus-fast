@@ -17,13 +17,16 @@
                             select row_to_json(properties)
                                 from (
                                     select
+                                        gid,
+                                        pid,
                                         name,
                                         layer,
                                         height,
+                                        level,
+                                        type,
                                         color,
                                         selected_color,
-                                        area_code,
-                                        type
+                                        area_code
                             ) properties
                         ) as "properties"
                     from geo_boundary
@@ -33,8 +36,8 @@
     </select>
 
     <insert id="saveGeomText" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="gid">
-        INSERT INTO geo_boundary (name, layer, height, color, selected_color, area_code, type, create_user_id, create_time, geom)
-        VALUES (#{name}, #{layer}, #{height}, #{color}, #{selectedColor}, #{areaCode}, #{type}, #{createUserId}, #{createTime}, ST_GeomFromText(#{geomText}, 4326))
+        INSERT INTO geo_boundary (pid, name, layer, height, level, type, color, selected_color, area_code, create_user_id, create_time, geom)
+        VALUES (#{pid}, #{name}, #{layer}, #{height}, #{level}, #{type}, #{color}, #{selectedColor}, #{areaCode}, #{createUserId}, #{createTime}, ST_GeomFromText(#{geomText}, 4326))
     </insert>
 
 </mapper>

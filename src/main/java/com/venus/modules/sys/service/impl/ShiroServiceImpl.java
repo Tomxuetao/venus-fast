@@ -1,8 +1,6 @@
 package com.venus.modules.sys.service.impl;
 
 import com.venus.common.utils.Constant;
-import com.venus.common.utils.RedisKeys;
-import com.venus.common.utils.RedisUtils;
 import com.venus.modules.sys.dao.SysMenuDao;
 import com.venus.modules.sys.dao.SysUserDao;
 import com.venus.modules.sys.dao.SysUserTokenDao;
@@ -26,7 +24,7 @@ public class ShiroServiceImpl implements ShiroService {
     private SysUserTokenDao sysUserTokenDao;
 
     @Override
-    public Set<String> getUserPermissions(long userId) {
+    public Set getUserPermissions(long userId) {
         List<String> permsList;
         //系统管理员，拥有最高权限
         if (userId == Constant.SUPER_ADMIN) {

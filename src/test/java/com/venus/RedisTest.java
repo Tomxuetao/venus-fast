@@ -31,17 +31,4 @@ public class RedisTest {
         System.out.println(redisUtils.get("user"));
     }
 
-    @Test
-    public void redisListTest() {
-        List<SysUserEntity> sysUserEntityList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            SysUserEntity user = new SysUserEntity();
-            user.setEmail("qqq@qq.com");
-            user.setMobile("155555030339");
-            redisUtils.set("user", user);
-            sysUserEntityList.add(user);
-        }
-        redisUtils.leftPushAll("redis:user", Collections.singletonList(sysUserEntityList));
-    }
-
 }

@@ -1,6 +1,5 @@
 package com.venus.modules.sys.service.impl;
 
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.venus.common.utils.Constant;
 import com.venus.common.utils.MapUtils;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -55,22 +53,22 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
     }
 
     @Override
-    public List<SysMenuEntity> getUserMenuList(Long userId) {
+    public List getUserMenuList(Long userId) {
+        String redisKey = RedisKeys.getUserMenuKey(String.valueOf(userId));
+        if (redisUtils.get(redisKey, List.class) != null) {
+            return redisUtils.get(redisKey, List.class);
+        }
         List<SysMenuEntity> menuList;
-
         //系统管理员，拥有最高权限
         if (userId == Constant.SUPER_ADMIN) {
             menuList = getAllMenuList(null);
-        } else {
-            //用户菜单列表
-            List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
-            menuList = getAllMenuList(menuIdList);
+            redisUtils.set(redisKey, menuList);
+            return menuList;
         }
-        String redisKey = RedisKeys.getUserMenuKey(String.valueOf(userId));
-        redisUtils.leftPushAll(redisKey, Collections.singletonList(menuList));
-
-        Long len = redisUtils.size(redisKey);
-        System.out.println(len);
+        //用户菜单列表
+        List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+        menuList = getAllMenuList(menuIdList);
+        redisUtils.set(redisKey, menuList);
         return menuList;
     }
 
