@@ -1,5 +1,3 @@
-
-
 package com.venus.common.validator;
 
 import com.venus.common.exception.RRException;

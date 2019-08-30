@@ -18,6 +18,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class SysUserController extends AbstractController {
      */
     @GetMapping("/info")
     public R info() {
-        return R.ok().put("user", getUser());
+        return R.ok().put("user", sysUserService.queryById(getUserId()));
     }
 
     /**
@@ -85,12 +86,10 @@ public class SysUserController extends AbstractController {
     @GetMapping("/info/{userId}")
     @RequiresPermissions("sys:user:info")
     public R info(@PathVariable("userId") Long userId) {
-        SysUserEntity user = sysUserService.getById(userId);
-
+        SysUserEntity user = sysUserService.queryById(userId);
         //获取用户所属的角色列表
         List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
         user.setRoleIdList(roleIdList);
-
         return R.ok().put("user", user);
     }
 

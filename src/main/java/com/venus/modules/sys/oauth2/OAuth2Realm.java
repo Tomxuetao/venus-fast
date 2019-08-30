@@ -1,4 +1,3 @@
-
 package com.venus.modules.sys.oauth2;
 
 import com.venus.modules.sys.entity.SysUserEntity;

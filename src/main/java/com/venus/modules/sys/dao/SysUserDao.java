@@ -1,4 +1,3 @@
-
 package com.venus.modules.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -30,5 +29,10 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 	 * 根据用户名，查询系统用户
 	 */
 	SysUserEntity queryByUserName(String username);
+
+	/**
+	 * 查询用户信息
+	 */
+	SysUserEntity queryByUserId(Long userId);
 
 }

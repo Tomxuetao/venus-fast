@@ -1,5 +1,3 @@
-
-
 package com.venus.common.xss;
 
 import com.venus.common.exception.RRException;

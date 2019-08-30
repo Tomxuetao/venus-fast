@@ -1,5 +1,3 @@
-
-
 package com.venus.common.xss;
 
 import javax.servlet.*;

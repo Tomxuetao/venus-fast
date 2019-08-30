@@ -1,4 +1,3 @@
-
 package com.venus.modules.job.config;
 
 import org.springframework.context.annotation.Bean;

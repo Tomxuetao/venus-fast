@@ -1,4 +1,3 @@
-
 package com.venus.common.annotation;
 
 import java.lang.annotation.Documented;

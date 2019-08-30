@@ -1,7 +1,4 @@
-
-
 package com.venus.modules.oss.cloud;
-
 
 import com.venus.common.validator.group.AliyunGroup;
 import com.venus.common.validator.group.QcloudGroup;

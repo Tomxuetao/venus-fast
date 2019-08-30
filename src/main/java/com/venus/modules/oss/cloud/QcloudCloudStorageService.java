@@ -1,7 +1,4 @@
-
-
 package com.venus.modules.oss.cloud;
-
 
 import com.alibaba.fastjson.JSONObject;
 import com.qcloud.cos.COSClient;

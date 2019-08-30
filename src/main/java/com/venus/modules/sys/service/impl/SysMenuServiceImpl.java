@@ -23,8 +23,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
     private SysUserService sysUserService;
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
-    @Autowired
-    private RedisUtils redisUtils;
 
     @Override
     public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {
@@ -53,22 +51,16 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
     }
 
     @Override
-    public List getUserMenuList(Long userId) {
-        String redisKey = RedisKeys.getUserMenuKey(String.valueOf(userId));
-        if (redisUtils.get(redisKey, List.class) != null) {
-            return redisUtils.get(redisKey, List.class);
-        }
+    public List<SysMenuEntity> getUserMenuList(Long userId) {
         List<SysMenuEntity> menuList;
         //系统管理员，拥有最高权限
         if (userId == Constant.SUPER_ADMIN) {
             menuList = getAllMenuList(null);
-            redisUtils.set(redisKey, menuList);
             return menuList;
         }
         //用户菜单列表
         List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
         menuList = getAllMenuList(menuIdList);
-        redisUtils.set(redisKey, menuList);
         return menuList;
     }
 

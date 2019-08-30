@@ -1,5 +1,3 @@
-
-
 package com.venus.modules.job.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;

@@ -19,7 +19,11 @@
 
     <!-- 查询用户通过名称 -->
 	<select id="queryByUserName" resultType="com.venus.modules.sys.entity.SysUserEntity">
-		select * from sys_user where username = #{username}
+		select user_id, username, password, salt, email, mobile, status, create_user_id, create_time from sys_user where username = #{username}
+	</select>
+
+	<select id="queryByUserId" resultType="com.venus.modules.sys.entity.SysUserEntity">
+		select user_id, username, email, mobile, status, create_user_id, create_time from sys_user where user_id = #{userId}
 	</select>
 
 </mapper>

@@ -1,5 +1,3 @@
-
-
 package com.venus.common.xss;
 
 import org.apache.commons.io.IOUtils;
