@@ -30,6 +30,7 @@ public class GeoBoundaryController extends AbstractController {
         return R.error("未查询到相关数据");
     }
 
+    @SysLog("保存周界")
     @PostMapping("/save")
     @RequiresPermissions("geo:boundary:save")
     public R saveGeomText(@RequestBody GeoBoundaryEntity geoBoundaryEntity) {
