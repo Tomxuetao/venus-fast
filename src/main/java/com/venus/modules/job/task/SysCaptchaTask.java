@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("sysCaptchaTask")
 public class SysCaptchaTask implements ITask {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private SysCaptchaService sysCaptchaService;

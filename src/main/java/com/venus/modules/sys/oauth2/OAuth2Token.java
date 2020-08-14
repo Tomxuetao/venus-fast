@@ -9,7 +9,7 @@ import org.apache.shiro.authc.AuthenticationToken;
  * @author Tomxuetao
  */
 public class OAuth2Token implements AuthenticationToken {
-    private String token;
+    private final String token;
 
     public OAuth2Token(String token){
         this.token = token;
