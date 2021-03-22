@@ -44,7 +44,7 @@ public class SysMenuController extends AbstractController {
 	 */
 	@GetMapping("/list")
 	@RequiresPermissions("sys:menu:list")
-	public List<SysMenuEntity> list(){
+	public R list(){
 		List<SysMenuEntity> menuList = sysMenuService.list();
 		for(SysMenuEntity sysMenuEntity : menuList){
 			SysMenuEntity parentMenuEntity = sysMenuService.getById(sysMenuEntity.getParentId());
@@ -52,7 +52,7 @@ public class SysMenuController extends AbstractController {
 				sysMenuEntity.setParentName(parentMenuEntity.getName());
 			}
 		}
-		return menuList;
+		return R.ok().put("list", menuList);
 	}
 
 	/**
