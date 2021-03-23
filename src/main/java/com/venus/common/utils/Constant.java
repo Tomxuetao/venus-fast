@@ -11,11 +11,11 @@ public class Constant {
     /**
      * 当前页码
      */
-    public static final String PAGE = "page";
+    public static final String PAGE = "pageNum";
     /**
      * 每页显示记录数
      */
-    public static final String LIMIT = "limit";
+    public static final String LIMIT = "pageSize";
     /**
      * 排序字段
      */
@@ -45,7 +45,7 @@ public class Constant {
          */
         BUTTON(2);
 
-        private int value;
+        private final int value;
 
         MenuType(int value) {
             this.value = value;
@@ -69,7 +69,7 @@ public class Constant {
          */
     	PAUSE(1);
 
-        private int value;
+        private final int value;
 
         ScheduleStatus(int value) {
             this.value = value;
@@ -97,7 +97,7 @@ public class Constant {
          */
         QCLOUD(3);
 
-        private int value;
+        private final int value;
 
         CloudService(int value) {
             this.value = value;
