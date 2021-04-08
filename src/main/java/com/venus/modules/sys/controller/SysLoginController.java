@@ -1,5 +1,6 @@
 package com.venus.modules.sys.controller;
 
+import com.venus.common.annotation.SysLog;
 import com.venus.common.utils.R;
 import com.venus.modules.sys.entity.SysUserEntity;
 import com.venus.modules.sys.form.SysLoginForm;
@@ -75,10 +76,10 @@ public class SysLoginController extends AbstractController {
         return sysUserTokenService.createToken(user.getUserId());
     }
 
-
     /**
      * 退出
      */
+    @SysLog("用户退出")
     @PostMapping("/sys/logout")
     public R logout() {
         sysUserTokenService.logout(getUserId());
