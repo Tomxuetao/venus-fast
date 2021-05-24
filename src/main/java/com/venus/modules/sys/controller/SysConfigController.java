@@ -32,7 +32,7 @@ public class SysConfigController extends AbstractController {
 	public R list(@RequestParam Map<String, Object> params){
 		PageUtils page = sysConfigService.queryPage(params);
 
-		return R.ok().put("page", page);
+		return R.ok().put(page);
 	}
 
 
@@ -44,7 +44,7 @@ public class SysConfigController extends AbstractController {
 	public R info(@PathVariable("id") Long id){
 		SysConfigEntity config = sysConfigService.getById(id);
 
-		return R.ok().put("config", config);
+		return R.ok().put(config);
 	}
 
 	/**

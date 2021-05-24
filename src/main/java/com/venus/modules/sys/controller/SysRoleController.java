@@ -42,7 +42,7 @@ public class SysRoleController extends AbstractController {
 
 		PageUtils page = sysRoleService.queryPage(params);
 
-		return R.ok().put("page", page);
+		return R.ok().put(page);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class SysRoleController extends AbstractController {
 		}
 		List<SysRoleEntity> list = (List<SysRoleEntity>) sysRoleService.listByMap(map);
 
-		return R.ok().put("list", list);
+		return R.ok().put(list);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class SysRoleController extends AbstractController {
 		List<Long> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
 		role.setMenuIdList(menuIdList);
 
-		return R.ok().put("role", role);
+		return R.ok().put(role);
 	}
 
 	/**

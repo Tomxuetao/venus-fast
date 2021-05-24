@@ -9,6 +9,8 @@ import com.venus.modules.sys.service.SysUserTokenService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -43,7 +45,10 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
             //更新token
             this.updateById(tokenEntity);
         }
-        return Objects.requireNonNull(R.ok().put("token", token)).put("expire", EXPIRE);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("token", token);
+        map.put("expire", EXPIRE);
+        return Objects.requireNonNull(R.ok().put(map));
     }
 
     @Override
