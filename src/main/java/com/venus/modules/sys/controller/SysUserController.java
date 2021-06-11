@@ -142,4 +142,9 @@ public class SysUserController extends AbstractController {
 
         return R.ok();
     }
+
+    @GetMapping("/validName")
+    public R validName(@RequestParam Map<String, String> params) {
+        return R.ok().put(sysUserService.queryCountByName(params.get("userName")));
+    }
 }
