@@ -35,14 +35,14 @@ public class SysRoleController extends AbstractController {
 	@GetMapping("/list")
 	@RequiresPermissions("sys:role:list")
 	public R list(@RequestParam Map<String, Object> params){
-		//如果不是超级管理员，则只查询自己创建的角色列表
+		// 如果不是超级管理员，则只查询自己创建的角色列表
 		if(getUserId() != Constant.SUPER_ADMIN){
 			params.put("createUserId", getUserId());
 		}
 
 		PageUtils page = sysRoleService.queryPage(params);
 
-		return R.ok().put("page", page);
+		return R.ok().put(page);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class SysRoleController extends AbstractController {
 		}
 		List<SysRoleEntity> list = (List<SysRoleEntity>) sysRoleService.listByMap(map);
 
-		return R.ok().put("list", list);
+		return R.ok().put(list);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class SysRoleController extends AbstractController {
 		List<Long> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
 		role.setMenuIdList(menuIdList);
 
-		return R.ok().put("role", role);
+		return R.ok().put(role);
 	}
 
 	/**
@@ -118,4 +118,9 @@ public class SysRoleController extends AbstractController {
 
 		return R.ok();
 	}
+
+    @GetMapping("/validName")
+	public R validName(@RequestParam Map<String, String> params) {
+	    return R.ok().put(sysRoleService.queryCountByName(params.get("roleName")));
+    }
 }

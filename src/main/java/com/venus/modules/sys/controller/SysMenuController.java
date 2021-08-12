@@ -12,9 +12,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 系统菜单
@@ -34,9 +32,12 @@ public class SysMenuController extends AbstractController {
 	 */
 	@GetMapping("/nav")
 	public R nav(){
-		List menuList = sysMenuService.getUserMenuList(getUserId());
+		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
 		Set<String> permissions = shiroService.getUserPermissions(getUserId());
-		return Objects.requireNonNull(R.ok().put("menuList", menuList)).put("permissions", permissions);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("menuList", menuList);
+        map.put("permissions", permissions);
+		return Objects.requireNonNull(R.ok().put(map));
 	}
 
 	/**
@@ -52,7 +53,7 @@ public class SysMenuController extends AbstractController {
 				sysMenuEntity.setParentName(parentMenuEntity.getName());
 			}
 		}
-		return R.ok().put("list", menuList);
+		return R.ok().put(menuList);
 	}
 
 	/**
@@ -72,7 +73,7 @@ public class SysMenuController extends AbstractController {
 		root.setOpen(true);
 		menuList.add(root);
 
-		return R.ok().put("menuList", menuList);
+		return R.ok().put(menuList);
 	}
 
 	/**
@@ -82,7 +83,7 @@ public class SysMenuController extends AbstractController {
 	@RequiresPermissions("sys:menu:info")
 	public R info(@PathVariable("menuId") Long menuId){
 		SysMenuEntity menu = sysMenuService.getById(menuId);
-		return R.ok().put("menu", menu);
+		return R.ok().put(menu);
 	}
 
 	/**

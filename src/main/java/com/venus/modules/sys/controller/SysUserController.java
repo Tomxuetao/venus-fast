@@ -47,7 +47,7 @@ public class SysUserController extends AbstractController {
         }
         PageUtils page = sysUserService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.ok().put(page);
     }
 
     /**
@@ -55,7 +55,7 @@ public class SysUserController extends AbstractController {
      */
     @GetMapping("/info")
     public R info() {
-        return R.ok().put("user", sysUserService.queryById(getUserId()));
+        return R.ok().put(sysUserService.queryById(getUserId()));
     }
 
     /**
@@ -90,7 +90,7 @@ public class SysUserController extends AbstractController {
         //获取用户所属的角色列表
         List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
         user.setRoleIdList(roleIdList);
-        return R.ok().put("user", user);
+        return R.ok().put(user);
     }
 
     /**
@@ -141,5 +141,10 @@ public class SysUserController extends AbstractController {
         sysUserService.deleteBatch(userIds);
 
         return R.ok();
+    }
+
+    @GetMapping("/validName")
+    public R validName(@RequestParam Map<String, String> params) {
+        return R.ok().put(sysUserService.queryCountByName(params.get("userName")));
     }
 }

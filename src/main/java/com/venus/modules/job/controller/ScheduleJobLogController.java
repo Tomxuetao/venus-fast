@@ -32,7 +32,7 @@ public class ScheduleJobLogController {
 	public R list(@RequestParam Map<String, Object> params){
 		PageUtils page = scheduleJobLogService.queryPage(params);
 
-		return R.ok().put("page", page);
+		return R.ok().put(page);
 	}
 
 	/**
@@ -42,6 +42,6 @@ public class ScheduleJobLogController {
 	public R info(@PathVariable("logId") Long logId){
 		ScheduleJobLogEntity log = scheduleJobLogService.getById(logId);
 
-		return R.ok().put("log", log);
+		return R.ok().put(log);
 	}
 }

@@ -96,7 +96,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 		return baseMapper.queryRoleIdList(createUserId);
 	}
 
-	/**
+    @Override
+    public int queryCountByName(String roleName) {
+        return this.count(new QueryWrapper<SysRoleEntity>().eq(StringUtils.isNotBlank(roleName), "role_name", roleName));
+    }
+
+    /**
 	 * 检查权限是否越权
 	 */
 	private void checkPrems(SysRoleEntity role){

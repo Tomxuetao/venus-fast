@@ -62,4 +62,6 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 */
 	SysUserEntity queryById(Long userId);
 
+	int queryCountByName(String userName);
+
 }

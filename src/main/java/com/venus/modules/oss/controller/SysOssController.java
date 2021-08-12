@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 文件上传
@@ -47,7 +48,7 @@ public class SysOssController {
 	public R list(@RequestParam Map<String, Object> params){
 		PageUtils page = sysOssService.queryPage(params);
 
-		return R.ok().put("page", page);
+		return R.ok().put(page);
 	}
 
 
@@ -59,7 +60,7 @@ public class SysOssController {
     public R config(){
         CloudStorageConfig config = sysConfigService.getConfigObject(KEY, CloudStorageConfig.class);
 
-        return R.ok().put("config", config);
+        return R.ok().put(config);
     }
 
 
@@ -100,8 +101,8 @@ public class SysOssController {
 		}
 
 		//上传文件
-		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-		String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
+		String suffix = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+		String url = Objects.requireNonNull(OSSFactory.build()).uploadSuffix(file.getBytes(), suffix);
 
 		//保存文件信息
 		SysOssEntity ossEntity = new SysOssEntity();
@@ -109,7 +110,7 @@ public class SysOssController {
 		ossEntity.setCreateDate(new Date());
 		sysOssService.save(ossEntity);
 
-		return R.ok().put("url", url);
+		return R.ok().put(url);
 	}
 
 

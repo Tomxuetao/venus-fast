@@ -119,6 +119,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return baseMapper.queryByUserId(userId);
     }
 
+    @Override
+    public int queryCountByName(String userName) {
+        return this.count(new QueryWrapper<SysUserEntity>().eq(StringUtils.isNotBlank(userName),"username", userName));
+    }
+
     /**
      * 检查角色是否越权
      */

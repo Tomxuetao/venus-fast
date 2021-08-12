@@ -31,7 +31,7 @@ public class ScheduleJobController {
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = scheduleJobService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.ok().put(page);
     }
 
     /**
@@ -42,7 +42,7 @@ public class ScheduleJobController {
     public R info(@PathVariable("jobId") Long jobId){
         ScheduleJobEntity schedule = scheduleJobService.getById(jobId);
 
-        return R.ok().put("schedule", schedule);
+        return R.ok().put(schedule);
     }
 
     /**
