@@ -53,6 +53,7 @@ public class SysMenuController extends AbstractController {
 				sysMenuEntity.setParentName(parentMenuEntity.getName());
 			}
 		}
+		menuList.sort(Comparator.comparing(SysMenuEntity::getOrderNum));
 		return R.ok().put(menuList);
 	}
 
