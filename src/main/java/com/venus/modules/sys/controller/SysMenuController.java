@@ -1,176 +1,125 @@
 package com.venus.modules.sys.controller;
 
-import com.venus.common.annotation.SysLog;
-import com.venus.common.exception.RRException;
-import com.venus.common.utils.Constant;
-import com.venus.common.utils.R;
-import com.venus.modules.sys.entity.SysMenuEntity;
-import com.venus.modules.sys.service.ShiroService;
+import com.venus.common.annotation.LogOperation;
+import com.venus.common.exception.ErrorCode;
+import com.venus.common.utils.Result;
+import com.venus.common.validator.AssertUtils;
+import com.venus.common.validator.ValidatorUtils;
+import com.venus.common.validator.group.DefaultGroup;
+import com.venus.modules.security.service.ShiroService;
+import com.venus.modules.security.user.SecurityUser;
+import com.venus.modules.security.user.UserDetail;
+import com.venus.modules.sys.dto.SysMenuDTO;
+import com.venus.modules.sys.enums.MenuTypeEnum;
 import com.venus.modules.sys.service.SysMenuService;
-import org.apache.commons.lang.StringUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
-/**
- * 系统菜单
- *
- * @author Tomxuetao
- */
 @RestController
 @RequestMapping("/sys/menu")
-public class SysMenuController extends AbstractController {
-	@Autowired
-	private SysMenuService sysMenuService;
-	@Autowired
-	private ShiroService shiroService;
+@Api(tags="菜单管理")
+public class SysMenuController {
+    @Autowired
+    private SysMenuService sysMenuService;
+    @Autowired
+    private ShiroService shiroService;
 
-	/**
-	 * 导航菜单
-	 */
-	@GetMapping("/nav")
-	public R nav(){
-		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
-		Set<String> permissions = shiroService.getUserPermissions(getUserId());
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("menuList", menuList);
-        map.put("permissions", permissions);
-		return Objects.requireNonNull(R.ok().put(map));
-	}
+    @GetMapping("nav")
+    @ApiOperation("导航")
+    public Result<List<SysMenuDTO>> nav(){
+        UserDetail user = SecurityUser.getUser();
+        List<SysMenuDTO> list = sysMenuService.getUserMenuList(user, MenuTypeEnum.MENU.value());
 
-	/**
-	 * 所有菜单列表
-	 */
-	@GetMapping("/list")
-	@RequiresPermissions("sys:menu:list")
-	public R list(){
-		List<SysMenuEntity> menuList = sysMenuService.list();
-		for(SysMenuEntity sysMenuEntity : menuList){
-			SysMenuEntity parentMenuEntity = sysMenuService.getById(sysMenuEntity.getParentId());
-			if(parentMenuEntity != null){
-				sysMenuEntity.setParentName(parentMenuEntity.getName());
-			}
-		}
-		menuList.sort(Comparator.comparing(SysMenuEntity::getOrderNum));
-		return R.ok().put(menuList);
-	}
+        return new Result<List<SysMenuDTO>>().ok(list);
+    }
 
-	/**
-	 * 选择菜单(添加、修改菜单)
-	 */
-	@GetMapping("/select")
-	@RequiresPermissions("sys:menu:select")
-	public R select(){
-		//查询列表数据
-		List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
+    @GetMapping("permissions")
+    @ApiOperation("权限标识")
+    public Result<Set<String>> permissions(){
+        UserDetail user = SecurityUser.getUser();
+        Set<String> set = shiroService.getUserPermissions(user);
 
-		//添加顶级菜单
-		SysMenuEntity root = new SysMenuEntity();
-		root.setMenuId(0L);
-		root.setName("一级菜单");
-		root.setParentId(-1L);
-		root.setOpen(true);
-		menuList.add(root);
+        return new Result<Set<String>>().ok(set);
+    }
 
-		return R.ok().put(menuList);
-	}
+    @GetMapping("list")
+    @ApiOperation("列表")
+    @ApiImplicitParam(name = "type", value = "菜单类型 0：菜单 1：按钮  null：全部", paramType = "query", dataType="int", dataTypeClass=Integer.class)
+    @RequiresPermissions("sys:menu:list")
+    public Result<List<SysMenuDTO>> list(Integer type){
+        List<SysMenuDTO> list = sysMenuService.getAllMenuList(type);
 
-	/**
-	 * 菜单信息
-	 */
-	@GetMapping("/info/{menuId}")
-	@RequiresPermissions("sys:menu:info")
-	public R info(@PathVariable("menuId") Long menuId){
-		SysMenuEntity menu = sysMenuService.getById(menuId);
-		return R.ok().put(menu);
-	}
+        return new Result<List<SysMenuDTO>>().ok(list);
+    }
 
-	/**
-	 * 保存
-	 */
-	@SysLog("保存菜单")
-	@PostMapping("/save")
-	@RequiresPermissions("sys:menu:save")
-	public R save(@RequestBody SysMenuEntity menu){
-		//数据校验
-		verifyForm(menu);
+    @GetMapping("{id}")
+    @ApiOperation("信息")
+    @RequiresPermissions("sys:menu:info")
+    public Result<SysMenuDTO> get(@PathVariable("id") Long id){
+        SysMenuDTO data = sysMenuService.get(id);
 
-		sysMenuService.save(menu);
+        return new Result<SysMenuDTO>().ok(data);
+    }
 
-		return R.ok();
-	}
+    @PostMapping
+    @ApiOperation("保存")
+    @LogOperation("保存")
+    @RequiresPermissions("sys:menu:save")
+    public Result save(@RequestBody SysMenuDTO dto){
+        //效验数据
+        ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
-	/**
-	 * 修改
-	 */
-	@SysLog("修改菜单")
-	@PostMapping("/update")
-	@RequiresPermissions("sys:menu:update")
-	public R update(@RequestBody SysMenuEntity menu){
-		//数据校验
-		verifyForm(menu);
+        sysMenuService.save(dto);
 
-		sysMenuService.updateById(menu);
+        return new Result();
+    }
 
-		return R.ok();
-	}
+    @PutMapping
+    @ApiOperation("修改")
+    @LogOperation("修改")
+    @RequiresPermissions("sys:menu:update")
+    public Result update(@RequestBody SysMenuDTO dto){
+        //效验数据
+        ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
-	/**
-	 * 删除
-	 */
-	@SysLog("删除菜单")
-	@PostMapping("/delete/{menuId}")
-	@RequiresPermissions("sys:menu:delete")
-	public R delete(@PathVariable("menuId") long menuId){
-		if(menuId <= 31){
-			return R.error("系统菜单，不能删除");
-		}
-		//判断是否有子菜单或按钮
-		List<SysMenuEntity> menuList = sysMenuService.queryListParentId(menuId);
-		if(menuList.size() > 0){
-			return R.error("请先删除子菜单或按钮");
-		}
-		sysMenuService.delete(menuId);
-		return R.ok();
-	}
+        sysMenuService.update(dto);
 
-	/**
-	 * 验证参数是否正确
-	 */
-	private void verifyForm(SysMenuEntity menu){
-		if(StringUtils.isBlank(menu.getName())){
-			throw new RRException("菜单名称不能为空");
-		}
-		if(menu.getParentId() == null){
-			throw new RRException("上级菜单不能为空");
-		}
-		//菜单
-		if(menu.getType() == Constant.MenuType.MENU.getValue()){
-			if(StringUtils.isBlank(menu.getUrl())){
-				throw new RRException("菜单URL不能为空");
-			}
-		}
-		//上级菜单类型
-		int parentType = Constant.MenuType.CATALOG.getValue();
-		if(menu.getParentId() != 0){
-			SysMenuEntity parentMenu = sysMenuService.getById(menu.getParentId());
-			parentType = parentMenu.getType();
-		}
-		//目录、菜单
-		if(menu.getType() == Constant.MenuType.CATALOG.getValue() ||
-				menu.getType() == Constant.MenuType.MENU.getValue()){
-			if(parentType != Constant.MenuType.CATALOG.getValue()){
-				throw new RRException("上级菜单只能为目录类型");
-			}
-			return ;
-		}
-		//按钮
-		if(menu.getType() == Constant.MenuType.BUTTON.getValue()){
-			if(parentType != Constant.MenuType.MENU.getValue()){
-				throw new RRException("上级菜单只能为菜单类型");
-			}
-		}
-	}
+        return new Result();
+    }
+
+    @DeleteMapping("{id}")
+    @ApiOperation("删除")
+    @LogOperation("删除")
+    @RequiresPermissions("sys:menu:delete")
+    public Result delete(@PathVariable("id") Long id){
+        //效验数据
+        AssertUtils.isNull(id, "id");
+
+        //判断是否有子菜单或按钮
+        List<SysMenuDTO> list = sysMenuService.getListPid(id);
+        if(list.size() > 0){
+            return new Result().error(ErrorCode.SUB_MENU_EXIST);
+        }
+
+        sysMenuService.delete(id);
+
+        return new Result();
+    }
+
+    @GetMapping("select")
+    @ApiOperation("角色菜单权限")
+    @RequiresPermissions("sys:menu:select")
+    public Result<List<SysMenuDTO>> select(){
+        UserDetail user = SecurityUser.getUser();
+        List<SysMenuDTO> list = sysMenuService.getUserMenuList(user, null);
+
+        return new Result<List<SysMenuDTO>>().ok(list);
+    }
 }

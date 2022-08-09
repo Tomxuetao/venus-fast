@@ -1,7 +1,7 @@
 package com.venus.modules.oss.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.venus.common.utils.PageUtils;
+import com.venus.common.base.service.BaseService;
+import com.venus.common.page.PageData;
 import com.venus.modules.oss.entity.SysOssEntity;
 
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author Tomxuetao
  */
-public interface SysOssService extends IService<SysOssEntity> {
+public interface SysOssService extends BaseService<SysOssEntity> {
 
-	PageUtils queryPage(Map<String, Object> params);
+	PageData<SysOssEntity> page(Map<String, Object> params);
 }

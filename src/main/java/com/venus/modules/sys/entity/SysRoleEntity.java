@@ -1,54 +1,41 @@
 package com.venus.modules.sys.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.venus.common.base.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-/**
- * 角色
- *
- * @author Tomxuetao
- */
 @Data
+@EqualsAndHashCode(callSuper=false)
 @TableName("sys_role")
-public class SysRoleEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class SysRoleEntity extends BaseEntity {
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 角色ID
-	 */
-	@TableId
-	private Long roleId;
-
-	/**
-	 * 角色名称
-	 */
-	@NotBlank(message="角色名称不能为空")
-	private String roleName;
-
-	/**
-	 * 备注
-	 */
-	private String remark;
-
-	/**
-	 * 创建者ID
-	 */
-	private Long createUserId;
-
-	@TableField(exist=false)
-	private List<Long> menuIdList;
-
-	/**
-	 * 创建时间
-	 */
-	private Date createTime;
-
-
+    /**
+     * 角色名称
+     */
+    private String name;
+    /**
+     * 备注
+     */
+    private String remark;
+    /**
+     * 部门ID
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Long deptId;
+    /**
+     * 更新者
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Long updater;
+    /**
+     * 更新时间
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateDate;
 }

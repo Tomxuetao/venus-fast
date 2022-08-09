@@ -1,6 +1,7 @@
 package com.venus.modules.oss.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.venus.common.base.dao.BaseDao;
 import com.venus.modules.oss.entity.SysOssEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,6 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Tomxuetao
  */
 @Mapper
-public interface SysOssDao extends BaseMapper<SysOssEntity> {
+public interface SysOssDao extends BaseDao<SysOssEntity> {
 
 }

@@ -1,44 +1,39 @@
 package com.venus.modules.sys.service;
 
-
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.venus.common.base.service.BaseService;
+import com.venus.modules.security.user.UserDetail;
+import com.venus.modules.sys.dto.SysMenuDTO;
 import com.venus.modules.sys.entity.SysMenuEntity;
 
 import java.util.List;
 
+public interface SysMenuService extends BaseService<SysMenuEntity> {
+    SysMenuDTO get(Long id);
 
-/**
- * 菜单管理
- *
- * @author Tomxuetao
- */
-public interface SysMenuService extends IService<SysMenuEntity> {
+    void save(SysMenuDTO dto);
 
-	/**
-	 * 根据父菜单，查询子菜单
-	 * @param parentId 父菜单ID
-	 * @param menuIdList  用户菜单ID
-	 */
-	List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList);
+    void update(SysMenuDTO dto);
 
-	/**
-	 * 根据父菜单，查询子菜单
-	 * @param parentId 父菜单ID
-	 */
-	List<SysMenuEntity> queryListParentId(Long parentId);
+    void delete(Long id);
 
-	/**
-	 * 获取不包含按钮的菜单列表
-	 */
-	List<SysMenuEntity> queryNotButtonList();
+    /**
+     * 菜单列表
+     *
+     * @param type 菜单类型
+     */
+    List<SysMenuDTO> getAllMenuList(Integer type);
 
-	/**
-	 * 获取用户菜单列表
-	 */
-	List<SysMenuEntity> getUserMenuList(Long userId);
+    /**
+     * 用户菜单列表
+     *
+     * @param user  用户
+     * @param type 菜单类型
+     */
+    List<SysMenuDTO> getUserMenuList(UserDetail user, Integer type);
 
-	/**
-	 * 删除
-	 */
-	void delete(Long menuId);
+    /**
+     * 根据父菜单，查询子菜单
+     * @param pid  父菜单ID
+     */
+    List<SysMenuDTO> getListPid(Long pid);
 }

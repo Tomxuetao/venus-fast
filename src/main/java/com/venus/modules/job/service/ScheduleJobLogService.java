@@ -1,18 +1,16 @@
 package com.venus.modules.job.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.venus.common.utils.PageUtils;
+import com.venus.common.base.service.BaseService;
+import com.venus.common.page.PageData;
+import com.venus.modules.job.dto.ScheduleJobLogDTO;
 import com.venus.modules.job.entity.ScheduleJobLogEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-/**
- * 定时任务日志
- *
- * @author Tomxuetao
- */
-public interface ScheduleJobLogService extends IService<ScheduleJobLogEntity> {
+@Service
+public interface ScheduleJobLogService extends BaseService<ScheduleJobLogEntity> {
+    PageData<ScheduleJobLogDTO> page(Map<String, Object> params);
 
-	PageUtils queryPage(Map<String, Object> params);
-
+    ScheduleJobLogDTO get(Long id);
 }

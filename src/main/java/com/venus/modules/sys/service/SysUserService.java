@@ -1,67 +1,43 @@
-
 package com.venus.modules.sys.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.venus.common.utils.PageUtils;
+import com.venus.common.page.PageData;
+import com.venus.common.base.service.BaseService;
+import com.venus.modules.sys.dto.SysUserDTO;
 import com.venus.modules.sys.entity.SysUserEntity;
 
 import java.util.List;
 import java.util.Map;
 
+public interface SysUserService extends BaseService<SysUserEntity> {
 
-/**
- * 系统用户
- *
- * @author Tomxuetao
- */
-public interface SysUserService extends IService<SysUserEntity> {
+    PageData<SysUserDTO> page(Map<String, Object> params);
 
-	PageUtils queryPage(Map<String, Object> params);
+    List<SysUserDTO> list(Map<String, Object> params);
 
-	/**
-	 * 查询用户的所有权限
-	 * @param userId  用户ID
-	 */
-	List<String> queryAllPerms(Long userId);
+    SysUserDTO get(Long id);
 
-	/**
-	 * 查询用户的所有菜单ID
-	 */
-	List<Long> queryAllMenuId(Long userId);
+    SysUserDTO getByUsername(String username);
 
-	/**
-	 * 根据用户名，查询系统用户
-	 */
-	SysUserEntity queryByUserName(String username);
+    void save(SysUserDTO dto);
 
-	/**
-	 * 保存用户
-	 */
-	void saveUser(SysUserEntity user);
+    void update(SysUserDTO dto);
 
-	/**
-	 * 修改用户
-	 */
-	void update(SysUserEntity user);
+    void delete(Long[] ids);
 
-	/**
-	 * 删除用户
-	 */
-	void deleteBatch(Long[] userIds);
+    /**
+     * 修改密码
+     * @param id           用户ID
+     * @param newPassword  新密码
+     */
+    void updatePassword(Long id, String newPassword);
 
-	/**
-	 * 修改密码
-	 * @param userId       用户ID
-	 * @param password     原密码
-	 * @param newPassword  新密码
-	 */
-	boolean updatePassword(Long userId, String password, String newPassword);
+    /**
+     * 根据部门ID，查询用户数
+     */
+    int getCountByDeptId(Long deptId);
 
-	/**
-	 * 查询用户信息
-	 */
-	SysUserEntity queryById(Long userId);
-
-	int queryCountByName(String userName);
-
+    /**
+     * 根据部门ID,查询用户Id列表
+     */
+    List<Long> getUserIdListByDeptId(List<Long> deptIdList);
 }

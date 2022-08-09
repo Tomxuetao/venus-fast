@@ -1,147 +1,144 @@
 package com.venus.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.venus.common.exception.RRException;
-import com.venus.common.utils.Constant;
-import com.venus.common.utils.PageUtils;
-import com.venus.common.utils.Query;
+import com.venus.common.base.service.impl.BaseServiceImpl;
+import com.venus.common.constant.Constant;
+import com.venus.common.page.PageData;
+import com.venus.common.utils.ConvertUtils;
+import com.venus.modules.security.password.PasswordUtils;
+import com.venus.modules.security.user.SecurityUser;
+import com.venus.modules.security.user.UserDetail;
 import com.venus.modules.sys.dao.SysUserDao;
+import com.venus.modules.sys.dto.SysUserDTO;
 import com.venus.modules.sys.entity.SysUserEntity;
-import com.venus.modules.sys.service.SysRoleService;
-import com.venus.modules.sys.service.SysUserRoleService;
+import com.venus.modules.sys.enums.SuperAdminEnum;
+import com.venus.modules.sys.service.SysDeptService;
+import com.venus.modules.sys.service.SysRoleUserService;
 import com.venus.modules.sys.service.SysUserService;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
-/**
- * 系统用户
- *
- * @author Tomxuetao
- */
-@Service("sysUserService")
-public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
+@Service
+public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
     @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private SysRoleUserService sysRoleUserService;
     @Autowired
-    private SysRoleService sysRoleService;
+    private SysDeptService sysDeptService;
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        String username = (String) params.get("username");
-        Long createUserId = (Long) params.get("createUserId");
+    public PageData<SysUserDTO> page(Map<String, Object> params) {
+        //转换成like
+        paramsToLike(params, "username");
 
-        IPage<SysUserEntity> page = this.page(
-                new Query<SysUserEntity>().getPage(params),
-                new QueryWrapper<SysUserEntity>()
-                        .like(StringUtils.isNotBlank(username), "username", username)
-                        .eq(createUserId != null, "create_user_id", createUserId)
-        );
+        //分页
+        IPage<SysUserEntity> page = getPage(params, Constant.CREATE_DATE, false);
 
-        return new PageUtils(page);
-    }
-
-    @Override
-    public List<String> queryAllPerms(Long userId) {
-        return baseMapper.queryAllPerms(userId);
-    }
-
-    @Override
-    public List<Long> queryAllMenuId(Long userId) {
-        return baseMapper.queryAllMenuId(userId);
-    }
-
-    @Override
-    public SysUserEntity queryByUserName(String username) {
-        return baseMapper.queryByUserName(username);
-    }
-
-    @Override
-    @Transactional
-    public void saveUser(SysUserEntity user) {
-        user.setCreateTime(new Date());
-        //sha256加密
-        String salt = RandomStringUtils.randomAlphanumeric(20);
-        user.setPassword(new Sha256Hash(user.getPassword(), salt).toHex());
-        user.setSalt(salt);
-        this.save(user);
-
-        //检查角色是否越权
-        checkRole(user);
-
-        //保存用户与角色关系
-        sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
-    }
-
-    @Override
-    @Transactional
-    public void update(SysUserEntity user) {
-        if (StringUtils.isBlank(user.getPassword())) {
-            user.setPassword(null);
-        } else {
-            user.setPassword(new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
-        }
-        this.updateById(user);
-
-        //检查角色是否越权
-        checkRole(user);
-
-        //保存用户与角色关系
-        sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
-    }
-
-    @Override
-    public void deleteBatch(Long[] userId) {
-        this.removeByIds(Arrays.asList(userId));
-    }
-
-    @Override
-    public boolean updatePassword(Long userId, String password, String newPassword) {
-        SysUserEntity userEntity = new SysUserEntity();
-        userEntity.setPassword(newPassword);
-        return this.update(userEntity,
-                new QueryWrapper<SysUserEntity>().eq("user_id", userId).eq("password", password));
-    }
-
-    @Override
-    public SysUserEntity queryById(Long userId) {
-        return baseMapper.queryByUserId(userId);
-    }
-
-    @Override
-    public int queryCountByName(String userName) {
-        return this.count(new QueryWrapper<SysUserEntity>().eq(StringUtils.isNotBlank(userName),"username", userName));
-    }
-
-    /**
-     * 检查角色是否越权
-     */
-    private void checkRole(SysUserEntity user) {
-        if (user.getRoleIdList() == null || user.getRoleIdList().size() == 0) {
-            return;
-        }
-        //如果不是超级管理员，则需要判断用户的角色是否自己创建
-        if (user.getCreateUserId() == Constant.SUPER_ADMIN) {
-            return;
+        //普通管理员，只能查询所属部门及子部门的数据
+        UserDetail user = SecurityUser.getUser();
+        if(user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
+            params.put("deptIdList", sysDeptService.getSubDeptIdList(user.getDeptId()));
         }
 
-        //查询用户创建的角色列表
-        List<Long> roleIdList = sysRoleService.queryRoleIdList(user.getCreateUserId());
+        //查询
+        List<SysUserEntity> list = baseDao.getList(params);
 
-        //判断是否越权
-        if (!roleIdList.containsAll(user.getRoleIdList())) {
-            throw new RRException("新增用户所选角色，不是本人创建");
-        }
+        return getPageData(list, page.getTotal(), SysUserDTO.class);
     }
+
+    @Override
+    public List<SysUserDTO> list(Map<String, Object> params) {
+        //普通管理员，只能查询所属部门及子部门的数据
+        UserDetail user = SecurityUser.getUser();
+        if(user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
+            params.put("deptIdList", sysDeptService.getSubDeptIdList(user.getDeptId()));
+        }
+
+        List<SysUserEntity> entityList = baseDao.getList(params);
+
+        return ConvertUtils.sourceToTarget(entityList, SysUserDTO.class);
+    }
+
+    @Override
+    public SysUserDTO get(Long id) {
+        SysUserEntity entity = baseDao.getById(id);
+
+        return ConvertUtils.sourceToTarget(entity, SysUserDTO.class);
+    }
+
+    @Override
+    public SysUserDTO getByUsername(String username) {
+        SysUserEntity entity = baseDao.getByUsername(username);
+        return ConvertUtils.sourceToTarget(entity, SysUserDTO.class);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void save(SysUserDTO dto) {
+        SysUserEntity entity = ConvertUtils.sourceToTarget(dto, SysUserEntity.class);
+
+        //密码加密
+        String password = PasswordUtils.encode(entity.getPassword());
+        entity.setPassword(password);
+
+        //保存用户
+        entity.setSuperAdmin(SuperAdminEnum.NO.value());
+        insert(entity);
+
+        //保存角色用户关系
+        sysRoleUserService.saveOrUpdate(entity.getId(), dto.getRoleIdList());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(SysUserDTO dto) {
+        SysUserEntity entity = ConvertUtils.sourceToTarget(dto, SysUserEntity.class);
+
+        //密码加密
+        if(StringUtils.isBlank(dto.getPassword())){
+            entity.setPassword(null);
+        }else{
+            String password = PasswordUtils.encode(entity.getPassword());
+            entity.setPassword(password);
+        }
+
+        //更新用户
+        updateById(entity);
+
+        //更新角色用户关系
+        sysRoleUserService.saveOrUpdate(entity.getId(), dto.getRoleIdList());
+    }
+
+    @Override
+    public void delete(Long[] ids) {
+        //删除用户
+        baseDao.deleteBatchIds(Arrays.asList(ids));
+
+        //删除角色用户关系
+        sysRoleUserService.deleteByUserIds(ids);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updatePassword(Long id, String newPassword) {
+        newPassword = PasswordUtils.encode(newPassword);
+
+        baseDao.updatePassword(id, newPassword);
+    }
+
+    @Override
+    public int getCountByDeptId(Long deptId) {
+        return baseDao.getCountByDeptId(deptId);
+    }
+
+    @Override
+    public List<Long> getUserIdListByDeptId(List<Long> deptIdList) {
+        return baseDao.getUserIdListByDeptId(deptIdList);
+    }
+
 }

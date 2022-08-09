@@ -2,122 +2,121 @@ package com.venus.modules.job.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.venus.common.utils.Constant;
-import com.venus.common.utils.PageUtils;
-import com.venus.common.utils.Query;
+import com.venus.common.base.service.impl.BaseServiceImpl;
+import com.venus.common.constant.Constant;
+import com.venus.common.page.PageData;
+import com.venus.common.utils.ConvertUtils;
 import com.venus.modules.job.dao.ScheduleJobDao;
+import com.venus.modules.job.dto.ScheduleJobDTO;
 import com.venus.modules.job.entity.ScheduleJobEntity;
 import com.venus.modules.job.service.ScheduleJobService;
 import com.venus.modules.job.utils.ScheduleUtils;
-import org.apache.commons.lang.StringUtils;
-import org.quartz.CronTrigger;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-@Service("scheduleJobService")
-public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobDao, ScheduleJobEntity> implements ScheduleJobService {
+@Service
+public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, ScheduleJobEntity> implements ScheduleJobService {
     @Autowired
     private Scheduler scheduler;
 
-    /**
-     * 项目启动时，初始化定时器
-     */
-    @PostConstruct
-    public void init() {
-        List<ScheduleJobEntity> scheduleJobList = this.list();
-        for (ScheduleJobEntity scheduleJob : scheduleJobList) {
-            CronTrigger cronTrigger = ScheduleUtils.getCronTrigger(scheduler, scheduleJob.getJobId());
-            //如果不存在，则创建
-            if (cronTrigger == null) {
-                ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
-            } else {
-                ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
-            }
-        }
-    }
-
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        String beanName = (String) params.get("beanName");
-
-        IPage<ScheduleJobEntity> page = this.page(
-                new Query<ScheduleJobEntity>().getPage(params),
-                new QueryWrapper<ScheduleJobEntity>().like(StringUtils.isNotBlank(beanName), "bean_name", beanName)
+    public PageData<ScheduleJobDTO> page(Map<String, Object> params) {
+        IPage<ScheduleJobEntity> page = baseDao.selectPage(
+                getPage(params, Constant.CREATE_DATE, false),
+                getWrapper(params)
         );
-
-        return new PageUtils(page);
-    }
-
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void saveJob(ScheduleJobEntity scheduleJob) {
-        scheduleJob.setCreateTime(new Date());
-        scheduleJob.setStatus(Constant.ScheduleStatus.NORMAL.getValue());
-        this.save(scheduleJob);
-
-        ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
+        return getPageData(page, ScheduleJobDTO.class);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void update(ScheduleJobEntity scheduleJob) {
-        ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
+    public ScheduleJobDTO get(Long id) {
+        ScheduleJobEntity entity = baseDao.selectById(id);
 
-        this.updateById(scheduleJob);
+        return ConvertUtils.sourceToTarget(entity, ScheduleJobDTO.class);
+    }
+
+    private QueryWrapper<ScheduleJobEntity> getWrapper(Map<String, Object> params){
+        String beanName = (String)params.get("beanName");
+
+        QueryWrapper<ScheduleJobEntity> wrapper = new QueryWrapper<>();
+        wrapper.like(StringUtils.isNotBlank(beanName), "bean_name", beanName);
+
+        return wrapper;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteBatch(Long[] jobIds) {
-        for (Long jobId : jobIds) {
-            ScheduleUtils.deleteScheduleJob(scheduler, jobId);
+    public void save(ScheduleJobDTO dto) {
+        ScheduleJobEntity entity = ConvertUtils.sourceToTarget(dto, ScheduleJobEntity.class);
+
+        entity.setStatus(Constant.ScheduleStatus.NORMAL.getValue());
+        this.insert(entity);
+
+        ScheduleUtils.createScheduleJob(scheduler, entity);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(ScheduleJobDTO dto) {
+        ScheduleJobEntity entity = ConvertUtils.sourceToTarget(dto, ScheduleJobEntity.class);
+
+        ScheduleUtils.updateScheduleJob(scheduler, entity);
+
+        this.updateById(entity);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteBatch(Long[] ids) {
+        for(Long id : ids){
+            ScheduleUtils.deleteScheduleJob(scheduler, id);
         }
 
         //删除数据
-        this.removeByIds(Arrays.asList(jobIds));
+        this.deleteBatchIds(Arrays.asList(ids));
     }
 
     @Override
-    public int updateBatch(Long[] jobIds, int status) {
+    public int updateBatch(Long[] ids, int status){
         Map<String, Object> map = new HashMap<>(2);
-        map.put("list", jobIds);
+        map.put("ids", ids);
         map.put("status", status);
-        return baseMapper.updateBatch(map);
+        return baseDao.updateBatch(map);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void run(Long[] jobIds) {
-        for (Long jobId : jobIds) {
-            ScheduleUtils.run(scheduler, this.getById(jobId));
+    public void run(Long[] ids) {
+        for(Long id : ids){
+            ScheduleUtils.run(scheduler, this.selectById(id));
         }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void pause(Long[] jobIds) {
-        for (Long jobId : jobIds) {
-            ScheduleUtils.pauseJob(scheduler, jobId);
+    public void pause(Long[] ids) {
+        for(Long id : ids){
+            ScheduleUtils.pauseJob(scheduler, id);
         }
 
-        updateBatch(jobIds, Constant.ScheduleStatus.PAUSE.getValue());
+        updateBatch(ids, Constant.ScheduleStatus.PAUSE.getValue());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void resume(Long[] jobIds) {
-        for (Long jobId : jobIds) {
-            ScheduleUtils.resumeJob(scheduler, jobId);
+    public void resume(Long[] ids) {
+        for(Long id : ids){
+            ScheduleUtils.resumeJob(scheduler, id);
         }
 
-        updateBatch(jobIds, Constant.ScheduleStatus.NORMAL.getValue());
+        updateBatch(ids, Constant.ScheduleStatus.NORMAL.getValue());
     }
 
 }

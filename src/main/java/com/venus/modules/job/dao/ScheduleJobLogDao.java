@@ -1,6 +1,7 @@
 package com.venus.modules.job.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.venus.common.base.dao.BaseDao;
 import com.venus.modules.job.entity.ScheduleJobLogEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,6 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Tomxuetao
  */
 @Mapper
-public interface ScheduleJobLogDao extends BaseMapper<ScheduleJobLogEntity> {
+public interface ScheduleJobLogDao extends BaseDao<ScheduleJobLogEntity> {
 
 }

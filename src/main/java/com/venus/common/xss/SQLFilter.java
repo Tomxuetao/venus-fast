@@ -1,7 +1,8 @@
 package com.venus.common.xss;
 
-import com.venus.common.exception.RRException;
-import org.apache.commons.lang.StringUtils;
+import com.venus.common.exception.ErrorCode;
+import com.venus.common.exception.VenusException;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * SQL过滤
@@ -28,12 +29,12 @@ public class SQLFilter {
         str = str.toLowerCase();
 
         //非法字符
-        String[] keywords = {"master", "truncate", "insert", "select", "delete", "update", "declare", "alert", "drop"};
+        String[] keywords = {"master", "truncate", "insert", "select", "delete", "update", "declare", "alter", "drop"};
 
         //判断是否包含非法字符
         for(String keyword : keywords){
             if(str.contains(keyword)){
-                throw new RRException("包含非法字符");
+                throw new VenusException(ErrorCode.INVALID_SYMBOL);
             }
         }
 

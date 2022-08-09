@@ -2,8 +2,6 @@
 
 package com.venus.service;
 
-import com.venus.modules.sys.dao.SysUserDao;
-import com.venus.modules.sys.entity.SysUserEntity;
 import com.venus.datasource.annotation.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

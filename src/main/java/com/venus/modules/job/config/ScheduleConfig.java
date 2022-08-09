@@ -14,7 +14,6 @@ import java.util.Properties;
  */
 @Configuration
 public class ScheduleConfig {
-
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
@@ -22,14 +21,14 @@ public class ScheduleConfig {
 
         //quartz参数
         Properties prop = new Properties();
-        prop.put("org.quartz.scheduler.instanceName", "VenusScheduler");
+        prop.put("org.quartz.scheduler.instanceName", "RenrenScheduler");
         prop.put("org.quartz.scheduler.instanceId", "AUTO");
         //线程池配置
         prop.put("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
         prop.put("org.quartz.threadPool.threadCount", "20");
         prop.put("org.quartz.threadPool.threadPriority", "5");
         //JobStore配置
-        prop.put("org.quartz.jobStore.class", "org.quartz.impl.jdbcjobstore.JobStoreTX");
+        prop.put("org.quartz.jobStore.class", "org.springframework.scheduling.quartz.LocalDataSourceJobStore");
         //集群配置
         prop.put("org.quartz.jobStore.isClustered", "true");
         prop.put("org.quartz.jobStore.clusterCheckinInterval", "15000");
@@ -39,12 +38,12 @@ public class ScheduleConfig {
         prop.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
         prop.put("org.quartz.jobStore.selectWithLockSQL", "SELECT * FROM {0}LOCKS UPDLOCK WHERE LOCK_NAME = ?");
 
-        //PostgreSQL数据库，需要打开此注释
+        // PostgresSQL数据库，需要打开此注释
         prop.put("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
 
         factory.setQuartzProperties(prop);
 
-        factory.setSchedulerName("VenusScheduler");
+        factory.setSchedulerName("RenrenScheduler");
         //延时启动
         factory.setStartupDelay(30);
         factory.setApplicationContextSchedulerContextKey("applicationContextKey");

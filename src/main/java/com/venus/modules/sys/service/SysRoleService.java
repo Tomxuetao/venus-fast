@@ -1,33 +1,23 @@
 package com.venus.modules.sys.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.venus.common.utils.PageUtils;
+import com.venus.common.page.PageData;
+import com.venus.common.base.service.BaseService;
+import com.venus.modules.sys.dto.SysRoleDTO;
 import com.venus.modules.sys.entity.SysRoleEntity;
 
 import java.util.List;
 import java.util.Map;
 
+public interface SysRoleService extends BaseService<SysRoleEntity> {
+    PageData<SysRoleDTO> page(Map<String, Object> params);
 
-/**
- * 角色
- *
- * @author Tomxuetao
- */
-public interface SysRoleService extends IService<SysRoleEntity> {
+    List<SysRoleDTO> list(Map<String, Object> params);
 
-	PageUtils queryPage(Map<String, Object> params);
+    SysRoleDTO get(Long id);
 
-	void saveRole(SysRoleEntity role);
+    void save(SysRoleDTO dto);
 
-	void update(SysRoleEntity role);
+    void update(SysRoleDTO dto);
 
-	void deleteBatch(Long[] roleIds);
-
-
-	/**
-	 * 查询用户创建的角色ID列表
-	 */
-	List<Long> queryRoleIdList(Long createUserId);
-
-	int queryCountByName(String roleName);
+    void delete(Long[] ids);
 }

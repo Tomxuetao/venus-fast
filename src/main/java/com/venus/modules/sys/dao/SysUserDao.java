@@ -1,38 +1,31 @@
 package com.venus.modules.sys.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.venus.common.base.dao.BaseDao;
 import com.venus.modules.sys.entity.SysUserEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
-/**
- * 系统用户
- *
- * @author Tomxuetao
- */
 @Mapper
-public interface SysUserDao extends BaseMapper<SysUserEntity> {
+public interface SysUserDao extends BaseDao<SysUserEntity> {
 
-	/**
-	 * 查询用户的所有权限
-	 * @param userId  用户ID
-	 */
-	List<String> queryAllPerms(Long userId);
+    List<SysUserEntity> getList(Map<String, Object> params);
 
-	/**
-	 * 查询用户的所有菜单ID
-	 */
-	List<Long> queryAllMenuId(Long userId);
+    SysUserEntity getById(Long id);
 
-	/**
-	 * 根据用户名，查询系统用户
-	 */
-	SysUserEntity queryByUserName(String username);
+    SysUserEntity getByUsername(String username);
 
-	/**
-	 * 查询用户信息
-	 */
-	SysUserEntity queryByUserId(Long userId);
+    int updatePassword(@Param("id") Long id, @Param("newPassword") String newPassword);
 
+    /**
+     * 根据部门ID，查询用户数
+     */
+    int getCountByDeptId(Long deptId);
+
+    /**
+     * 根据部门ID,查询用户ID列表
+     */
+    List<Long> getUserIdListByDeptId(List<Long> deptIdList);
 }

@@ -1,29 +1,15 @@
 package com.venus.modules.oss.cloud;
 
 import com.aliyun.oss.OSSClient;
-import com.venus.common.exception.RRException;
+import com.venus.common.exception.ErrorCode;
+import com.venus.common.exception.VenusException;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-/**
- * 阿里云存储
- *
- * @author Tomxuetao
- */
-public class AliyunCloudStorageService extends CloudStorageService {
-    private OSSClient client;
-
+public class AliyunCloudStorageService extends AbstractCloudStorageService {
     public AliyunCloudStorageService(CloudStorageConfig config){
         this.config = config;
-
-        //初始化
-        init();
-    }
-
-    private void init(){
-        client = new OSSClient(config.getAliyunEndPoint(), config.getAliyunAccessKeyId(),
-                config.getAliyunAccessKeySecret());
     }
 
     @Override
@@ -33,10 +19,13 @@ public class AliyunCloudStorageService extends CloudStorageService {
 
     @Override
     public String upload(InputStream inputStream, String path) {
+        OSSClient client = new OSSClient(config.getAliyunEndPoint(), config.getAliyunAccessKeyId(),
+                config.getAliyunAccessKeySecret());
         try {
             client.putObject(config.getAliyunBucketName(), path, inputStream);
+            client.shutdown();
         } catch (Exception e){
-            throw new RRException("上传文件失败，请检查配置信息", e);
+            throw new VenusException(ErrorCode.OSS_UPLOAD_FILE_ERROR, e, "");
         }
 
         return config.getAliyunDomain() + "/" + path;

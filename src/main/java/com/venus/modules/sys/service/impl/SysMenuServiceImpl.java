@@ -1,102 +1,95 @@
 package com.venus.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.venus.common.utils.Constant;
-import com.venus.common.utils.MapUtils;
-import com.venus.common.utils.RedisKeys;
-import com.venus.common.utils.RedisUtils;
+import com.venus.common.base.service.impl.BaseServiceImpl;
+import com.venus.common.exception.ErrorCode;
+import com.venus.common.exception.VenusException;
+import com.venus.common.utils.ConvertUtils;
+import com.venus.modules.security.user.UserDetail;
 import com.venus.modules.sys.dao.SysMenuDao;
+import com.venus.modules.sys.dto.SysMenuDTO;
 import com.venus.modules.sys.entity.SysMenuEntity;
+import com.venus.modules.sys.enums.SuperAdminEnum;
 import com.venus.modules.sys.service.SysMenuService;
 import com.venus.modules.sys.service.SysRoleMenuService;
-import com.venus.modules.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
-
-@Service("sysMenuService")
-public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> implements SysMenuService {
-    @Autowired
-    private SysUserService sysUserService;
+@Service
+public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenuEntity> implements SysMenuService {
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
 
     @Override
-    public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {
-        List<SysMenuEntity> menuList = queryListParentId(parentId);
-        if (menuIdList == null) {
-            return menuList;
+    public SysMenuDTO get(Long id) {
+        SysMenuEntity entity = baseDao.getById(id);
+
+        SysMenuDTO dto = ConvertUtils.sourceToTarget(entity, SysMenuDTO.class);
+
+        return dto;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void save(SysMenuDTO dto) {
+        SysMenuEntity entity = ConvertUtils.sourceToTarget(dto, SysMenuEntity.class);
+
+        //保存菜单
+        insert(entity);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(SysMenuDTO dto) {
+        SysMenuEntity entity = ConvertUtils.sourceToTarget(dto, SysMenuEntity.class);
+
+        //上级菜单不能为自身
+        if (entity.getId().equals(entity.getPid())) {
+            throw new VenusException(ErrorCode.SUPERIOR_MENU_ERROR);
         }
 
-        List<SysMenuEntity> userMenuList = new ArrayList<>();
-        for (SysMenuEntity menu : menuList) {
-            if (menuIdList.contains(menu.getMenuId())) {
-                userMenuList.add(menu);
-            }
-        }
-        return userMenuList;
+        //更新菜单
+        updateById(entity);
     }
 
     @Override
-    public List<SysMenuEntity> queryListParentId(Long parentId) {
-        return baseMapper.queryListParentId(parentId);
-    }
-
-    @Override
-    public List<SysMenuEntity> queryNotButtonList() {
-        return baseMapper.queryNotButtonList();
-    }
-
-    @Override
-    public List<SysMenuEntity> getUserMenuList(Long userId) {
-        List<SysMenuEntity> menuList;
-        //系统管理员，拥有最高权限
-        if (userId == Constant.SUPER_ADMIN) {
-            menuList = getAllMenuList(null);
-            return menuList;
-        }
-        //用户菜单列表
-        List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
-        menuList = getAllMenuList(menuIdList);
-        return menuList;
-    }
-
-    @Override
-    public void delete(Long menuId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Long id) {
         //删除菜单
-        this.removeById(menuId);
-        //删除菜单与角色关联
-        sysRoleMenuService.removeByMap(new MapUtils().put("menu_id", menuId));
+        deleteById(id);
+
+        //删除角色菜单关系
+        sysRoleMenuService.deleteByMenuId(id);
     }
 
-    /**
-     * 获取所有菜单列表
-     */
-    private List<SysMenuEntity> getAllMenuList(List<Long> menuIdList) {
-        //查询根菜单列表
-        List<SysMenuEntity> menuList = queryListParentId(0L, menuIdList);
-        //递归获取子菜单
-        getMenuTreeList(menuList, menuIdList);
-        return menuList;
+    @Override
+    public List<SysMenuDTO> getAllMenuList(Integer type) {
+        List<SysMenuEntity> menuList = baseDao.getMenuList(type);
+
+        return ConvertUtils.sourceToTarget(menuList, SysMenuDTO.class);
     }
 
-    /**
-     * 递归
-     */
-    private List<SysMenuEntity> getMenuTreeList(List<SysMenuEntity> menuList, List<Long> menuIdList) {
-        List<SysMenuEntity> subMenuList = new ArrayList<>();
+    @Override
+    public List<SysMenuDTO> getUserMenuList(UserDetail user, Integer type) {
+        List<SysMenuEntity> menuList;
 
-        for (SysMenuEntity entity : menuList) {
-            //目录
-            if (entity.getType() == Constant.MenuType.CATALOG.getValue()) {
-                entity.setList(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
-            }
-            subMenuList.add(entity);
+        //系统管理员，拥有最高权限
+        if (user.getSuperAdmin() == SuperAdminEnum.YES.value()) {
+            menuList = baseDao.getMenuList(type);
+        } else {
+            menuList = baseDao.getUserMenuList(user.getId(), type);
         }
 
-        return subMenuList;
+        return ConvertUtils.sourceToTarget(menuList, SysMenuDTO.class);
     }
+
+    @Override
+    public List<SysMenuDTO> getListPid(Long pid) {
+        List<SysMenuEntity> menuList = baseDao.getListPid(pid);
+
+        return ConvertUtils.sourceToTarget(menuList, SysMenuDTO.class);
+    }
+
 }

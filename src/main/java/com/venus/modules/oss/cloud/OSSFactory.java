@@ -1,10 +1,9 @@
 package com.venus.modules.oss.cloud;
 
 
-import com.venus.modules.sys.service.SysConfigService;
-import com.venus.common.utils.ConfigConstant;
-import com.venus.common.utils.Constant;
+import com.venus.common.constant.Constant;
 import com.venus.common.utils.SpringContextUtils;
+import com.venus.modules.sys.service.SysParamsService;
 
 /**
  * 文件上传Factory
@@ -12,15 +11,15 @@ import com.venus.common.utils.SpringContextUtils;
  * @author Tomxuetao
  */
 public final class OSSFactory {
-    private static SysConfigService sysConfigService;
+    private static SysParamsService sysParamsService;
 
     static {
-        OSSFactory.sysConfigService = (SysConfigService) SpringContextUtils.getBean("sysConfigService");
+        OSSFactory.sysParamsService = SpringContextUtils.getBean(SysParamsService.class);
     }
 
-    public static CloudStorageService build(){
+    public static AbstractCloudStorageService build(){
         //获取云存储配置信息
-        CloudStorageConfig config = sysConfigService.getConfigObject(ConfigConstant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
+        CloudStorageConfig config = sysParamsService.getValueObject(Constant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
 
         if(config.getType() == Constant.CloudService.QINIU.getValue()){
             return new QiniuCloudStorageService(config);

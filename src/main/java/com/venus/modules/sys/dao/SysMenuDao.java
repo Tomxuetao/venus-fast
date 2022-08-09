@@ -1,28 +1,45 @@
 package com.venus.modules.sys.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.venus.common.base.dao.BaseDao;
 import com.venus.modules.sys.entity.SysMenuEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * 菜单管理
- *
- * @author Tomxuetao
- */
 @Mapper
-public interface SysMenuDao extends BaseMapper<SysMenuEntity> {
+public interface SysMenuDao extends BaseDao<SysMenuEntity> {
+    SysMenuEntity getById(@Param("id") Long id);
 
-	/**
-	 * 根据父菜单，查询子菜单
-	 * @param parentId 父菜单ID
-	 */
-	List<SysMenuEntity> queryListParentId(Long parentId);
+    /**
+     * 查询所有菜单列表
+     *
+     * @param type 菜单类型
+     */
+    List<SysMenuEntity> getMenuList(@Param("type") Integer type);
 
-	/**
-	 * 获取不包含按钮的菜单列表
-	 */
-	List<SysMenuEntity> queryNotButtonList();
+    /**
+     * 查询用户菜单列表
+     *
+     * @param userId 用户ＩＤ
+     * @param type 菜单类型
+     */
+    List<SysMenuEntity> getUserMenuList(@Param("userId") Long userId, @Param("type") Integer type);
 
+    /**
+     * 查询用户权限列表
+     * @param userId  用户ID
+     */
+    List<String> getUserPermissionsList(Long userId);
+
+    /**
+     * 查询所有权限列表
+     */
+    List<String> getPermissionsList();
+
+    /**
+     * 根据父菜单，查询子菜单
+     * @param pid  父菜单ID
+     */
+    List<SysMenuEntity> getListPid(Long pid);
 }

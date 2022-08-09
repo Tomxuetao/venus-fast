@@ -5,7 +5,8 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-import com.venus.common.exception.RRException;
+import com.venus.common.exception.ErrorCode;
+import com.venus.common.exception.VenusException;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.io.InputStream;
  *
  * @author Tomxuetao
  */
-public class QiniuCloudStorageService extends CloudStorageService {
+public class QiniuCloudStorageService extends AbstractCloudStorageService {
     private UploadManager uploadManager;
     private String token;
 
@@ -31,6 +32,7 @@ public class QiniuCloudStorageService extends CloudStorageService {
         uploadManager = new UploadManager(new Configuration(Region.autoRegion()));
         token = Auth.create(config.getQiniuAccessKey(), config.getQiniuSecretKey()).
                 uploadToken(config.getQiniuBucketName());
+
     }
 
     @Override
@@ -38,10 +40,10 @@ public class QiniuCloudStorageService extends CloudStorageService {
         try {
             Response res = uploadManager.put(data, path, token);
             if (!res.isOK()) {
-                throw new RuntimeException("上传七牛出错：" + res.toString());
+                throw new VenusException(ErrorCode.OSS_UPLOAD_FILE_ERROR, res.toString());
             }
         } catch (Exception e) {
-            throw new RRException("上传文件失败，请核对七牛配置信息", e);
+            throw new VenusException(ErrorCode.OSS_UPLOAD_FILE_ERROR, e, "");
         }
 
         return config.getQiniuDomain() + "/" + path;
@@ -53,7 +55,7 @@ public class QiniuCloudStorageService extends CloudStorageService {
             byte[] data = IOUtils.toByteArray(inputStream);
             return this.upload(data, path);
         } catch (IOException e) {
-            throw new RRException("上传文件失败", e);
+            throw new VenusException(ErrorCode.OSS_UPLOAD_FILE_ERROR, e, "");
         }
     }
 

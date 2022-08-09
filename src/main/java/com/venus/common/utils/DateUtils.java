@@ -1,11 +1,12 @@
 package com.venus.common.utils;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -39,6 +40,21 @@ public class DateUtils {
         if(date != null){
             SimpleDateFormat df = new SimpleDateFormat(pattern);
             return df.format(date);
+        }
+        return null;
+    }
+
+    /**
+     * 日期解析
+     * @param date  日期
+     * @param pattern  格式，如：DateUtils.DATE_TIME_PATTERN
+     * @return  返回Date
+     */
+    public static Date parse(String date, String pattern) {
+        try {
+            return new SimpleDateFormat(pattern).parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return null;
     }

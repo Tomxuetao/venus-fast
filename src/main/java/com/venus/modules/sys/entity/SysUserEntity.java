@@ -1,82 +1,75 @@
 package com.venus.modules.sys.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.venus.common.validator.group.AddGroup;
-import com.venus.common.validator.group.UpdateGroup;
+import com.venus.common.base.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 系统用户
- *
- * @author Tomxuetao
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 @TableName("sys_user")
-public class SysUserEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * 用户ID
-	 */
-	@TableId
-	private Long userId;
-
-	/**
-	 * 用户名
-	 */
-	@NotBlank(message="用户名不能为空", groups = {AddGroup.class, UpdateGroup.class})
-	private String username;
-
-	/**
-	 * 密码
-	 */
-	@NotBlank(message="密码不能为空", groups = AddGroup.class)
-	private String password;
-
-	/**
-	 * 盐
-	 */
-	private String salt;
-
-	/**
-	 * 邮箱
-	 */
-	@NotBlank(message="邮箱不能为空", groups = {AddGroup.class, UpdateGroup.class})
-	@Email(message="邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
-	private String email;
-
-	/**
-	 * 手机号
-	 */
-	private String mobile;
-
-	/**
-	 * 状态  0：禁用   1：正常
-	 */
-	private Integer status;
-
-	/**
-	 * 角色ID列表
-	 */
-	@TableField(exist=false)
-	private List<Long> roleIdList;
-
-	/**
-	 * 创建者ID
-	 */
-	private Long createUserId;
-
-	/**
-	 * 创建时间
-	 */
-	private Date createTime;
-
+public class SysUserEntity extends BaseEntity {
+    private static final long serialVersionUID = 1L;
+    /**
+     * 用户名
+     */
+    private String username;
+    /**
+     * 密码
+     */
+    private String password;
+    /**
+     * 姓名
+     */
+    private String realName;
+    /**
+     * 头像
+     */
+    private String headUrl;
+    /**
+     * 性别   0：男   1：女    2：保密
+     */
+    private Integer gender;
+    /**
+     * 邮箱
+     */
+    private String email;
+    /**
+     * 手机号
+     */
+    private String mobile;
+    /**
+     * 部门ID
+     */
+    private Long deptId;
+    /**
+     * 超级管理员   0：否   1：是
+     */
+    private Integer superAdmin;
+    /**
+     * 状态  0：停用   1：正常
+     */
+    private Integer status;
+    /**
+     * 更新者
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Long updater;
+    /**
+     * 更新时间
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateDate;
+    /**
+     * 部门名称
+     */
+    @TableField(exist=false)
+    private String deptName;
 }

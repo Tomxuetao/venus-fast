@@ -1,150 +1,152 @@
 package com.venus.modules.sys.controller;
 
-import com.venus.common.annotation.SysLog;
-import com.venus.common.utils.Constant;
-import com.venus.common.utils.PageUtils;
-import com.venus.common.utils.R;
-import com.venus.common.validator.Assert;
+import com.venus.common.annotation.LogOperation;
+import com.venus.common.constant.Constant;
+import com.venus.common.exception.ErrorCode;
+import com.venus.common.page.PageData;
+import com.venus.common.utils.ConvertUtils;
+import com.venus.common.utils.ExcelUtils;
+import com.venus.common.utils.Result;
+import com.venus.common.validator.AssertUtils;
 import com.venus.common.validator.ValidatorUtils;
 import com.venus.common.validator.group.AddGroup;
+import com.venus.common.validator.group.DefaultGroup;
 import com.venus.common.validator.group.UpdateGroup;
-import com.venus.modules.sys.entity.SysUserEntity;
-import com.venus.modules.sys.form.PasswordForm;
-import com.venus.modules.sys.service.SysUserRoleService;
+import com.venus.modules.security.password.PasswordUtils;
+import com.venus.modules.security.user.SecurityUser;
+import com.venus.modules.security.user.UserDetail;
+import com.venus.modules.sys.dto.PasswordDTO;
+import com.venus.modules.sys.dto.SysUserDTO;
+import com.venus.modules.sys.excel.SysUserExcel;
+import com.venus.modules.sys.service.SysRoleUserService;
 import com.venus.modules.sys.service.SysUserService;
-import org.apache.commons.lang.ArrayUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 系统用户
- *
- * @author Tomxuetao
- */
 @RestController
 @RequestMapping("/sys/user")
-public class SysUserController extends AbstractController {
+@Api(tags="用户管理")
+public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
     @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private SysRoleUserService sysRoleUserService;
 
-    /**
-     * 所有用户列表
-     */
-    @GetMapping("/list")
-    @RequiresPermissions("sys:user:list")
-    public R list(@RequestParam Map<String, Object> params) {
-        //只有超级管理员，才能查看所有管理员列表
-        if (getUserId() != Constant.SUPER_ADMIN) {
-            params.put("createUserId", getUserId());
-        }
-        PageUtils page = sysUserService.queryPage(params);
+    @GetMapping("page")
+    @ApiOperation("分页")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType="int", dataTypeClass=Integer.class) ,
+            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query",required = true, dataType="int", dataTypeClass=Integer.class) ,
+            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType="String", dataTypeClass=String.class) ,
+            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType="String", dataTypeClass=String.class) ,
+            @ApiImplicitParam(name = "username", value = "用户名", paramType = "query", dataType="String", dataTypeClass=String.class),
+            @ApiImplicitParam(name = "gender", value = "性别", paramType = "query", dataType="String", dataTypeClass=String.class),
+            @ApiImplicitParam(name = "deptId", value = "部门ID", paramType = "query", dataType="String", dataTypeClass=String.class)
+    })
+    @RequiresPermissions("sys:user:page")
+    public Result<PageData<SysUserDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
+        PageData<SysUserDTO> page = sysUserService.page(params);
 
-        return R.ok().put(page);
+        return new Result<PageData<SysUserDTO>>().ok(page);
     }
 
-    /**
-     * 获取登录的用户信息
-     */
-    @GetMapping("/info")
-    public R info() {
-        return R.ok().put(sysUserService.queryById(getUserId()));
-    }
-
-    /**
-     * 修改登录用户密码
-     */
-    @SysLog("修改密码")
-    @PostMapping("/password")
-    public R password(@RequestBody PasswordForm form) {
-        Assert.isBlank(form.getNewPassword(), "新密码不为能空");
-
-        //sha256加密
-        String password = new Sha256Hash(form.getPassword(), getUser().getSalt()).toHex();
-        //sha256加密
-        String newPassword = new Sha256Hash(form.getNewPassword(), getUser().getSalt()).toHex();
-
-        //更新密码
-        boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
-        if (!flag) {
-            return R.error("原密码不正确");
-        }
-
-        return R.ok();
-    }
-
-    /**
-     * 用户信息
-     */
-    @GetMapping("/info/{userId}")
+    @GetMapping("{id}")
+    @ApiOperation("信息")
     @RequiresPermissions("sys:user:info")
-    public R info(@PathVariable("userId") Long userId) {
-        SysUserEntity user = sysUserService.queryById(userId);
-        //获取用户所属的角色列表
-        List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-        user.setRoleIdList(roleIdList);
-        return R.ok().put(user);
+    public Result<SysUserDTO> get(@PathVariable("id") Long id){
+        SysUserDTO data = sysUserService.get(id);
+
+        //用户角色列表
+        List<Long> roleIdList = sysRoleUserService.getRoleIdList(id);
+        data.setRoleIdList(roleIdList);
+
+        return new Result<SysUserDTO>().ok(data);
     }
 
-    /**
-     * 保存用户
-     */
-    @SysLog("保存用户")
-    @PostMapping("/save")
+    @GetMapping("info")
+    @ApiOperation("登录用户信息")
+    public Result<SysUserDTO> info(){
+        SysUserDTO data = ConvertUtils.sourceToTarget(SecurityUser.getUser(), SysUserDTO.class);
+        return new Result<SysUserDTO>().ok(data);
+    }
+
+    @PutMapping("password")
+    @ApiOperation("修改密码")
+    @LogOperation("修改密码")
+    public Result password(@RequestBody PasswordDTO dto){
+        //效验数据
+        ValidatorUtils.validateEntity(dto);
+
+        UserDetail user = SecurityUser.getUser();
+
+        //原密码不正确
+        if(!PasswordUtils.matches(dto.getPassword(), user.getPassword())){
+            return new Result().error(ErrorCode.PASSWORD_ERROR);
+        }
+
+        sysUserService.updatePassword(user.getId(), dto.getNewPassword());
+
+        return new Result();
+    }
+
+    @PostMapping
+    @ApiOperation("保存")
+    @LogOperation("保存")
     @RequiresPermissions("sys:user:save")
-    public R save(@RequestBody SysUserEntity user) {
-        ValidatorUtils.validateEntity(user, AddGroup.class);
+    public Result save(@RequestBody SysUserDTO dto){
+        //效验数据
+        ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
 
-        user.setCreateUserId(getUserId());
-        sysUserService.saveUser(user);
+        sysUserService.save(dto);
 
-        return R.ok();
+        return new Result();
     }
 
-    /**
-     * 修改用户
-     */
-    @SysLog("修改用户")
-    @PostMapping("/update")
+    @PutMapping
+    @ApiOperation("修改")
+    @LogOperation("修改")
     @RequiresPermissions("sys:user:update")
-    public R update(@RequestBody SysUserEntity user) {
-        ValidatorUtils.validateEntity(user, UpdateGroup.class);
+    public Result update(@RequestBody SysUserDTO dto){
+        //效验数据
+        ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
-        user.setCreateUserId(getUserId());
-        sysUserService.update(user);
+        sysUserService.update(dto);
 
-        return R.ok();
+        return new Result();
     }
 
-    /**
-     * 删除用户
-     */
-    @SysLog("删除用户")
-    @PostMapping("/delete")
+    @DeleteMapping
+    @ApiOperation("删除")
+    @LogOperation("删除")
     @RequiresPermissions("sys:user:delete")
-    public R delete(@RequestBody Long[] userIds) {
-        if (ArrayUtils.contains(userIds, 1L)) {
-            return R.error("系统管理员不能删除");
-        }
+    public Result delete(@RequestBody Long[] ids){
+        //效验数据
+        AssertUtils.isArrayEmpty(ids, "id");
 
-        if (ArrayUtils.contains(userIds, getUserId())) {
-            return R.error("当前用户不能删除");
-        }
+        sysUserService.deleteBatchIds(Arrays.asList(ids));
 
-        sysUserService.deleteBatch(userIds);
-
-        return R.ok();
+        return new Result();
     }
 
-    @GetMapping("/validName")
-    public R validName(@RequestParam Map<String, String> params) {
-        return R.ok().put(sysUserService.queryCountByName(params.get("userName")));
+    @GetMapping("export")
+    @ApiOperation("导出")
+    @LogOperation("导出")
+    @RequiresPermissions("sys:user:export")
+    @ApiImplicitParam(name = "username", value = "用户名", paramType = "query", dataType="String", dataTypeClass=String.class)
+    public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
+        List<SysUserDTO> list = sysUserService.list(params);
+
+        ExcelUtils.exportExcelToTarget(response, null, list, SysUserExcel.class);
     }
 }
