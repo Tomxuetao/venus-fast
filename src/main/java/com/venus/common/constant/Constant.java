@@ -37,11 +37,11 @@ public interface Constant {
     /**
      * 当前页码
      */
-    String PAGE = "page";
+    String PAGE = "pageNum";
     /**
      * 每页显示记录数
      */
-    String LIMIT = "limit";
+    String LIMIT = "pageSize";
     /**
      * 排序字段
      */
@@ -73,7 +73,7 @@ public interface Constant {
          */
         NORMAL(1);
 
-        private int value;
+        private final int value;
 
         ScheduleStatus(int value) {
             this.value = value;
@@ -101,7 +101,7 @@ public interface Constant {
          */
         QCLOUD(3);
 
-        private int value;
+        private final int value;
 
         CloudService(int value) {
             this.value = value;
