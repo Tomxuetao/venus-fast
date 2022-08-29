@@ -4,7 +4,7 @@ import com.venus.common.base.service.impl.BaseServiceImpl;
 import com.venus.common.exception.ErrorCode;
 import com.venus.common.exception.VenusException;
 import com.venus.common.utils.ConvertUtils;
-import com.venus.modules.security.user.UserDetail;
+import com.venus.modules.login.user.UserDetail;
 import com.venus.modules.sys.dao.SysMenuDao;
 import com.venus.modules.sys.dto.SysMenuDTO;
 import com.venus.modules.sys.entity.SysMenuEntity;

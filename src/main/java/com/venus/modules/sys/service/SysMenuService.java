@@ -1,7 +1,7 @@
 package com.venus.modules.sys.service;
 
 import com.venus.common.base.service.BaseService;
-import com.venus.modules.security.user.UserDetail;
+import com.venus.modules.login.user.UserDetail;
 import com.venus.modules.sys.dto.SysMenuDTO;
 import com.venus.modules.sys.entity.SysMenuEntity;
 
