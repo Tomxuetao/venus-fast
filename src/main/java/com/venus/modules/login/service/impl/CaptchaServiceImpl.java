@@ -28,7 +28,7 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     @Override
     public void create(HttpServletResponse response, String uuid) throws IOException {
-        response.setContentType("image/gif");
+        response.setContentType("image/jpeg");
         response.setHeader("Pragma", "No-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
