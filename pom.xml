@@ -33,7 +33,7 @@
         <knife4j.version>3.0.3</knife4j.version>
         <mybatisplus.version>3.5.2</mybatisplus.version>
         <quartz.version>2.3.2</quartz.version>
-        <shiro.version>1.9.1</shiro.version>
+        <shiro.version>1.10.0</shiro.version>
         <captcha.version>1.6.2</captcha.version>
         <easypoi.version>4.4.0</easypoi.version>
         <qiniu.version>7.11.0</qiniu.version>
