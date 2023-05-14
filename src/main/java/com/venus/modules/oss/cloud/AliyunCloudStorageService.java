@@ -1,6 +1,9 @@
 package com.venus.modules.oss.cloud;
 
-import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.ClientBuilderConfiguration;
+
 import com.venus.common.exception.ErrorCode;
 import com.venus.common.exception.VenusException;
 
@@ -19,8 +22,9 @@ public class AliyunCloudStorageService extends AbstractCloudStorageService {
 
     @Override
     public String upload(InputStream inputStream, String path) {
-        OSSClient client = new OSSClient(config.getAliyunEndPoint(), config.getAliyunAccessKeyId(),
-                config.getAliyunAccessKeySecret());
+        ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
+        OSS client = new OSSClientBuilder().build(config.getAliyunEndPoint(), config.getAliyunAccessKeyId(),
+                config.getAliyunAccessKeySecret(), conf);
         try {
             client.putObject(config.getAliyunBucketName(), path, inputStream);
             client.shutdown();
