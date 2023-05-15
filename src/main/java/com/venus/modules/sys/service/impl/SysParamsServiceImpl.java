@@ -85,7 +85,7 @@ public class SysParamsServiceImpl extends BaseServiceImpl<SysParamsDao, SysParam
     public void delete(Long[] ids) {
         //删除Redis数据
         List<String> paramCodeList = baseDao.getParamCodeList(ids);
-        String[] paramCodes = paramCodeList.toArray(new String[paramCodeList.size()]);
+        String[] paramCodes = paramCodeList.toArray(new String[0]);
         sysParamsRedis.delete(paramCodes);
 
         //删除
