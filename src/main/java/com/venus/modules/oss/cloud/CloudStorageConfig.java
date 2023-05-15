@@ -1,6 +1,7 @@
 package com.venus.modules.oss.cloud;
 
 import com.venus.common.validator.group.AliyunGroup;
+import com.venus.common.validator.group.MinioGroup;
 import com.venus.common.validator.group.QcloudGroup;
 import com.venus.common.validator.group.QiniuGroup;
 import io.swagger.annotations.ApiModelProperty;
@@ -96,4 +97,23 @@ public class CloudStorageConfig implements Serializable {
     @ApiModelProperty(value = "腾讯云COS所属地区")
     @NotBlank(message="{qcloud.region.require}", groups = QcloudGroup.class)
     private String qcloudRegion;
+
+    @ApiModelProperty(value = "Minio路径前缀")
+    private String minioPrefix;
+
+    @ApiModelProperty(value = "MinioEndPoint")
+    @NotBlank(message="{aliyun.endPoint.require}", groups = MinioGroup.class)
+    private String minioEndPoint;
+
+    @ApiModelProperty(value = "MinioAccessKey")
+    @NotBlank(message="{aliyun.accesskeyid.require}", groups = MinioGroup.class)
+    private String minioAccessKey;
+
+    @ApiModelProperty(value = "MinioSecretKey")
+    @NotBlank(message="{aliyun.accesskeysecret.require}", groups = MinioGroup.class)
+    private String minioSecretKey;
+
+    @ApiModelProperty(value = "MinioBucketName")
+    @NotBlank(message="{aliyun.bucketname.require}", groups = MinioGroup.class)
+    private String minioBucketName;
 }

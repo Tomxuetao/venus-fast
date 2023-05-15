@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @TableName("sys_role")
 public class SysRoleEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;

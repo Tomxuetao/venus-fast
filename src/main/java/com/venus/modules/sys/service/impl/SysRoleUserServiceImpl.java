@@ -18,12 +18,12 @@ public class SysRoleUserServiceImpl extends BaseServiceImpl<SysRoleUserDao, SysR
         deleteByUserIds(new Long[]{userId});
 
         //用户没有一个角色权限的情况
-        if(CollUtil.isEmpty(roleIdList)){
-            return ;
+        if (CollUtil.isEmpty(roleIdList)) {
+            return;
         }
 
         //保存角色用户关系
-        for(Long roleId : roleIdList){
+        for (Long roleId : roleIdList) {
             SysRoleUserEntity sysRoleUserEntity = new SysRoleUserEntity();
             sysRoleUserEntity.setUserId(userId);
             sysRoleUserEntity.setRoleId(roleId);

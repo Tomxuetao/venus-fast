@@ -21,7 +21,7 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Bean
-    public DefaultWebSessionManager sessionManager(){
+    public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionValidationSchedulerEnabled(false);
         sessionManager.setSessionIdUrlRewritingEnabled(false);

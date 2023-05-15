@@ -7,7 +7,7 @@ public class SecurityUser {
     public static Subject getSubject() {
         try {
             return SecurityUtils.getSubject();
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -17,12 +17,12 @@ public class SecurityUser {
      */
     public static UserDetail getUser() {
         Subject subject = getSubject();
-        if(subject == null){
+        if (subject == null) {
             return new UserDetail();
         }
 
-        UserDetail user = (UserDetail)subject.getPrincipal();
-        if(user == null){
+        UserDetail user = (UserDetail) subject.getPrincipal();
+        if (user == null) {
             return new UserDetail();
         }
 

@@ -25,6 +25,7 @@ import java.util.Map;
 public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeDao, SysDictTypeEntity> implements SysDictTypeService {
     @Autowired
     private SysDictDataDao sysDictDataDao;
+
     @Override
     public PageData<SysDictTypeDTO> page(Map<String, Object> params) {
         IPage<SysDictTypeEntity> page = baseDao.selectPage(
@@ -35,7 +36,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeDao, SysD
         return getPageData(page, SysDictTypeDTO.class);
     }
 
-    private QueryWrapper<SysDictTypeEntity> getWrapper(Map<String, Object> params){
+    private QueryWrapper<SysDictTypeEntity> getWrapper(Map<String, Object> params) {
         String dictType = (String) params.get("dictType");
         String dictName = (String) params.get("dictName");
 
@@ -80,9 +81,9 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictTypeDao, SysD
     public List<DictType> getAllList() {
         List<DictType> typeList = baseDao.getDictTypeList();
         List<DictData> dataList = sysDictDataDao.getDictDataList();
-        for(DictType type : typeList){
-            for(DictData data : dataList){
-                if(type.getId().equals(data.getDictTypeId())){
+        for (DictType type : typeList) {
+            for (DictData data : dataList) {
+                if (type.getId().equals(data.getDictTypeId())) {
                     type.getDataList().add(data);
                 }
             }

@@ -29,7 +29,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataDao, SysD
         return getPageData(page, SysDictDataDTO.class);
     }
 
-    private QueryWrapper<SysDictDataEntity> getWrapper(Map<String, Object> params){
+    private QueryWrapper<SysDictDataEntity> getWrapper(Map<String, Object> params) {
         String dictTypeId = (String) params.get("dictTypeId");
         String dictLabel = (String) params.get("dictLabel");
         String dictValue = (String) params.get("dictValue");

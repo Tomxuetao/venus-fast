@@ -26,9 +26,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuDao, SysMenuEntit
     public SysMenuDTO get(Long id) {
         SysMenuEntity entity = baseDao.getById(id);
 
-        SysMenuDTO dto = ConvertUtils.sourceToTarget(entity, SysMenuDTO.class);
-
-        return dto;
+        return ConvertUtils.sourceToTarget(entity, SysMenuDTO.class);
     }
 
     @Override

@@ -13,5 +13,5 @@ import java.util.Map;
  */
 public interface SysOssService extends BaseService<SysOssEntity> {
 
-	PageData<SysOssEntity> page(Map<String, Object> params);
+    PageData<SysOssEntity> page(Map<String, Object> params);
 }

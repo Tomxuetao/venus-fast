@@ -33,7 +33,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDeptEntit
     public List<SysDeptDTO> list(Map<String, Object> params) {
         //普通管理员，只能查询所属部门及子部门的数据
         UserDetail user = SecurityUser.getUser();
-        if(user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
+        if (user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
             params.put("deptIdList", getSubDeptIdList(user.getDeptId()));
         }
 
@@ -48,7 +48,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDeptEntit
     @Override
     public SysDeptDTO get(Long id) {
         //超级管理员，部门ID为null
-        if(id == null){
+        if (id == null) {
             return null;
         }
 
@@ -72,13 +72,13 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDeptEntit
         SysDeptEntity entity = ConvertUtils.sourceToTarget(dto, SysDeptEntity.class);
 
         //上级部门不能为自身
-        if(entity.getId().equals(entity.getPid())){
+        if (entity.getId().equals(entity.getPid())) {
             throw new VenusException(ErrorCode.SUPERIOR_DEPT_ERROR);
         }
 
         //上级部门不能为下级部门
         List<Long> subDeptList = getSubDeptIdList(entity.getId());
-        if(subDeptList.contains(entity.getPid())){
+        if (subDeptList.contains(entity.getPid())) {
             throw new VenusException(ErrorCode.SUPERIOR_DEPT_ERROR);
         }
 
@@ -91,13 +91,13 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDeptEntit
     public void delete(Long id) {
         //判断是否有子部门
         List<Long> subList = getSubDeptIdList(id);
-        if(subList.size() > 1){
+        if (subList.size() > 1) {
             throw new VenusException(ErrorCode.DEPT_SUB_DELETE_ERROR);
         }
 
         //判断部门下面是否有用户
         int count = sysUserDao.getCountByDeptId(id);
-        if(count > 0){
+        if (count > 0) {
             throw new VenusException(ErrorCode.DEPT_USER_DELETE_ERROR);
         }
 
@@ -115,11 +115,12 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDeptEntit
 
     /**
      * 获取所有上级部门ID
+     *
      * @param pid 上级ID
      */
-    private String getPidList(Long pid){
+    private String getPidList(Long pid) {
         //顶级部门，无上级部门
-        if(Constant.DEPT_ROOT.equals(pid)){
+        if (Constant.DEPT_ROOT.equals(pid)) {
             return Constant.DEPT_ROOT + "";
         }
 
@@ -128,7 +129,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDeptEntit
 
         //list转map
         Map<Long, SysDeptEntity> map = new HashMap<>(deptList.size());
-        for(SysDeptEntity entity : deptList){
+        for (SysDeptEntity entity : deptList) {
             map.put(entity.getId(), entity);
         }
 
@@ -141,13 +142,13 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDeptEntit
 
     private void getPidTree(Long pid, Map<Long, SysDeptEntity> map, List<Long> pidList) {
         //顶级部门，无上级部门
-        if(Constant.DEPT_ROOT.equals(pid)){
-            return ;
+        if (Constant.DEPT_ROOT.equals(pid)) {
+            return;
         }
 
         //上级部门存在
         SysDeptEntity parent = map.get(pid);
-        if(parent != null){
+        if (parent != null) {
             getPidTree(parent.getPid(), map, pidList);
         }
 

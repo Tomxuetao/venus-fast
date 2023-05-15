@@ -14,14 +14,16 @@ public interface ShiroService {
 
     /**
      * 根据用户ID，查询用户
+     *
      * @param userId
      */
     SysUserEntity getUser(Long userId);
 
     /**
      * 获取用户对应的部门数据权限
-     * @param userId  用户ID
-     * @return        返回部门ID列表
+     *
+     * @param userId 用户ID
+     * @return 返回部门ID列表
      */
     List<Long> getDataScopeList(Long userId);
 }

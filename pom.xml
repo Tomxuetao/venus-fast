@@ -40,6 +40,7 @@
         <aliyun.oss.version>3.15.1</aliyun.oss.version>
         <aliyun.core.version>4.6.0</aliyun.core.version>
         <qcloud.cos.version>5.6.98</qcloud.cos.version>
+        <io.minio.version>8.5.2</io.minio.version>
     </properties>
 
     <dependencies>
@@ -189,6 +190,11 @@
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>${aliyun.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${io.minio.version}</version>
         </dependency>
         <dependency>
             <groupId>com.qcloud</groupId>

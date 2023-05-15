@@ -13,7 +13,7 @@ import java.util.Date;
  * 系统用户
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @TableName("sys_user")
 public class SysUserEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
@@ -70,6 +70,6 @@ public class SysUserEntity extends BaseEntity {
     /**
      * 部门名称
      */
-    @TableField(exist=false)
+    @TableField(exist = false)
     private String deptName;
 }

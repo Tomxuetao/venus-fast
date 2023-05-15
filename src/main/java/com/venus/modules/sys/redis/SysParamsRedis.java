@@ -15,16 +15,16 @@ public class SysParamsRedis {
         redisUtils.hDel(key, paramCodes);
     }
 
-    public void set(String paramCode, String paramValue){
-        if(paramValue == null){
-            return ;
+    public void set(String paramCode, String paramValue) {
+        if (paramValue == null) {
+            return;
         }
         String key = RedisKeys.getSysParamsKey();
         redisUtils.hSet(key, paramCode, paramValue);
     }
 
-    public String get(String paramCode){
+    public String get(String paramCode) {
         String key = RedisKeys.getSysParamsKey();
-        return (String)redisUtils.hGet(key, paramCode);
+        return (String) redisUtils.hGet(key, paramCode);
     }
 }

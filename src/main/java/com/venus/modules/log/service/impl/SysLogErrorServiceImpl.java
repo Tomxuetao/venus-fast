@@ -36,7 +36,7 @@ public class SysLogErrorServiceImpl extends BaseServiceImpl<SysLogErrorDao, SysL
         return ConvertUtils.sourceToTarget(entityList, SysLogErrorDTO.class);
     }
 
-    private QueryWrapper<SysLogErrorEntity> getWrapper(Map<String, Object> params){
+    private QueryWrapper<SysLogErrorEntity> getWrapper(Map<String, Object> params) {
         QueryWrapper<SysLogErrorEntity> wrapper = new QueryWrapper<>();
         return wrapper;
     }

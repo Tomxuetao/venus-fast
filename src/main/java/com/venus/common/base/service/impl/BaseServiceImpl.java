@@ -27,27 +27,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public  abstract class BaseServiceImpl<M extends BaseMapper<T>, T>  implements BaseService<T> {
+public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements BaseService<T> {
     @Autowired
     protected M baseDao;
     protected Log log = LogFactory.getLog(getClass());
 
     /**
      * 获取分页对象
-     * @param params      分页查询参数
-     * @param defaultOrderField  默认排序字段
-     * @param isAsc              排序方式
+     *
+     * @param params            分页查询参数
+     * @param defaultOrderField 默认排序字段
+     * @param isAsc             排序方式
      */
     protected IPage<T> getPage(Map<String, Object> params, String defaultOrderField, boolean isAsc) {
         //分页参数
         long curPage = 1;
         long limit = 10;
 
-        if(params.get(Constant.PAGE) != null){
-            curPage = Long.parseLong((String)params.get(Constant.PAGE));
+        if (params.get(Constant.PAGE) != null) {
+            curPage = Long.parseLong((String) params.get(Constant.PAGE));
         }
-        if(params.get(Constant.LIMIT) != null){
-            limit = Long.parseLong((String)params.get(Constant.LIMIT));
+        if (params.get(Constant.LIMIT) != null) {
+            limit = Long.parseLong((String) params.get(Constant.LIMIT));
         }
 
         //分页对象
@@ -57,49 +58,49 @@ public  abstract class BaseServiceImpl<M extends BaseMapper<T>, T>  implements B
         params.put(Constant.PAGE, page);
 
         //排序字段
-        String orderField = (String)params.get(Constant.ORDER_FIELD);
-        String order = (String)params.get(Constant.ORDER);
+        String orderField = (String) params.get(Constant.ORDER_FIELD);
+        String order = (String) params.get(Constant.ORDER);
 
         //前端字段排序
-        if(StringUtils.isNotBlank(orderField) && StringUtils.isNotBlank(order)){
-            if(Constant.ASC.equalsIgnoreCase(order)) {
+        if (StringUtils.isNotBlank(orderField) && StringUtils.isNotBlank(order)) {
+            if (Constant.ASC.equalsIgnoreCase(order)) {
                 return page.addOrder(OrderItem.asc(orderField));
-            }else {
+            } else {
                 return page.addOrder(OrderItem.desc(orderField));
             }
         }
 
         //没有排序字段，则不排序
-        if(StringUtils.isBlank(defaultOrderField)){
+        if (StringUtils.isBlank(defaultOrderField)) {
             return page;
         }
 
         //默认排序
-        if(isAsc) {
+        if (isAsc) {
             page.addOrder(OrderItem.asc(defaultOrderField));
-        }else {
+        } else {
             page.addOrder(OrderItem.desc(defaultOrderField));
         }
 
         return page;
     }
 
-    protected <T> PageData<T> getPageData(List<?> list, long total, Class<T> target){
+    protected <T> PageData<T> getPageData(List<?> list, long total, Class<T> target) {
         List<T> targetList = ConvertUtils.sourceToTarget(list, target);
 
         return new PageData<>(targetList, total);
     }
 
-    protected <T> PageData<T> getPageData(IPage page, Class<T> target){
+    protected <T> PageData<T> getPageData(IPage page, Class<T> target) {
         return getPageData(page.getRecords(), page.getTotal(), target);
     }
 
-    protected void paramsToLike(Map<String, Object> params, String... likes){
-        for (String like : likes){
-            String val = (String)params.get(like);
-            if (StringUtils.isNotBlank(val)){
+    protected void paramsToLike(Map<String, Object> params, String... likes) {
+        for (String like : likes) {
+            String val = (String) params.get(like);
+            if (StringUtils.isNotBlank(val)) {
                 params.put(like, "%" + val + "%");
-            }else {
+            } else {
                 params.put(like, null);
             }
         }
@@ -126,7 +127,7 @@ public  abstract class BaseServiceImpl<M extends BaseMapper<T>, T>  implements B
 
     @Override
     public Class<T> currentModelClass() {
-        return (Class<T>)ReflectionKit.getSuperClassGenericType(this.getClass(), BaseServiceImpl.class, 1);
+        return (Class<T>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseServiceImpl.class, 1);
     }
 
     protected String getSqlStatement(SqlMethod sqlMethod) {

@@ -41,7 +41,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
 
         //普通管理员，只能查询所属部门及子部门的数据
         UserDetail user = SecurityUser.getUser();
-        if(user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
+        if (user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
             params.put("deptIdList", sysDeptService.getSubDeptIdList(user.getDeptId()));
         }
 
@@ -55,7 +55,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
     public List<SysUserDTO> list(Map<String, Object> params) {
         //普通管理员，只能查询所属部门及子部门的数据
         UserDetail user = SecurityUser.getUser();
-        if(user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
+        if (user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
             params.put("deptIdList", sysDeptService.getSubDeptIdList(user.getDeptId()));
         }
 
@@ -100,9 +100,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
         SysUserEntity entity = ConvertUtils.sourceToTarget(dto, SysUserEntity.class);
 
         //密码加密
-        if(StringUtils.isBlank(dto.getPassword())){
+        if (StringUtils.isBlank(dto.getPassword())) {
             entity.setPassword(null);
-        }else{
+        } else {
             String password = PasswordUtils.encode(entity.getPassword());
             entity.setPassword(password);
         }

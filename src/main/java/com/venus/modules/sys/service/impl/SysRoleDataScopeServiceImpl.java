@@ -24,12 +24,12 @@ public class SysRoleDataScopeServiceImpl extends BaseServiceImpl<SysRoleDataScop
         deleteByRoleIds(new Long[]{roleId});
 
         //角色没有一个数据权限的情况
-        if(CollUtil.isEmpty(deptIdList)){
-            return ;
+        if (CollUtil.isEmpty(deptIdList)) {
+            return;
         }
 
         //保存角色数据权限关系
-        for(Long deptId : deptIdList){
+        for (Long deptId : deptIdList) {
             SysRoleDataScopeEntity sysRoleDataScopeEntity = new SysRoleDataScopeEntity();
             sysRoleDataScopeEntity.setDeptId(deptId);
             sysRoleDataScopeEntity.setRoleId(roleId);

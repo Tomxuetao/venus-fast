@@ -17,16 +17,18 @@ public final class OSSFactory {
         OSSFactory.sysParamsService = SpringContextUtils.getBean(SysParamsService.class);
     }
 
-    public static AbstractCloudStorageService build(){
+    public static AbstractCloudStorageService build() {
         //获取云存储配置信息
         CloudStorageConfig config = sysParamsService.getValueObject(Constant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
 
-        if(config.getType() == Constant.CloudService.QINIU.getValue()){
+        if (config.getType() == Constant.CloudService.QINIU.getValue()) {
             return new QiniuCloudStorageService(config);
-        }else if(config.getType() == Constant.CloudService.ALIYUN.getValue()){
+        } else if (config.getType() == Constant.CloudService.ALIYUN.getValue()) {
             return new AliyunCloudStorageService(config);
-        }else if(config.getType() == Constant.CloudService.QCLOUD.getValue()){
+        } else if (config.getType() == Constant.CloudService.QCLOUD.getValue()) {
             return new QcloudCloudStorageService(config);
+        } else if (config.getType() == Constant.CloudService.MINIO.getValue()) {
+            return new MinioCloudStorageService(config);
         }
 
         return null;

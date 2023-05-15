@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.util.Date;
 
 @RestController
-@Api(tags="登录管理")
+@Api(tags = "登录管理")
 public class LoginController {
     @Autowired
     private SysUserService sysUserService;
@@ -47,9 +47,9 @@ public class LoginController {
     private SysLogLoginService sysLogLoginService;
 
     @GetMapping("captcha")
-    @ApiOperation(value = "验证码", produces="application/octet-stream")
-    @ApiImplicitParam(paramType = "query", dataType="string", name = "uuid", required = true, dataTypeClass=String.class)
-    public void captcha(HttpServletResponse response, String uuid)throws IOException {
+    @ApiOperation(value = "验证码", produces = "application/octet-stream")
+    @ApiImplicitParam(paramType = "query", dataType = "string", name = "uuid", required = true, dataTypeClass = String.class)
+    public void captcha(HttpServletResponse response, String uuid) throws IOException {
         //uuid不能为空
         AssertUtils.isBlank(uuid, ErrorCode.IDENTIFIER_NOT_NULL);
 
@@ -65,7 +65,7 @@ public class LoginController {
 
         //验证码是否正确
         boolean flag = captchaService.validate(login.getUuid(), login.getCaptcha());
-        if(!flag){
+        if (!flag) {
             return new Result().error(ErrorCode.CAPTCHA_ERROR);
         }
 
@@ -80,7 +80,7 @@ public class LoginController {
         log.setIp(IpUtils.getIpAddr(request));
 
         //用户不存在
-        if(user == null){
+        if (user == null) {
             log.setStatus(LoginStatusEnum.FAIL.value());
             log.setCreatorName(login.getUsername());
             sysLogLoginService.save(log);
@@ -89,7 +89,7 @@ public class LoginController {
         }
 
         //密码错误
-        if(!PasswordUtils.matches(login.getPassword(), user.getPassword())){
+        if (!PasswordUtils.matches(login.getPassword(), user.getPassword())) {
             log.setStatus(LoginStatusEnum.FAIL.value());
             log.setCreator(user.getId());
             log.setCreatorName(user.getUsername());
@@ -99,7 +99,7 @@ public class LoginController {
         }
 
         //账号停用
-        if(user.getStatus() == UserStatusEnum.DISABLE.value()){
+        if (user.getStatus() == UserStatusEnum.DISABLE.value()) {
             log.setStatus(LoginStatusEnum.LOCK.value());
             log.setCreator(user.getId());
             log.setCreatorName(user.getUsername());

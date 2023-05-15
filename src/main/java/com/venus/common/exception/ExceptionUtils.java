@@ -8,29 +8,30 @@ public class ExceptionUtils {
 
     /**
      * 获取异常信息
-     * @param ex  异常
-     * @return    返回异常信息
+     *
+     * @param ex 异常
+     * @return 返回异常信息
      */
-    public static String getErrorStackTrace(Exception ex){
+    public static String getErrorStackTrace(Exception ex) {
         StringWriter sw = null;
         PrintWriter pw = null;
         try {
             sw = new StringWriter();
             pw = new PrintWriter(sw, true);
             ex.printStackTrace(pw);
-        }finally {
+        } finally {
             try {
-                if(pw != null) {
+                if (pw != null) {
                     pw.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
             try {
-                if(sw != null) {
+                if (sw != null) {
                     sw.close();
                 }
-            } catch (IOException e) {
+            } catch (IOException ignored) {
 
             }
         }

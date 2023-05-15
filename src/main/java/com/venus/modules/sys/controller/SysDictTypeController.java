@@ -25,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("sys/dict/type")
-@Api(tags="字典类型")
+@Api(tags = "字典类型")
 public class SysDictTypeController {
 
     @Autowired
@@ -34,15 +34,15 @@ public class SysDictTypeController {
     @GetMapping("page")
     @ApiOperation("字典类型")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType="int", dataTypeClass=Integer.class) ,
-            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query",required = true, dataType="int", dataTypeClass=Integer.class) ,
-            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType="String", dataTypeClass=String.class) ,
-            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType="String", dataTypeClass=String.class) ,
-            @ApiImplicitParam(name = "dictType", value = "字典类型", paramType = "query", dataType="String", dataTypeClass=String.class),
-            @ApiImplicitParam(name = "dictName", value = "字典名称", paramType = "query", dataType="String", dataTypeClass=String.class)
+            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "dictType", value = "字典类型", paramType = "query", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "dictName", value = "字典名称", paramType = "query", dataType = "String", dataTypeClass = String.class)
     })
     @RequiresPermissions("sys:dict:page")
-    public Result<PageData<SysDictTypeDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Result<PageData<SysDictTypeDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         //字典类型
         PageData<SysDictTypeDTO> page = sysDictTypeService.page(params);
 
@@ -52,7 +52,7 @@ public class SysDictTypeController {
     @GetMapping("{id}")
     @ApiOperation("信息")
     @RequiresPermissions("sys:dict:info")
-    public Result<SysDictTypeDTO> get(@PathVariable("id") Long id){
+    public Result<SysDictTypeDTO> get(@PathVariable("id") Long id) {
         SysDictTypeDTO data = sysDictTypeService.get(id);
 
         return new Result<SysDictTypeDTO>().ok(data);
@@ -62,7 +62,7 @@ public class SysDictTypeController {
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("sys:dict:save")
-    public Result save(@RequestBody SysDictTypeDTO dto){
+    public Result save(@RequestBody SysDictTypeDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, DefaultGroup.class);
 
@@ -75,7 +75,7 @@ public class SysDictTypeController {
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("sys:dict:update")
-    public Result update(@RequestBody SysDictTypeDTO dto){
+    public Result update(@RequestBody SysDictTypeDTO dto) {
         //效验数据
         ValidatorUtils.validateEntity(dto, UpdateGroup.class, DefaultGroup.class);
 
@@ -88,7 +88,7 @@ public class SysDictTypeController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:dict:delete")
-    public Result delete(@RequestBody Long[] ids){
+    public Result delete(@RequestBody Long[] ids) {
         //效验数据
         AssertUtils.isArrayEmpty(ids, "id");
 
@@ -99,7 +99,7 @@ public class SysDictTypeController {
 
     @GetMapping("all")
     @ApiOperation("所有字典数据")
-    public Result<List<DictType>> all(){
+    public Result<List<DictType>> all() {
         List<DictType> list = sysDictTypeService.getAllList();
 
         return new Result<List<DictType>>().ok(list);

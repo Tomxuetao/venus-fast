@@ -26,14 +26,15 @@ public interface SysMenuService extends BaseService<SysMenuEntity> {
     /**
      * 用户菜单列表
      *
-     * @param user  用户
+     * @param user 用户
      * @param type 菜单类型
      */
     List<SysMenuDTO> getUserMenuList(UserDetail user, Integer type);
 
     /**
      * 根据父菜单，查询子菜单
-     * @param pid  父菜单ID
+     *
+     * @param pid 父菜单ID
      */
     List<SysMenuDTO> getListPid(Long pid);
 }

@@ -26,7 +26,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("sys/log/operation")
-@Api(tags="操作日志")
+@Api(tags = "操作日志")
 public class SysLogOperateController {
     @Autowired
     private SysLogOperateService sysLogOperateService;
@@ -34,14 +34,14 @@ public class SysLogOperateController {
     @GetMapping("page")
     @ApiOperation("分页")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType="int", dataTypeClass=Integer.class) ,
-            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query",required = true, dataType="int", dataTypeClass=Integer.class) ,
-            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType="String", dataTypeClass=String.class) ,
-            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType="String", dataTypeClass=String.class) ,
-            @ApiImplicitParam(name = "status", value = "状态  0：失败    1：成功", paramType = "query", dataType="int", dataTypeClass=Integer.class)
+            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "status", value = "状态  0：失败    1：成功", paramType = "query", dataType = "int", dataTypeClass = Integer.class)
     })
     @RequiresPermissions("sys:log:operation")
-    public Result<PageData<SysLogOperateDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Result<PageData<SysLogOperateDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SysLogOperateDTO> page = sysLogOperateService.page(params);
 
         return new Result<PageData<SysLogOperateDTO>>().ok(page);

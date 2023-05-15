@@ -18,7 +18,7 @@ import java.util.List;
 public class ExcelUtils {
     public static void exportExcel(HttpServletResponse response, String fileName, Collection<?> list,
                                    Class<?> pojoClass) throws IOException {
-        if(StringUtils.isBlank(fileName)){
+        if (StringUtils.isBlank(fileName)) {
             //当前日期
             fileName = DateUtils.format(new Date());
         }
@@ -36,15 +36,15 @@ public class ExcelUtils {
     /**
      * Excel导出，先sourceList转换成List<targetClass>，再导出
      *
-     * @param response      response
-     * @param fileName      文件名
-     * @param sourceList    原数据List
-     * @param targetClass   目标对象Class
+     * @param response    response
+     * @param fileName    文件名
+     * @param sourceList  原数据List
+     * @param targetClass 目标对象Class
      */
     public static void exportExcelToTarget(HttpServletResponse response, String fileName, Collection<?> sourceList,
                                            Class<?> targetClass) throws Exception {
         List targetList = new ArrayList<>(sourceList.size());
-        for(Object source : sourceList){
+        for (Object source : sourceList) {
             Object target = targetClass.newInstance();
             BeanUtils.copyProperties(source, target);
             targetList.add(target);

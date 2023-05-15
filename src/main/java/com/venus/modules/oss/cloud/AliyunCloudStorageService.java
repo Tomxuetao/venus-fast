@@ -11,7 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 public class AliyunCloudStorageService extends AbstractCloudStorageService {
-    public AliyunCloudStorageService(CloudStorageConfig config){
+    public AliyunCloudStorageService(CloudStorageConfig config) {
         this.config = config;
     }
 
@@ -28,7 +28,7 @@ public class AliyunCloudStorageService extends AbstractCloudStorageService {
         try {
             client.putObject(config.getAliyunBucketName(), path, inputStream);
             client.shutdown();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new VenusException(ErrorCode.OSS_UPLOAD_FILE_ERROR, e, "");
         }
 

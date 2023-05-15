@@ -19,12 +19,12 @@ public class SysRoleMenuServiceImpl extends BaseServiceImpl<SysRoleMenuDao, SysR
         deleteByRoleIds(new Long[]{roleId});
 
         //角色没有一个菜单权限的情况
-        if(CollUtil.isEmpty(menuIdList)){
-            return ;
+        if (CollUtil.isEmpty(menuIdList)) {
+            return;
         }
 
         //保存角色菜单关系
-        for(Long menuId : menuIdList){
+        for (Long menuId : menuIdList) {
             SysRoleMenuEntity sysRoleMenuEntity = new SysRoleMenuEntity();
             sysRoleMenuEntity.setMenuId(menuId);
             sysRoleMenuEntity.setRoleId(roleId);
@@ -35,7 +35,7 @@ public class SysRoleMenuServiceImpl extends BaseServiceImpl<SysRoleMenuDao, SysR
     }
 
     @Override
-    public List<Long> getMenuIdList(Long roleId){
+    public List<Long> getMenuIdList(Long roleId) {
         return baseDao.getMenuIdList(roleId);
     }
 

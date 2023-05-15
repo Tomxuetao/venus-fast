@@ -11,8 +11,8 @@ import java.util.List;
 public class ConvertUtils {
     private static final Logger logger = LoggerFactory.getLogger(ConvertUtils.class);
 
-    public static <T> T sourceToTarget(Object source, Class<T> target){
-        if(source == null){
+    public static <T> T sourceToTarget(Object source, Class<T> target) {
+        if (source == null) {
             return null;
         }
         T targetObject = null;
@@ -26,19 +26,19 @@ public class ConvertUtils {
         return targetObject;
     }
 
-    public static <T> List<T> sourceToTarget(Collection<?> sourceList, Class<T> target){
-        if(sourceList == null){
+    public static <T> List<T> sourceToTarget(Collection<?> sourceList, Class<T> target) {
+        if (sourceList == null) {
             return null;
         }
 
         List<T> targetList = new ArrayList<>(sourceList.size());
         try {
-            for(Object source : sourceList){
+            for (Object source : sourceList) {
                 T targetObject = target.getConstructor().newInstance();
                 BeanUtils.copyProperties(source, targetObject);
                 targetList.add(targetObject);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("convert error ", e);
         }
 

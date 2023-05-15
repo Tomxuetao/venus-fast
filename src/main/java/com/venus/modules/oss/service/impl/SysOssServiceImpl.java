@@ -15,12 +15,12 @@ import java.util.Map;
 @Service
 public class SysOssServiceImpl extends BaseServiceImpl<SysOssDao, SysOssEntity> implements SysOssService {
 
-	@Override
-	public PageData<SysOssEntity> page(Map<String, Object> params) {
-		IPage<SysOssEntity> page = baseDao.selectPage(
-				getPage(params, Constant.CREATE_DATE, false),
-				new QueryWrapper<>()
-		);
-		return getPageData(page, SysOssEntity.class);
-	}
+    @Override
+    public PageData<SysOssEntity> page(Map<String, Object> params) {
+        IPage<SysOssEntity> page = baseDao.selectPage(
+                getPage(params, Constant.CREATE_DATE, false),
+                new QueryWrapper<>()
+        );
+        return getPageData(page, SysOssEntity.class);
+    }
 }

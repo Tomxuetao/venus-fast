@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @TableName("sys_dict_data")
 public class SysDictDataEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;

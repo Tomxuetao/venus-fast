@@ -20,6 +20,7 @@ public interface SysRoleDataScopeDao extends BaseDao<SysRoleDataScopeEntity> {
 
     /**
      * 根据角色id，删除角色数据权限关系
+     *
      * @param roleIds 角色ids
      */
     void deleteByRoleIds(Long[] roleIds);

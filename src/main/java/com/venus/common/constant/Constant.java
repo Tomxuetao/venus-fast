@@ -99,7 +99,12 @@ public interface Constant {
         /**
          * 腾讯云
          */
-        QCLOUD(3);
+        QCLOUD(3),
+
+        /**
+         * Minio
+         */
+        MINIO(4);
 
         private final int value;
 

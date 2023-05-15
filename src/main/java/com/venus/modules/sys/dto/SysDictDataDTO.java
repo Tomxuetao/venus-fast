@@ -21,16 +21,16 @@ public class SysDictDataDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "id")
-    @Null(message="{id.null}", groups = AddGroup.class)
-    @NotNull(message="{id.require}", groups = UpdateGroup.class)
+    @Null(message = "{id.null}", groups = AddGroup.class)
+    @NotNull(message = "{id.require}", groups = UpdateGroup.class)
     private Long id;
 
     @ApiModelProperty(value = "字典类型ID")
-    @NotNull(message="{sysdict.type.require}", groups = DefaultGroup.class)
+    @NotNull(message = "{sysdict.type.require}", groups = DefaultGroup.class)
     private Long dictTypeId;
 
     @ApiModelProperty(value = "字典标签")
-    @NotBlank(message="{sysdict.label.require}", groups = DefaultGroup.class)
+    @NotBlank(message = "{sysdict.label.require}", groups = DefaultGroup.class)
     private String dictLabel;
 
     @ApiModelProperty(value = "字典值")

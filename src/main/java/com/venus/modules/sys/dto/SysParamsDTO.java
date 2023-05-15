@@ -20,16 +20,16 @@ public class SysParamsDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "id")
-    @Null(message="{id.null}", groups = AddGroup.class)
-    @NotNull(message="{id.require}", groups = UpdateGroup.class)
+    @Null(message = "{id.null}", groups = AddGroup.class)
+    @NotNull(message = "{id.require}", groups = UpdateGroup.class)
     private Long id;
 
     @ApiModelProperty(value = "参数编码")
-    @NotBlank(message="{sysparams.paramcode.require}", groups = DefaultGroup.class)
+    @NotBlank(message = "{sysparams.paramcode.require}", groups = DefaultGroup.class)
     private String paramCode;
 
     @ApiModelProperty(value = "参数值")
-    @NotBlank(message="{sysparams.paramvalue.require}", groups = DefaultGroup.class)
+    @NotBlank(message = "{sysparams.paramvalue.require}", groups = DefaultGroup.class)
     private String paramValue;
 
     @ApiModelProperty(value = "备注")

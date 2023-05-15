@@ -21,12 +21,12 @@ public class SysRoleDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "id")
-    @Null(message="{id.null}", groups = AddGroup.class)
-    @NotNull(message="{id.require}", groups = UpdateGroup.class)
+    @Null(message = "{id.null}", groups = AddGroup.class)
+    @NotNull(message = "{id.require}", groups = UpdateGroup.class)
     private Long id;
 
     @ApiModelProperty(value = "角色名称")
-    @NotBlank(message="{sysrole.name.require}", groups = DefaultGroup.class)
+    @NotBlank(message = "{sysrole.name.require}", groups = DefaultGroup.class)
     private String name;
 
     @ApiModelProperty(value = "备注")

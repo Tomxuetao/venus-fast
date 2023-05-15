@@ -24,14 +24,14 @@ public class QcloudCloudStorageService extends AbstractCloudStorageService {
     private COSCredentials credentials;
     private ClientConfig clientConfig;
 
-    public QcloudCloudStorageService(CloudStorageConfig config){
+    public QcloudCloudStorageService(CloudStorageConfig config) {
         this.config = config;
 
         //初始化
         init();
     }
 
-    private void init(){
+    private void init() {
         //1、初始化用户身份信息(secretId, secretKey)
         credentials = new BasicCOSCredentials(config.getQcloudSecretId(), config.getQcloudSecretKey());
 
@@ -51,12 +51,12 @@ public class QcloudCloudStorageService extends AbstractCloudStorageService {
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(inputStream.available());
-            String bucketName = config.getQcloudBucketName() +"-"+ config.getQcloudAppId();
+            String bucketName = config.getQcloudBucketName() + "-" + config.getQcloudAppId();
             PutObjectRequest request = new PutObjectRequest(bucketName, path, inputStream, metadata);
             PutObjectResult result = client.putObject(request);
 
             client.shutdown();
-            if(result.getETag() == null){
+            if (result.getETag() == null) {
                 throw new VenusException(ErrorCode.OSS_UPLOAD_FILE_ERROR, "");
             }
         } catch (IOException e) {

@@ -36,7 +36,7 @@ public class SysLogOperateServiceImpl extends BaseServiceImpl<SysLogOperateDao, 
         return ConvertUtils.sourceToTarget(entityList, SysLogOperateDTO.class);
     }
 
-    private QueryWrapper<SysLogOperateEntity> getWrapper(Map<String, Object> params){
+    private QueryWrapper<SysLogOperateEntity> getWrapper(Map<String, Object> params) {
         String status = (String) params.get("status");
 
         QueryWrapper<SysLogOperateEntity> wrapper = new QueryWrapper<>();

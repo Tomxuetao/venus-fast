@@ -33,7 +33,7 @@ public class Oauth2Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        UserDetail user = (UserDetail)principals.getPrimaryPrincipal();
+        UserDetail user = (UserDetail) principals.getPrimaryPrincipal();
 
         //用户权限列表
         Set<String> permsSet = shiroService.getUserPermissions(user);
@@ -53,7 +53,7 @@ public class Oauth2Realm extends AuthorizingRealm {
         //根据accessToken，查询用户信息
         SysUserTokenEntity tokenEntity = shiroService.getByToken(accessToken);
         //token失效
-        if(tokenEntity == null || tokenEntity.getExpireDate().getTime() < System.currentTimeMillis()){
+        if (tokenEntity == null || tokenEntity.getExpireDate().getTime() < System.currentTimeMillis()) {
             throw new IncorrectCredentialsException(MessageUtils.getMessage(ErrorCode.TOKEN_INVALID));
         }
 
@@ -68,7 +68,7 @@ public class Oauth2Realm extends AuthorizingRealm {
         userDetail.setDeptIdList(deptIdList);
 
         //账号锁定
-        if(userDetail.getStatus() == 0){
+        if (userDetail.getStatus() == 0) {
             throw new LockedAccountException(MessageUtils.getMessage(ErrorCode.ACCOUNT_LOCK));
         }
 

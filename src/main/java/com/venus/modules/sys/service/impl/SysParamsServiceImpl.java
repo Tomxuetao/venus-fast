@@ -45,7 +45,7 @@ public class SysParamsServiceImpl extends BaseServiceImpl<SysParamsDao, SysParam
         return ConvertUtils.sourceToTarget(entityList, SysParamsDTO.class);
     }
 
-    private QueryWrapper<SysParamsEntity> getWrapper(Map<String, Object> params){
+    private QueryWrapper<SysParamsEntity> getWrapper(Map<String, Object> params) {
         String paramCode = (String) params.get("paramCode");
 
         QueryWrapper<SysParamsEntity> wrapper = new QueryWrapper<>();
@@ -95,7 +95,7 @@ public class SysParamsServiceImpl extends BaseServiceImpl<SysParamsDao, SysParam
     @Override
     public String getValue(String paramCode) {
         String paramValue = sysParamsRedis.get(paramCode);
-        if(paramValue == null){
+        if (paramValue == null) {
             paramValue = baseDao.getValueByCode(paramCode);
 
             sysParamsRedis.set(paramCode, paramValue);
@@ -106,7 +106,7 @@ public class SysParamsServiceImpl extends BaseServiceImpl<SysParamsDao, SysParam
     @Override
     public <T> T getValueObject(String paramCode, Class<T> clazz) {
         String paramValue = getValue(paramCode);
-        if(StringUtils.isNotBlank(paramValue)){
+        if (StringUtils.isNotBlank(paramValue)) {
             return JsonUtils.parseObject(paramValue, clazz);
         }
 

@@ -37,7 +37,7 @@ public class SysLogLoginServiceImpl extends BaseServiceImpl<SysLogLoginDao, SysL
         return ConvertUtils.sourceToTarget(entityList, SysLogLoginDTO.class);
     }
 
-    private QueryWrapper<SysLogLoginEntity> getWrapper(Map<String, Object> params){
+    private QueryWrapper<SysLogLoginEntity> getWrapper(Map<String, Object> params) {
         String status = (String) params.get("status");
         String creatorName = (String) params.get("creatorName");
 
