@@ -109,7 +109,8 @@ public class SysRoleController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:role:delete")
-    public Result delete(@RequestBody Long[] ids) {
+    public Result delete(@RequestBody Map<String, Long[]> dataForm) {
+        Long[] ids = dataForm.get("ids");
         //效验数据
         AssertUtils.isArrayEmpty(ids, "id");
 

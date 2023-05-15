@@ -6,6 +6,7 @@ import com.venus.common.constant.Constant;
 import com.venus.common.exception.ErrorCode;
 import com.venus.common.page.PageData;
 import com.venus.common.utils.Result;
+import com.venus.common.validator.AssertUtils;
 import com.venus.common.validator.ValidatorUtils;
 import com.venus.common.validator.group.AliyunGroup;
 import com.venus.common.validator.group.MinioGroup;
@@ -116,7 +117,10 @@ public class SysOssController {
     @ApiOperation(value = "删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:oss:all")
-    public Result delete(@RequestBody Long[] ids) {
+    public Result delete(@RequestBody Map<String, Long[]> dataForm) {
+        Long[] ids = dataForm.get("ids");
+        //效验数据
+        AssertUtils.isArrayEmpty(ids, "id");
         sysOssService.deleteBatchIds(Arrays.asList(ids));
 
         return new Result();

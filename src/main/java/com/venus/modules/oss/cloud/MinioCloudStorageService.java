@@ -49,7 +49,7 @@ public class MinioCloudStorageService extends AbstractCloudStorageService {
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | MinioException e) {
             throw new RuntimeException(e);
         }
-        return config.getMinioBucketName() + "/" + path;
+        return "/" + config.getMinioBucketName() + "/" + path;
     }
 
     @Override

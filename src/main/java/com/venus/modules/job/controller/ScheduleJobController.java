@@ -4,6 +4,7 @@ import com.venus.common.annotation.LogOperation;
 import com.venus.common.constant.Constant;
 import com.venus.common.page.PageData;
 import com.venus.common.utils.Result;
+import com.venus.common.validator.AssertUtils;
 import com.venus.common.validator.ValidatorUtils;
 import com.venus.common.validator.group.AddGroup;
 import com.venus.common.validator.group.DefaultGroup;
@@ -86,7 +87,11 @@ public class ScheduleJobController {
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:schedule:delete")
-    public Result delete(@RequestBody Long[] ids){
+    public Result delete(@RequestBody Map<String, Long[]> dataForm){
+        Long[] ids = dataForm.get("ids");
+
+        //效验数据
+        AssertUtils.isArrayEmpty(ids, "id");
         scheduleJobService.deleteBatch(ids);
 
         return new Result();
