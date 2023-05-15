@@ -99,16 +99,19 @@ public class SysOssController {
 
         //上传文件
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        String name = FilenameUtils.getName(file.getOriginalFilename());
         String url = Objects.requireNonNull(OSSFactory.build()).uploadSuffix(file.getBytes(), extension);
 
         //保存文件信息
         SysOssEntity ossEntity = new SysOssEntity();
         ossEntity.setUrl(url);
+        ossEntity.setName(name);
         ossEntity.setCreateDate(new Date());
         sysOssService.insert(ossEntity);
 
         Map<String, Object> data = new HashMap<>(1);
         data.put("src", url);
+        data.put("name", name);
 
         return new Result<Map<String, Object>>().ok(data);
     }

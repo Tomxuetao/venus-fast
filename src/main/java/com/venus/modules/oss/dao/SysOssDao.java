@@ -1,6 +1,5 @@
 package com.venus.modules.oss.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.venus.common.base.dao.BaseDao;
 import com.venus.modules.oss.entity.SysOssEntity;
 import org.apache.ibatis.annotations.Mapper;
