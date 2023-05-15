@@ -216,6 +216,7 @@ create table sys_log_error
 CREATE TABLE sys_oss (
                          id bigint NOT NULL COMMENT 'id',
                          url varchar(200) COMMENT 'URL地址',
+                         name varchar(200) COMMENT '文件名称',
                          creator bigint COMMENT '创建者',
                          create_date datetime COMMENT '创建时间',
                          PRIMARY KEY (id),

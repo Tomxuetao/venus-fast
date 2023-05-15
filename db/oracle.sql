@@ -355,6 +355,7 @@ COMMENT ON COLUMN sys_log_error.create_date IS '创建时间';
 CREATE TABLE sys_oss (
                          id NUMBER(20, 0) NOT NULL,
                          url varchar2(200),
+                         name varchar2(200),
                          creator NUMBER(20, 0),
                          create_date date,
                          PRIMARY KEY (id)
@@ -364,6 +365,7 @@ CREATE INDEX idx_sys_oss_create_date on sys_oss(create_date);
 COMMENT ON TABLE sys_oss IS '文件上传';
 COMMENT ON COLUMN sys_oss.id IS 'id';
 COMMENT ON COLUMN sys_oss.url IS 'URL地址';
+COMMENT ON COLUMN sys_oss.name IS '文件名称';
 COMMENT ON COLUMN sys_mail_log.creator IS '创建者';
 COMMENT ON COLUMN sys_mail_log.create_date IS '创建时间';
 
