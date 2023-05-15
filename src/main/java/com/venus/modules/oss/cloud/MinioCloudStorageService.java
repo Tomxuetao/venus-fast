@@ -44,15 +44,12 @@ public class MinioCloudStorageService extends AbstractCloudStorageService {
                     PutObjectArgs.builder()
                             .bucket(config.getMinioBucketName())
                             .object(path)
-                            .stream(inputStream, -1, 10485760)
+                            .stream(inputStream, inputStream.available(), -1)
                             .build());
-        } catch (MinioException e) {
-            System.out.println("Error occurred: " + e);
-            System.out.println("HTTP trace: " + e.httpTrace());
-        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | MinioException e) {
             throw new RuntimeException(e);
         }
-        return config.getMinioEndPoint() + "/" + path;
+        return config.getMinioEndPoint() + "/" + config.getMinioBucketName() + "/" + path;
     }
 
     @Override
