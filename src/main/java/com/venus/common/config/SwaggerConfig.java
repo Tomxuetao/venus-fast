@@ -33,7 +33,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
-                .extensions(openApiExtensionResolver.buildExtensions("Renren"))
+                .extensions(openApiExtensionResolver.buildExtensions("Venus"))
                 .directModelSubstitute(java.util.Date.class, String.class)
                 .securitySchemes(security());
     }
