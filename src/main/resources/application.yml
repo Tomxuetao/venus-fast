@@ -5,7 +5,7 @@ server:
     threads:
       max: 1000
       min-spare: 30
-  port: 8088
+  port: 8888
   servlet:
     context-path: /venus-admin
     session:
