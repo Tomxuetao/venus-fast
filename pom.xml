@@ -20,7 +20,7 @@
         <java.version>1.8</java.version>
         <jedis.version>4.2.2</jedis.version>
         <druid.version>1.2.11</druid.version>
-        <commons.lang.version>3.12.0</commons.lang.version>
+        <commons.lang.version>3.13.0</commons.lang.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
         <commons.io.version>2.11.0</commons.io.version>
         <commons.codec.version>1.15</commons.codec.version>
@@ -33,7 +33,7 @@
         <knife4j.version>3.0.3</knife4j.version>
         <mybatisplus.version>3.5.3.1</mybatisplus.version>
         <quartz.version>2.3.2</quartz.version>
-        <shiro.version>2.0.0-alpha-2</shiro.version>
+        <shiro.version>1.12.0</shiro.version>
         <captcha.version>1.6.2</captcha.version>
         <easypoi.version>4.4.0</easypoi.version>
         <qiniu.version>7.11.0</qiniu.version>
@@ -233,6 +233,12 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
             <version>${knife4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
