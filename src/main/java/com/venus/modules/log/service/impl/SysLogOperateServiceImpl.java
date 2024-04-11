@@ -40,7 +40,9 @@ public class SysLogOperateServiceImpl extends BaseServiceImpl<SysLogOperateDao, 
         String status = (String) params.get("status");
 
         QueryWrapper<SysLogOperateEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq(StringUtils.isNotBlank(status), "status", status);
+        if (StringUtils.isNotBlank(status)) {
+            wrapper.eq("status", Integer.parseInt(status));
+        }
 
         return wrapper;
     }

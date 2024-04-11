@@ -37,8 +37,7 @@ public class SysLogErrorServiceImpl extends BaseServiceImpl<SysLogErrorDao, SysL
     }
 
     private QueryWrapper<SysLogErrorEntity> getWrapper(Map<String, Object> params) {
-        QueryWrapper<SysLogErrorEntity> wrapper = new QueryWrapper<>();
-        return wrapper;
+        return new QueryWrapper<>();
     }
 
     @Override

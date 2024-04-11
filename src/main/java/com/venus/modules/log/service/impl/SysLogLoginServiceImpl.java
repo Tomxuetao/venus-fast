@@ -22,10 +22,7 @@ public class SysLogLoginServiceImpl extends BaseServiceImpl<SysLogLoginDao, SysL
 
     @Override
     public PageData<SysLogLoginDTO> page(Map<String, Object> params) {
-        IPage<SysLogLoginEntity> page = baseDao.selectPage(
-                getPage(params, Constant.CREATE_DATE, false),
-                getWrapper(params)
-        );
+        IPage<SysLogLoginEntity> page = baseDao.selectPage(getPage(params, Constant.CREATE_DATE, false), getWrapper(params));
 
         return getPageData(page, SysLogLoginDTO.class);
     }
@@ -42,7 +39,9 @@ public class SysLogLoginServiceImpl extends BaseServiceImpl<SysLogLoginDao, SysL
         String creatorName = (String) params.get("creatorName");
 
         QueryWrapper<SysLogLoginEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq(StringUtils.isNotBlank(status), "status", status);
+        if (StringUtils.isNotBlank(status)) {
+            wrapper.eq("status", Integer.parseInt(status));
+        }
         wrapper.like(StringUtils.isNotBlank(creatorName), "creator_name", creatorName);
 
         return wrapper;

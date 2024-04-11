@@ -29,15 +29,18 @@ public class ValidatorUtils {
 
     /**
      * 校验对象
-     * @param object        待校验对象
-     * @param groups        待校验的组
+     *
+     * @param object 待校验对象
+     * @param groups 待校验的组
      */
     public static void validateEntity(Object object, Class<?>... groups)
-            throws VenusException {
+        throws VenusException {
         Locale.setDefault(LocaleContextHolder.getLocale());
-        Validator validator = Validation.byDefaultProvider().configure().messageInterpolator(
-                        new ResourceBundleMessageInterpolator(new MessageSourceResourceBundleLocator(getMessageSource())))
-                .buildValidatorFactory().getValidator();
+        Validator validator = Validation.byDefaultProvider()
+            .configure()
+            .messageInterpolator(new ResourceBundleMessageInterpolator(new MessageSourceResourceBundleLocator(getMessageSource())))
+            .buildValidatorFactory()
+            .getValidator();
 
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object, groups);
         if (!constraintViolations.isEmpty()) {

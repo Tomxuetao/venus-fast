@@ -25,16 +25,16 @@ public class IpUtils {
         String ip = null;
         try {
             ip = request.getHeader("x-forwarded-for");
-            if (org.apache.commons.lang3.StringUtils.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {
+            if (StringUtils.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {
                 ip = request.getHeader("Proxy-Client-IP");
             }
-            if (org.apache.commons.lang3.StringUtils.isEmpty(ip) || ip.length() == 0 || unknown.equalsIgnoreCase(ip)) {
+            if (StringUtils.isEmpty(ip) || ip.isEmpty() || unknown.equalsIgnoreCase(ip)) {
                 ip = request.getHeader("WL-Proxy-Client-IP");
             }
-            if (org.apache.commons.lang3.StringUtils.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {
+            if (StringUtils.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {
                 ip = request.getHeader("HTTP_CLIENT_IP");
             }
-            if (org.apache.commons.lang3.StringUtils.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {
+            if (StringUtils.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {
                 ip = request.getHeader("HTTP_X_FORWARDED_FOR");
             }
             if (StringUtils.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {

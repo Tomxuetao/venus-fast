@@ -25,9 +25,8 @@ public class ExcelUtils {
 
         Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(), pojoClass, list);
         response.setCharacterEncoding("UTF-8");
-        response.setHeader("content-Type", "application/vnd.ms-excel");
-        response.setHeader("Content-Disposition",
-                "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8") + ".xls");
+        response.setHeader("content-Type", "application/vnd.ms-excel;charset=UTF-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8") + ".xlsx");
         ServletOutputStream out = response.getOutputStream();
         workbook.write(out);
         out.flush();
