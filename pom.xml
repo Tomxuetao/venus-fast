@@ -33,7 +33,7 @@
         <knife4j.version>3.0.3</knife4j.version>
         <mybatisplus.version>3.5.3.1</mybatisplus.version>
         <quartz.version>2.3.2</quartz.version>
-        <shiro.version>1.12.0</shiro.version>
+        <shiro.version>1.13.0</shiro.version>
         <captcha.version>1.6.2</captcha.version>
         <easypoi.version>4.4.0</easypoi.version>
         <qiniu.version>7.11.0</qiniu.version>
@@ -41,7 +41,7 @@
         <aliyun.core.version>4.6.0</aliyun.core.version>
         <qcloud.cos.version>5.6.98</qcloud.cos.version>
         <io.minio.version>8.5.3</io.minio.version>
-        <org.postgresql.postgresql>42.3.8</org.postgresql.postgresql>
+        <org.postgresql.postgresql>42.7.3</org.postgresql.postgresql>
     </properties>
 
     <dependencies>
