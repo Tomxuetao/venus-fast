@@ -18,7 +18,7 @@ public interface Constant {
      */
     Long DEPT_ROOT = 0L;
     /**
-     *  升序
+     * 升序
      */
     String ASC = "asc";
     /**
