@@ -3,15 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.venus</groupId>
-    <artifactId>VenusFast</artifactId>
+    <artifactId>venus-fast</artifactId>
     <version>3.0.0</version>
     <packaging>jar</packaging>
-    <description>VenusFast</description>
+    <description>venus-fast</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.1</version>
+        <version>2.7.6</version>
     </parent>
 
     <properties>
@@ -19,21 +19,21 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <jedis.version>4.2.2</jedis.version>
-        <druid.version>1.2.11</druid.version>
+        <druid.version>1.2.20</druid.version>
         <commons.lang.version>3.13.0</commons.lang.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
         <commons.io.version>2.11.0</commons.io.version>
         <commons.codec.version>1.15</commons.codec.version>
         <guava.version>32.1.2-jre</guava.version>
         <joda.time.version>2.10.14</joda.time.version>
-        <hutool.version>5.8.20</hutool.version>
+        <hutool.version>5.8.21</hutool.version>
         <gson.version>2.9.0</gson.version>
         <jsoup.version>1.15.3</jsoup.version>
         <lombok.version>1.18.24</lombok.version>
         <knife4j.version>3.0.3</knife4j.version>
         <mybatisplus.version>3.5.3.1</mybatisplus.version>
         <quartz.version>2.3.2</quartz.version>
-        <shiro.version>1.12.0</shiro.version>
+        <shiro.version>1.13.0</shiro.version>
         <captcha.version>1.6.2</captcha.version>
         <easypoi.version>4.4.0</easypoi.version>
         <qiniu.version>7.11.0</qiniu.version>
@@ -41,7 +41,7 @@
         <aliyun.core.version>4.6.0</aliyun.core.version>
         <qcloud.cos.version>5.6.98</qcloud.cos.version>
         <io.minio.version>8.5.3</io.minio.version>
-        <org.postgresql.postgresql>42.3.8</org.postgresql.postgresql>
+        <org.postgresql.postgresql>42.7.3</org.postgresql.postgresql>
     </properties>
 
     <dependencies>
@@ -240,7 +240,37 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 跳过单元测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <!-- 阿里云maven仓库 -->
     <repositories>

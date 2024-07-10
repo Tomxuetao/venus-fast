@@ -28,28 +28,28 @@ public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                .paths(PathSelectors.any())
-                .build()
-                .extensions(openApiExtensionResolver.buildExtensions("Venus"))
-                .directModelSubstitute(java.util.Date.class, String.class)
-                .securitySchemes(security());
+            .apiInfo(apiInfo())
+            .select()
+            .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+            .paths(PathSelectors.any())
+            .build()
+            .extensions(openApiExtensionResolver.buildExtensions("Venus"))
+            .directModelSubstitute(java.util.Date.class, String.class)
+            .securitySchemes(security());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("venus-admin文档")
-                .description("venus-admin文档")
-                .termsOfServiceUrl("https://www.venus.com/")
-                .version("1.x")
-                .build();
+            .title("venus-admin文档")
+            .description("venus-admin文档")
+            .termsOfServiceUrl("https://www.venus.com/")
+            .version("1.x")
+            .build();
     }
 
     private List<SecurityScheme> security() {
         return newArrayList(
-                new ApiKey(Constant.TOKEN_HEADER, Constant.TOKEN_HEADER, "header")
+            new ApiKey(Constant.TOKEN_HEADER, Constant.TOKEN_HEADER, "header")
         );
     }
 }
