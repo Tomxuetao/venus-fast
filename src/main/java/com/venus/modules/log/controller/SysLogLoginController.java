@@ -61,5 +61,4 @@ public class SysLogLoginController {
 
         ExcelUtils.exportExcelToTarget(response, null, list, SysLogLoginExcel.class);
     }
-
 }

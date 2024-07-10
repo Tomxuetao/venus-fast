@@ -19,5 +19,4 @@ public class SysLogErrorExcel {
     private String ip;
     @Excel(name = "创建时间", format = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
-
 }

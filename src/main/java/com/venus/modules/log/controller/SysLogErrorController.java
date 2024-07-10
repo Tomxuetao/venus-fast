@@ -55,5 +55,4 @@ public class SysLogErrorController {
 
         ExcelUtils.exportExcelToTarget(response, null, list, SysLogErrorExcel.class);
     }
-
 }

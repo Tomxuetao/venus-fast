@@ -31,5 +31,4 @@ public class SysLogLoginEntity extends BaseEntity {
      * 用户名
      */
     private String creatorName;
-
 }

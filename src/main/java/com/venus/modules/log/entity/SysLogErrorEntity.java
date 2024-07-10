@@ -35,5 +35,4 @@ public class SysLogErrorEntity extends BaseEntity {
      * 异常信息
      */
     private String errorInfo;
-
 }

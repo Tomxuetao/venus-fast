@@ -56,5 +56,4 @@ public class SysLogOperateController {
 
         ExcelUtils.exportExcelToTarget(response, null, list, SysLogOperateExcel.class);
     }
-
 }

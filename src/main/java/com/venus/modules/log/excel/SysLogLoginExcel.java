@@ -19,5 +19,4 @@ public class SysLogLoginExcel {
     private String creatorName;
     @Excel(name = "创建时间", format = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
-
 }
