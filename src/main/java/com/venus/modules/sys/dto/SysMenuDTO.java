@@ -37,7 +37,7 @@ public class SysMenuDTO extends TreeNode<SysMenuDTO> implements Serializable {
     private String url;
 
     @ApiModelProperty(value = "类型  0：菜单   1：按钮")
-    @Range(min = 0, max = 1, message = "{sysmenu.type.range}", groups = DefaultGroup.class)
+    @Range(min = 0, max = 1, message = "{sys_menu.type.range}", groups = DefaultGroup.class)
     private Integer type;
 
     @ApiModelProperty(value = "菜单图标")
