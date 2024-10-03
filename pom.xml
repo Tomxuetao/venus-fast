@@ -22,7 +22,7 @@
         <druid.version>1.2.20</druid.version>
         <commons.lang.version>3.13.0</commons.lang.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
-        <commons.io.version>2.11.0</commons.io.version>
+        <commons.io.version>2.14.0</commons.io.version>
         <commons.codec.version>1.15</commons.codec.version>
         <guava.version>32.1.2-jre</guava.version>
         <joda.time.version>2.10.14</joda.time.version>
