@@ -32,7 +32,7 @@ public class SysUserTokenServiceImpl extends BaseServiceImpl<SysUserTokenDao, Sy
 
         //判断是否生成过token
         SysUserTokenEntity tokenEntity = baseDao.getByUserId(userId);
-        if(tokenEntity == null){
+        if (tokenEntity == null) {
             //生成一个token
             token = TokenGenerator.generateValue();
 
@@ -40,21 +40,23 @@ public class SysUserTokenServiceImpl extends BaseServiceImpl<SysUserTokenDao, Sy
             tokenEntity.setUserId(userId);
             tokenEntity.setToken(token);
             tokenEntity.setUpdateDate(now);
+            tokenEntity.setCreateDate(now);
             tokenEntity.setExpireDate(expireTime);
 
             //保存token
             this.insert(tokenEntity);
-        }else{
+        } else {
             //判断token是否过期
-            if(tokenEntity.getExpireDate().getTime() < System.currentTimeMillis()){
+            if (tokenEntity.getExpireDate().getTime() < System.currentTimeMillis()) {
                 //token过期，重新生成token
                 token = TokenGenerator.generateValue();
-            }else {
+            } else {
                 token = tokenEntity.getToken();
             }
 
             tokenEntity.setToken(token);
             tokenEntity.setUpdateDate(now);
+            tokenEntity.setCreateDate(now);
             tokenEntity.setExpireDate(expireTime);
 
             //更新token

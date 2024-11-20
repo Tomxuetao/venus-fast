@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sys/dept")
@@ -69,11 +70,12 @@ public class SysDeptController {
         return new Result();
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:dept:delete")
-    public Result delete(@PathVariable("id") Long id) {
+    public Result delete(@RequestBody Map<String, Long> dataForm) {
+        Long id = dataForm.get("id");
         // 效验数据
         AssertUtils.isNull(id, "id");
 

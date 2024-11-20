@@ -6,7 +6,7 @@ import com.venus.common.page.PageData;
 import com.venus.common.utils.ExcelUtils;
 import com.venus.common.utils.Result;
 import com.venus.modules.log.dto.SysLogOperateDTO;
-import com.venus.modules.log.excel.SysLogOperateExcel;
+import com.venus.modules.log.excel.SysLogOperationExcel;
 import com.venus.modules.log.service.SysLogOperateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -54,6 +54,6 @@ public class SysLogOperateController {
     public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
         List<SysLogOperateDTO> list = sysLogOperateService.list(params);
 
-        ExcelUtils.exportExcelToTarget(response, null, list, SysLogOperateExcel.class);
+        ExcelUtils.exportExcelToTarget(response, null, "操作日志", list, SysLogOperationExcel.class);
     }
 }

@@ -15,5 +15,4 @@ public interface SysLogErrorService extends BaseService<SysLogErrorEntity> {
     List<SysLogErrorDTO> list(Map<String, Object> params);
 
     void save(SysLogErrorEntity entity);
-
 }

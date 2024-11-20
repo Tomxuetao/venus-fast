@@ -59,6 +59,6 @@ public class SysLogLoginController {
     public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
         List<SysLogLoginDTO> list = sysLogLoginService.list(params);
 
-        ExcelUtils.exportExcelToTarget(response, null, list, SysLogLoginExcel.class);
+        ExcelUtils.exportExcelToTarget(response, null, "登录日志", list, SysLogLoginExcel.class);
     }
 }

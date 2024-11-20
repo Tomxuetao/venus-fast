@@ -11,21 +11,21 @@ import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("sys_dict_data")
-public class SysDictDataEntity extends BaseEntity {
+@TableName("sys_dict")
+public class SysDictEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
     /**
      * 字典类型ID
      */
-    private Long dictTypeId;
+    private Long pid;
     /**
      * 字典标签
      */
-    private String dictLabel;
+    private String label;
     /**
      * 字典值
      */
-    private String dictValue;
+    private String value;
     /**
      * 备注
      */

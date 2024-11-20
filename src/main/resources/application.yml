@@ -11,6 +11,7 @@ server:
     session:
       cookie:
         http-only: true
+        secure: true
 
 knife4j:
   enable: true
@@ -24,7 +25,7 @@ knife4j:
 spring:
   # 环境 dev|test|prod
   profiles:
-    active: prod
+    active: dev
   messages:
     encoding: UTF-8
     basename: i18n/messages

@@ -1,5 +1,7 @@
 package com.venus.modules.login.controller;
 
+import com.aliyun.core.utils.StringUtils;
+import com.venus.common.constant.Constant;
 import com.venus.common.exception.ErrorCode;
 import com.venus.common.exception.VenusException;
 import com.venus.common.utils.IpUtils;
@@ -11,8 +13,10 @@ import com.venus.modules.log.enums.LoginOperateEnum;
 import com.venus.modules.log.enums.LoginStatusEnum;
 import com.venus.modules.log.service.SysLogLoginService;
 import com.venus.modules.login.dto.LoginDTO;
+import com.venus.modules.login.entity.SysUserTokenEntity;
 import com.venus.modules.login.password.PasswordUtils;
 import com.venus.modules.login.service.CaptchaService;
+import com.venus.modules.login.service.ShiroService;
 import com.venus.modules.login.service.SysUserTokenService;
 import com.venus.modules.login.user.SecurityUser;
 import com.venus.modules.login.user.UserDetail;
@@ -33,10 +37,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 @RestController
 @Api(tags = "登录管理")
 public class LoginController {
+    @Autowired
+    private ShiroService shiroService;
     @Autowired
     private SysUserService sysUserService;
     @Autowired
@@ -140,4 +147,20 @@ public class LoginController {
         return new Result();
     }
 
+    @PostMapping("checkToken")
+    @ApiOperation(value = "检验Token")
+    public Result checkToken(HttpServletRequest httpRequest) {
+        String token = httpRequest.getHeader(Constant.TOKEN_HEADER);
+        if (StringUtils.isBlank(token)) {
+            return new Result().error(ErrorCode.TOKEN_NOT_EMPTY);
+        }
+        SysUserTokenEntity sysUserTokenEntity = shiroService.getByToken(token);
+        if (sysUserTokenEntity == null) {
+            return new Result().error(ErrorCode.TOKEN_INVALID);
+        }
+        if (sysUserTokenEntity.getExpireDate().getTime() < System.currentTimeMillis()) {
+            return new Result().error(ErrorCode.TOKEN_INVALID);
+        }
+        return new Result();
+    }
 }

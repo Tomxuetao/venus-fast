@@ -17,7 +17,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "字典数据")
-public class SysDictDataDTO implements Serializable {
+public class SysDictDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "id")
@@ -25,16 +25,16 @@ public class SysDictDataDTO implements Serializable {
     @NotNull(message = "{id.require}", groups = UpdateGroup.class)
     private Long id;
 
-    @ApiModelProperty(value = "字典类型ID")
+    @ApiModelProperty(value = "上级ID")
     @NotNull(message = "{sysdict.type.require}", groups = DefaultGroup.class)
-    private Long dictTypeId;
+    private Long pid;
 
     @ApiModelProperty(value = "字典标签")
     @NotBlank(message = "{sysdict.label.require}", groups = DefaultGroup.class)
-    private String dictLabel;
+    private String label;
 
     @ApiModelProperty(value = "字典值")
-    private String dictValue;
+    private String value;
 
     @ApiModelProperty(value = "备注")
     private String remark;

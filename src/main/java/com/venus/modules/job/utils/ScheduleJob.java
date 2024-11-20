@@ -9,6 +9,7 @@ import com.venus.modules.job.service.ScheduleJobLogService;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.lang.reflect.Method;
@@ -19,8 +20,9 @@ public class ScheduleJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
-        ScheduleJobEntity scheduleJob = (ScheduleJobEntity) context.getMergedJobDataMap().
-                get(ScheduleUtils.JOB_PARAM_KEY);
+        ScheduleJobEntity scheduleJob = new ScheduleJobEntity();
+        Object object = context.getMergedJobDataMap().get(ScheduleUtils.JOB_PARAM_KEY);
+        BeanUtils.copyProperties(object, scheduleJob);
 
         //数据库保存执行记录
         ScheduleJobLogEntity log = new ScheduleJobLogEntity();
@@ -41,7 +43,7 @@ public class ScheduleJob extends QuartzJobBean {
 
             //任务执行总时长
             long times = System.currentTimeMillis() - startTime;
-            log.setTimes((int)times);
+            log.setTimes((int) times);
             //任务状态
             log.setStatus(Constant.SUCCESS);
 
@@ -51,12 +53,12 @@ public class ScheduleJob extends QuartzJobBean {
 
             //任务执行总时长
             long times = System.currentTimeMillis() - startTime;
-            log.setTimes((int)times);
+            log.setTimes((int) times);
 
             //任务状态
             log.setStatus(Constant.FAIL);
             log.setError(ExceptionUtils.getErrorStackTrace(e));
-        }finally {
+        } finally {
             //获取spring bean
             ScheduleJobLogService scheduleJobLogService = SpringContextUtils.getBean(ScheduleJobLogService.class);
             scheduleJobLogService.insert(log);

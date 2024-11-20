@@ -20,18 +20,18 @@ public class ScheduleJobLogServiceImpl extends BaseServiceImpl<ScheduleJobLogDao
 
     @Override
     public PageData<ScheduleJobLogDTO> page(Map<String, Object> params) {
-        IPage<ScheduleJobLogEntity> page = baseDao.selectPage(
-                getPage(params, Constant.CREATE_DATE, false),
-                getWrapper(params)
-        );
+        IPage<ScheduleJobLogEntity> page = baseDao.selectPage(getPage(params, Constant.CREATE_DATE, false), getWrapper(params));
         return getPageData(page, ScheduleJobLogDTO.class);
     }
 
-    private QueryWrapper<ScheduleJobLogEntity> getWrapper(Map<String, Object> params){
-        String jobId = (String)params.get("jobId");
-
+    private QueryWrapper<ScheduleJobLogEntity> getWrapper(Map<String, Object> params) {
+        String jobId = (String) params.get("jobId");
+        String beanName = (String) params.get("beanName");
         QueryWrapper<ScheduleJobLogEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq(StringUtils.isNotBlank(jobId), "job_id", jobId);
+        if (StringUtils.isNotBlank(jobId)) {
+            wrapper.eq("job_id", Long.parseLong(jobId));
+        }
+        wrapper.like(StringUtils.isNotBlank(beanName), "bean_name", beanName);
 
         return wrapper;
     }

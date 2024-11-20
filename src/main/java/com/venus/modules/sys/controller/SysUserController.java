@@ -100,7 +100,7 @@ public class SysUserController {
         return new Result();
     }
 
-    @PostMapping
+    @PostMapping("save")
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("sys:user:save")
@@ -113,7 +113,7 @@ public class SysUserController {
         return new Result();
     }
 
-    @PutMapping
+    @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("sys:user:update")
@@ -126,7 +126,7 @@ public class SysUserController {
         return new Result();
     }
 
-    @DeleteMapping
+    @DeleteMapping("delete")
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:user:delete")
@@ -148,6 +148,6 @@ public class SysUserController {
     public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
         List<SysUserDTO> list = sysUserService.list(params);
 
-        ExcelUtils.exportExcelToTarget(response, null, list, SysUserExcel.class);
+        ExcelUtils.exportExcelToTarget(response, null, "用户管理", list, SysUserExcel.class);
     }
 }

@@ -104,7 +104,7 @@ public class SysMenuController {
 
         //判断是否有子菜单或按钮
         List<SysMenuDTO> list = sysMenuService.getListPid(id);
-        if (list.size() > 0) {
+        if (!list.isEmpty()) {
             return new Result().error(ErrorCode.SUB_MENU_EXIST);
         }
 

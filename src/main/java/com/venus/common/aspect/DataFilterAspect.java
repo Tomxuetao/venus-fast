@@ -47,6 +47,7 @@ public class DataFilterAspect {
                 String sqlFilter = getSqlFilter(user, point);
                 map.put(Constant.SQL_FILTER, new DataScope(sqlFilter));
             } catch (Exception e) {
+                throw new VenusException(ErrorCode.DATA_SCOPE_PARAMS_ERROR);
             }
 
             return;

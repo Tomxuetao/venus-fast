@@ -105,7 +105,7 @@ public class SysParamsController {
     public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
         List<SysParamsDTO> list = sysParamsService.list(params);
 
-        ExcelUtils.exportExcelToTarget(response, null, list, SysParamsExcel.class);
+        ExcelUtils.exportExcelToTarget(response, null,"参数管理", list, SysParamsExcel.class);
     }
 
 }

@@ -39,13 +39,7 @@ public class SysRoleController {
 
     @GetMapping("page")
     @ApiOperation("分页")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "name", value = "角色名", paramType = "query", dataType = "String", dataTypeClass = String.class)
-    })
+    @ApiImplicitParams({@ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class), @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class), @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String", dataTypeClass = String.class), @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String", dataTypeClass = String.class), @ApiImplicitParam(name = "name", value = "角色名", paramType = "query", dataType = "String", dataTypeClass = String.class)})
     @RequiresPermissions("sys:role:page")
     public Result<PageData<SysRoleDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SysRoleDTO> page = sysRoleService.page(params);
@@ -79,7 +73,7 @@ public class SysRoleController {
         return new Result<SysRoleDTO>().ok(data);
     }
 
-    @PostMapping
+    @PostMapping("save")
     @ApiOperation("保存")
     @LogOperation("保存")
     @RequiresPermissions("sys:role:save")
@@ -92,7 +86,7 @@ public class SysRoleController {
         return new Result();
     }
 
-    @PutMapping
+    @PutMapping("update")
     @ApiOperation("修改")
     @LogOperation("修改")
     @RequiresPermissions("sys:role:update")

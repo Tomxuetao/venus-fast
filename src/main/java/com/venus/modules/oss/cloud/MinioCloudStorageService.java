@@ -28,24 +28,12 @@ public class MinioCloudStorageService extends AbstractCloudStorageService {
     @Override
     public String upload(InputStream inputStream, String path) {
         try {
-            MinioClient minioClient = MinioClient
-                    .builder()
-                    .endpoint(config.getMinioEndPoint())
-                    .credentials(config.getMinioAccessKey(), config.getMinioSecretKey())
-                    .build();
-            boolean hasBucket = minioClient.bucketExists(
-                    BucketExistsArgs.builder()
-                            .bucket(config.getMinioBucketName())
-                            .build());
+            MinioClient minioClient = MinioClient.builder().endpoint(config.getMinioEndPoint()).credentials(config.getMinioAccessKey(), config.getMinioSecretKey()).build();
+            boolean hasBucket = minioClient.bucketExists(BucketExistsArgs.builder().bucket(config.getMinioBucketName()).build());
             if (!hasBucket) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(config.getMinioBucketName()).build());
             }
-            minioClient.putObject(
-                    PutObjectArgs.builder()
-                            .bucket(config.getMinioBucketName())
-                            .object(path)
-                            .stream(inputStream, inputStream.available(), -1)
-                            .build());
+            minioClient.putObject(PutObjectArgs.builder().bucket(config.getMinioBucketName()).object(path).stream(inputStream, inputStream.available(), -1).build());
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | MinioException e) {
             throw new RuntimeException(e);
         }

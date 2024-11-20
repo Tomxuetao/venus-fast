@@ -2,8 +2,8 @@ package com.venus.modules.login.oauth2;
 
 import com.venus.common.exception.VenusException;
 
-import java.security.MessageDigest;
 import java.util.UUID;
+import java.security.MessageDigest;
 
 public class TokenGenerator {
 
@@ -11,7 +11,7 @@ public class TokenGenerator {
         return generateValue(UUID.randomUUID().toString());
     }
 
-    private static final char[] HEX_CODE = "0123456789abcdef".toCharArray();
+    private static final char[] HEX_CODE = "venus-admin-645678".toCharArray();
 
     public static String toHexString(byte[] data) {
         if (data == null) {

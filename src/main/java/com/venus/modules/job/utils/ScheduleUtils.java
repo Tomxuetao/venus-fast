@@ -47,8 +47,7 @@ public class ScheduleUtils {
             JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(scheduleJob.getId())).build();
 
             //表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression())
-                    .withMisfireHandlingInstructionDoNothing();
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression()).withMisfireHandlingInstructionDoNothing();
 
             //按新的cronExpression表达式构建一个新的trigger
             CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(scheduleJob.getId())).withSchedule(scheduleBuilder).build();
@@ -59,7 +58,7 @@ public class ScheduleUtils {
             scheduler.scheduleJob(jobDetail, trigger);
 
             //暂停任务
-            if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
+            if (scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()) {
                 pauseJob(scheduler, scheduleJob.getId());
             }
         } catch (SchedulerException e) {
@@ -75,8 +74,7 @@ public class ScheduleUtils {
             TriggerKey triggerKey = getTriggerKey(scheduleJob.getId());
 
             //表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression())
-                    .withMisfireHandlingInstructionDoNothing();
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression()).withMisfireHandlingInstructionDoNothing();
 
             CronTrigger trigger = getCronTrigger(scheduler, scheduleJob.getId());
 
@@ -89,7 +87,7 @@ public class ScheduleUtils {
             scheduler.rescheduleJob(triggerKey, trigger);
 
             //暂停任务
-            if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
+            if (scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()) {
                 pauseJob(scheduler, scheduleJob.getId());
             }
 

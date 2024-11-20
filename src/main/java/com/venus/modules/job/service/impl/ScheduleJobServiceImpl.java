@@ -28,10 +28,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
 
     @Override
     public PageData<ScheduleJobDTO> page(Map<String, Object> params) {
-        IPage<ScheduleJobEntity> page = baseDao.selectPage(
-                getPage(params, Constant.CREATE_DATE, false),
-                getWrapper(params)
-        );
+        IPage<ScheduleJobEntity> page = baseDao.selectPage(getPage(params, Constant.CREATE_DATE, false), getWrapper(params));
         return getPageData(page, ScheduleJobDTO.class);
     }
 
@@ -42,8 +39,8 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
         return ConvertUtils.sourceToTarget(entity, ScheduleJobDTO.class);
     }
 
-    private QueryWrapper<ScheduleJobEntity> getWrapper(Map<String, Object> params){
-        String beanName = (String)params.get("beanName");
+    private QueryWrapper<ScheduleJobEntity> getWrapper(Map<String, Object> params) {
+        String beanName = (String) params.get("beanName");
 
         QueryWrapper<ScheduleJobEntity> wrapper = new QueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(beanName), "bean_name", beanName);
@@ -75,7 +72,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteBatch(Long[] ids) {
-        for(Long id : ids){
+        for (Long id : ids) {
             ScheduleUtils.deleteScheduleJob(scheduler, id);
         }
 
@@ -84,7 +81,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     }
 
     @Override
-    public int updateBatch(Long[] ids, int status){
+    public int updateBatch(Long[] ids, int status) {
         Map<String, Object> map = new HashMap<>(2);
         map.put("ids", ids);
         map.put("status", status);
@@ -94,7 +91,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void run(Long[] ids) {
-        for(Long id : ids){
+        for (Long id : ids) {
             ScheduleUtils.run(scheduler, this.selectById(id));
         }
     }
@@ -102,7 +99,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void pause(Long[] ids) {
-        for(Long id : ids){
+        for (Long id : ids) {
             ScheduleUtils.pauseJob(scheduler, id);
         }
 
@@ -112,7 +109,7 @@ public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobDao, Sche
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void resume(Long[] ids) {
-        for(Long id : ids){
+        for (Long id : ids) {
             ScheduleUtils.resumeJob(scheduler, id);
         }
 

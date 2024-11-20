@@ -1,14 +1,14 @@
 package com.venus.modules.sys.excel;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 
 @Data
 public class SysParamsExcel {
-    @Excel(name = "参数编码")
+    @ExcelProperty("参数编码")
     private String paramCode;
-    @Excel(name = "参数值")
+    @ExcelProperty("参数值")
     private String paramValue;
-    @Excel(name = "备注")
+    @ExcelProperty("备注")
     private String remark;
 }

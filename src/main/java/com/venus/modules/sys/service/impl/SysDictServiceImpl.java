@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.venus.common.base.service.impl.BaseServiceImpl;
 import com.venus.common.page.PageData;
 import com.venus.common.utils.ConvertUtils;
-import com.venus.modules.sys.dao.SysDictDataDao;
-import com.venus.modules.sys.dto.SysDictDataDTO;
-import com.venus.modules.sys.entity.SysDictDataEntity;
-import com.venus.modules.sys.service.SysDictDataService;
+import com.venus.modules.sys.dao.SysDictDao;
+import com.venus.modules.sys.dto.SysDictDTO;
+import com.venus.modules.sys.entity.SysDictEntity;
+import com.venus.modules.sys.service.SysDictService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,50 +17,45 @@ import java.util.Arrays;
 import java.util.Map;
 
 @Service
-public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictDataDao, SysDictDataEntity> implements SysDictDataService {
+public class SysDictServiceImpl extends BaseServiceImpl<SysDictDao, SysDictEntity> implements SysDictService {
 
     @Override
-    public PageData<SysDictDataDTO> page(Map<String, Object> params) {
-        IPage<SysDictDataEntity> page = baseDao.selectPage(
-                getPage(params, "sort", true),
-                getWrapper(params)
-        );
+    public PageData<SysDictDTO> page(Map<String, Object> params) {
+        IPage<SysDictEntity> page = baseDao.selectPage(getPage(params, "sort", true), getWrapper(params));
 
-        return getPageData(page, SysDictDataDTO.class);
+        return getPageData(page, SysDictDTO.class);
     }
 
-    private QueryWrapper<SysDictDataEntity> getWrapper(Map<String, Object> params) {
-        String dictTypeId = (String) params.get("dictTypeId");
-        String dictLabel = (String) params.get("dictLabel");
-        String dictValue = (String) params.get("dictValue");
+    private QueryWrapper<SysDictEntity> getWrapper(Map<String, Object> params) {;
+        String label = (String) params.get("label");
+        String value = (String) params.get("value");
 
-        QueryWrapper<SysDictDataEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq("dict_type_id", dictTypeId);
-        wrapper.like(StringUtils.isNotBlank(dictLabel), "dict_label", dictLabel);
-        wrapper.like(StringUtils.isNotBlank(dictValue), "dict_value", dictValue);
+        QueryWrapper<SysDictEntity> wrapper = new QueryWrapper<>();
+        wrapper.like(StringUtils.isNotBlank(label), "label", label);
+        wrapper.like(StringUtils.isNotBlank(value), "value", value);
 
         return wrapper;
     }
 
     @Override
-    public SysDictDataDTO get(Long id) {
-        SysDictDataEntity entity = baseDao.selectById(id);
+    public SysDictDTO get(Long id) {
+        SysDictEntity entity = baseDao.selectById(id);
 
-        return ConvertUtils.sourceToTarget(entity, SysDictDataDTO.class);
+        return ConvertUtils.sourceToTarget(entity, SysDictDTO.class);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save(SysDictDataDTO dto) {
-        SysDictDataEntity entity = ConvertUtils.sourceToTarget(dto, SysDictDataEntity.class);
+    public void save(SysDictDTO dto) {
+        SysDictEntity entity = ConvertUtils.sourceToTarget(dto, SysDictEntity.class);
 
         insert(entity);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(SysDictDataDTO dto) {
-        SysDictDataEntity entity = ConvertUtils.sourceToTarget(dto, SysDictDataEntity.class);
+    public void update(SysDictDTO dto) {
+        SysDictEntity entity = ConvertUtils.sourceToTarget(dto, SysDictEntity.class);
 
         updateById(entity);
     }
