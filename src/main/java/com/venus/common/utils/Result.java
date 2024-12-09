@@ -2,9 +2,15 @@ package com.venus.common.utils;
 
 import com.venus.common.exception.ErrorCode;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
+@Data
+@Schema
 public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
@@ -56,27 +62,4 @@ public class Result<T> implements Serializable {
         return this;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
 }

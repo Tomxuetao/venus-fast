@@ -27,8 +27,7 @@ import java.lang.reflect.Method;
 public class DataSourceAspect {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Pointcut("@annotation(com.venus.datasource.annotation.DataSource) " +
-            "|| @within(com.venus.datasource.annotation.DataSource)")
+    @Pointcut("@annotation(com.venus.datasource.annotation.DataSource) " + "|| @within(com.venus.datasource.annotation.DataSource)")
     public void dataSourcePointCut() {
 
     }

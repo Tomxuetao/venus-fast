@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.venus.modules.gen.dao.DmGenDao">
+
+	<resultMap id="tableMap" type="map">
+		<result column="TABLENAME" property="tableName"></result>
+		<result column="TABLECOMMENT" property="tableComment"></result>
+		<result column="COLUMNNAME" property="columnName"></result>
+		<result column="DATATYPE" property="dataType"></result>
+		<result column="COLUMNCOMMENT" property="columnComment"></result>
+		<result column="COLUMNKEY" property="columnKey"></result>
+		<result column="EXTRA" property="extra"></result>
+		<result column="CREATETIME" property="createTime"></result>
+	</resultMap>
+
+	<select id="queryList" resultMap="tableMap">
+		SELECT T.* FROM (SELECT DISTINCT T1.TABLE_NAME AS tableName, T2.COMMENTS AS tableComment, T3.CREATED as
+		createTime FROM USER_TAB_COLUMNS T1 INNER JOIN USER_TAB_COMMENTS T2
+		ON T1.TABLE_NAME = T2.TABLE_NAME INNER JOIN USER_OBJECTS T3
+		ON T3.OBJECT_NAME = T1.TABLE_NAME) T WHERE 1=1
+		<if test="tableName != null and tableName.trim() != ''">
+			and T.tableName like concat('%', UCASE(#{tableName}), '%')
+		</if>
+		order by T.CREATETIME DESC
+	</select>
+
+	<select id="queryTable" resultMap="tableMap">
+		SELECT T.* FROM (SELECT DISTINCT T1.TABLE_NAME AS tableName, T2.COMMENTS AS tableComment,T3.CREATED as createTime FROM USER_TAB_COLUMNS T1 INNER JOIN USER_TAB_COMMENTS T2
+		ON T1.TABLE_NAME = T2.TABLE_NAME INNER JOIN USER_OBJECTS T3 ON T3.OBJECT_NAME = T1.TABLE_NAME) T WHERE T.tableName = UCASE(#{tableName})
+	</select>
+
+	<select id="queryColumns" resultMap="tableMap">
+		SELECT T2.COLUMN_NAME as columnName,
+		T1.COMMENTS as columnComment,
+		CASE WHEN T2.DATA_TYPE='NUMBER' THEN (CASE WHEN T2.DATA_PRECISION IS NULL THEN T2.DATA_TYPE WHEN NVL(T2.DATA_SCALE, 0) > 0 THEN T2.DATA_TYPE||'('||T2.DATA_PRECISION||','||T2.DATA_SCALE||')' ELSE T2.DATA_TYPE||'('||T2.DATA_PRECISION||')' END) ELSE T2.DATA_TYPE END as dataType,
+		CASE WHEN CONSTRAINT_TYPE='P' THEN 'PRI' END AS columnKey
+		FROM USER_COL_COMMENTS T1,
+		USER_TAB_COLUMNS T2, (SELECT T4.TABLE_NAME,
+		T4.COLUMN_NAME ,
+		T5.CONSTRAINT_TYPE
+		FROM USER_CONS_COLUMNS T4,
+		USER_CONSTRAINTS T5
+		WHERE T4.CONSTRAINT_NAME = T5.CONSTRAINT_NAME AND T5.CONSTRAINT_TYPE = 'P')T3
+		WHERE T1.TABLE_NAME = T2.TABLE_NAME AND T1.COLUMN_NAME=T2.COLUMN_NAME AND T1.TABLE_NAME = T3.TABLE_NAME(+) AND T1.COLUMN_NAME=T3.COLUMN_NAME(+) AND T1.TABLE_NAME = UCASE(#{tableName})
+		ORDER BY T2.TABLE_NAME,
+		T2.COLUMN_ID
+	</select>
+</mapper>

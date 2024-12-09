@@ -15,8 +15,11 @@ import com.venus.common.validator.group.UpdateGroup;
 import com.venus.modules.login.password.PasswordUtils;
 import com.venus.modules.login.user.SecurityUser;
 import com.venus.modules.login.user.UserDetail;
+import com.venus.modules.oss.service.SysOssService;
 import com.venus.modules.sys.dto.PasswordDTO;
 import com.venus.modules.sys.dto.SysUserDTO;
+import com.venus.modules.sys.entity.SysUserEntity;
+import com.venus.modules.sys.enums.SuperAdminEnum;
 import com.venus.modules.sys.excel.SysUserExcel;
 import com.venus.modules.sys.service.SysRoleUserService;
 import com.venus.modules.sys.service.SysUserService;
@@ -26,18 +29,23 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/sys/user")
 @Api(tags = "用户管理")
 public class SysUserController {
+    @Value("${spring.profiles.active}")
+    private String activeEnv;
+
+    @Autowired
+    private SysOssService sysOssService;
     @Autowired
     private SysUserService sysUserService;
     @Autowired
@@ -105,8 +113,20 @@ public class SysUserController {
     @LogOperation("保存")
     @RequiresPermissions("sys:user:save")
     public Result save(@RequestBody SysUserDTO dto) {
-        //效验数据
+        // 效验数据
         ValidatorUtils.validateEntity(dto, AddGroup.class, DefaultGroup.class);
+        // 校验手机号
+        if (sysUserService.getByMobile(dto.getMobile()) > 0) {
+            return new Result().error("手机号已存在");
+        }
+        // 校验邮箱
+        if (sysUserService.getByEmail(dto.getEmail()) > 0) {
+            return new Result().error("邮箱已存在");
+        }
+        // 校验用户名
+        if (sysUserService.getByUsername(dto.getUsername()) != null) {
+            return new Result().error("用户名已存在");
+        }
 
         sysUserService.save(dto);
 
@@ -140,6 +160,39 @@ public class SysUserController {
         return new Result();
     }
 
+    @PostMapping("import")
+    @ApiOperation("导入")
+    @LogOperation("导入")
+    @RequiresPermissions("sys:user:import")
+    public Result importExcel(@RequestParam("file") MultipartFile file) throws Exception {
+        if (file.isEmpty()) {
+            return new Result().error(ErrorCode.UPLOAD_FILE_EMPTY);
+        }
+        if (ExcelUtils.isExcel(file)) {
+            return new Result().error("请上传Excel文件");
+        }
+
+        //上传文件
+        if (Objects.equals(activeEnv, "prod")) {
+            try {
+                sysOssService.upload(file);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        List<SysUserEntity> list = sysUserService.importExcel(file);
+        if (list.isEmpty()) {
+            return new Result().error("导入数据为空");
+        }
+        list.forEach(sysUser -> {
+            // 设置密码 默认 888888
+            sysUser.setPassword("$2a$10$QvGRkLAw11cvUMG6G2yqDuVYbQaVVp07ap5IbCT1lleLTyTrQz3w2");
+            sysUser.setSuperAdmin(SuperAdminEnum.NO.value());
+        });
+        sysUserService.insertBatch(list, 1000);
+        return new Result();
+    }
+
     @GetMapping("export")
     @ApiOperation("导出")
     @LogOperation("导出")
@@ -148,6 +201,6 @@ public class SysUserController {
     public void export(@ApiIgnore @RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
         List<SysUserDTO> list = sysUserService.list(params);
 
-        ExcelUtils.exportExcelToTarget(response, null, "用户管理", list, SysUserExcel.class);
+        ExcelUtils.exportExcelToTarget(response, "导出用户", "用户管理", list, SysUserExcel.class);
     }
 }

@@ -31,6 +31,18 @@
 		select * from sys_user where username = #{value}
 	</select>
 
+	<select id="getByAccount" resultType="com.venus.modules.sys.entity.SysUserEntity">
+		select * from sys_user where email = #{value} or mobile = #{value}
+	</select>
+
+	<select id="getByMobile" resultType="int">
+		select count(*) from sys_user where mobile = #{value}
+	</select>
+
+	<select id="getByEmail" resultType="int">
+		select count(*) from sys_user where email = #{value}
+	</select>
+
 	<update id="updatePassword">
 		update sys_user set password = #{newPassword} where id = #{id}
 	</update>

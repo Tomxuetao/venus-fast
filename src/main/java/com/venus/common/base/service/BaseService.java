@@ -24,7 +24,7 @@ public interface BaseService<T> {
      *
      * @param entityList 实体对象集合
      */
-    boolean insertBatch(Collection<T> entityList);
+    void insertBatch(Collection<T> entityList);
 
     /**
      * <p>
@@ -34,7 +34,7 @@ public interface BaseService<T> {
      * @param entityList 实体对象集合
      * @param batchSize  插入批次数量
      */
-    boolean insertBatch(Collection<T> entityList, int batchSize);
+    void insertBatch(Collection<T> entityList, int batchSize);
 
     /**
      * <p>
@@ -90,7 +90,7 @@ public interface BaseService<T> {
      *
      * @param id 主键ID
      */
-    boolean deleteById(Serializable id);
+    void deleteById(Serializable id);
 
     /**
      * <p>

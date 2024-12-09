@@ -5,12 +5,15 @@ import com.venus.common.base.service.BaseService;
 import com.venus.modules.sys.dto.SysDictDTO;
 import com.venus.modules.sys.entity.SysDictEntity;
 
+import java.util.List;
 import java.util.Map;
 
 public interface SysDictService extends BaseService<SysDictEntity> {
     PageData<SysDictDTO> page(Map<String, Object> params);
 
     SysDictDTO get(Long id);
+
+    List<SysDictEntity> list(Map<String, Object> params);
 
     void save(SysDictDTO dto);
 

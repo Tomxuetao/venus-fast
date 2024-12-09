@@ -7,6 +7,8 @@ import com.venus.common.validator.group.DefaultGroup;
 import com.venus.common.validator.group.UpdateGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -15,6 +17,8 @@ import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 @ApiModel(value = "部门管理")
 public class SysDeptDTO extends TreeNode implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -42,56 +46,4 @@ public class SysDeptDTO extends TreeNode implements Serializable {
 
     @ApiModelProperty(value = "上级部门名称")
     private String parentName;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public Long getPid() {
-        return pid;
-    }
-
-    @Override
-    public void setPid(Long pid) {
-        this.pid = pid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
 }

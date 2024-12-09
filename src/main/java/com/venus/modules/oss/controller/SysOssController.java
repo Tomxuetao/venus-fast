@@ -13,19 +13,18 @@ import com.venus.common.validator.group.MinioGroup;
 import com.venus.common.validator.group.QcloudGroup;
 import com.venus.common.validator.group.QiniuGroup;
 import com.venus.modules.oss.cloud.CloudStorageConfig;
-import com.venus.modules.oss.cloud.OSSFactory;
 import com.venus.modules.oss.entity.SysOssEntity;
 import com.venus.modules.oss.service.SysOssService;
 import com.venus.modules.sys.service.SysParamsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -46,7 +45,7 @@ public class SysOssController {
 
     @GetMapping("page")
     @ApiOperation(value = "分页")
-    @RequiresPermissions("sys:oss:all")
+    @RequiresPermissions("sys:oss:page")
     public Result<PageData<SysOssEntity>> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SysOssEntity> page = sysOssService.page(params);
 
@@ -55,7 +54,7 @@ public class SysOssController {
 
     @GetMapping("info")
     @ApiOperation(value = "云存储配置信息")
-    @RequiresPermissions("sys:oss:all")
+    @RequiresPermissions("oss:config:info")
     public Result<CloudStorageConfig> info() {
         CloudStorageConfig config = sysParamsService.getValueObject(KEY, CloudStorageConfig.class);
 
@@ -65,7 +64,7 @@ public class SysOssController {
     @PostMapping
     @ApiOperation(value = "保存云存储配置信息")
     @LogOperation("保存云存储配置信息")
-    @RequiresPermissions("sys:oss:all")
+    @RequiresPermissions("oss:config:update")
     public Result saveConfig(@RequestBody CloudStorageConfig config) {
         //校验类型
         ValidatorUtils.validateEntity(config);
@@ -91,35 +90,19 @@ public class SysOssController {
 
     @PostMapping("upload")
     @ApiOperation(value = "上传文件")
-    @RequiresPermissions("sys:oss:all")
-    public Result<Map<String, Object>> upload(@RequestParam("file") MultipartFile file) throws Exception {
+    @RequiresPermissions("sys:oss:upload")
+    public Result<Map<String, Object>> upload(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return new Result<Map<String, Object>>().error(ErrorCode.UPLOAD_FILE_EMPTY);
         }
 
-        //上传文件
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        String name = FilenameUtils.getName(file.getOriginalFilename());
-        String url = Objects.requireNonNull(OSSFactory.build()).uploadSuffix(file.getBytes(), extension);
-
-        //保存文件信息
-        SysOssEntity ossEntity = new SysOssEntity();
-        ossEntity.setUrl(url);
-        ossEntity.setName(name);
-        ossEntity.setCreateDate(new Date());
-        sysOssService.insert(ossEntity);
-
-        Map<String, Object> data = new HashMap<>(1);
-        data.put("src", url);
-        data.put("name", name);
-
-        return new Result<Map<String, Object>>().ok(data);
+        return new Result<Map<String, Object>>().ok(sysOssService.upload(file));
     }
 
     @DeleteMapping
     @ApiOperation(value = "删除")
     @LogOperation("删除")
-    @RequiresPermissions("sys:oss:all")
+    @RequiresPermissions("sys:oss:delete")
     public Result delete(@RequestBody Map<String, Long[]> dataForm) {
         Long[] ids = dataForm.get("ids");
         //效验数据

@@ -1,6 +1,5 @@
 package com.venus.modules.oss.cloud;
 
-
 import com.venus.common.constant.Constant;
 import com.venus.common.utils.SpringContextUtils;
 import com.venus.modules.sys.service.SysParamsService;
@@ -33,5 +32,4 @@ public final class OSSFactory {
 
         return null;
     }
-
 }

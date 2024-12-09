@@ -26,4 +26,5 @@ public interface ErrorCode {
     int REDIS_ERROR = 10027;
     int JOB_ERROR = 10028;
     int INVALID_SYMBOL = 10029;
+    int CODE_ERROR = 10030;
 }

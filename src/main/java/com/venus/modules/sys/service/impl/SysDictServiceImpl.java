@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,22 +27,16 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDictDao, SysDictEntit
         return getPageData(page, SysDictDTO.class);
     }
 
-    private QueryWrapper<SysDictEntity> getWrapper(Map<String, Object> params) {;
-        String label = (String) params.get("label");
-        String value = (String) params.get("value");
-
-        QueryWrapper<SysDictEntity> wrapper = new QueryWrapper<>();
-        wrapper.like(StringUtils.isNotBlank(label), "label", label);
-        wrapper.like(StringUtils.isNotBlank(value), "value", value);
-
-        return wrapper;
-    }
-
     @Override
     public SysDictDTO get(Long id) {
         SysDictEntity entity = baseDao.selectById(id);
 
         return ConvertUtils.sourceToTarget(entity, SysDictDTO.class);
+    }
+
+    @Override
+    public List<SysDictEntity> list(Map<String, Object> params) {
+        return baseDao.selectList(getWrapper(params));
     }
 
     @Override
@@ -65,5 +60,16 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDictDao, SysDictEntit
     public void delete(Long[] ids) {
         //删除
         deleteBatchIds(Arrays.asList(ids));
+    }
+
+    private QueryWrapper<SysDictEntity> getWrapper(Map<String, Object> params) {;
+        String label = (String) params.get("label");
+        String value = (String) params.get("value");
+
+        QueryWrapper<SysDictEntity> wrapper = new QueryWrapper<>();
+        wrapper.like(StringUtils.isNotBlank(label), "label", label);
+        wrapper.like(StringUtils.isNotBlank(value), "value", value);
+
+        return wrapper;
     }
 }

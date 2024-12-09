@@ -9,6 +9,7 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -48,10 +49,20 @@ public class ShiroConfig {
         filters.put("oauth2", new Oauth2Filter());
         shiroFilter.setFilters(filters);
 
+        Map<String, String> filterMap = getFilterMap();
+        shiroFilter.setFilterChainDefinitionMap(filterMap);
+
+        return shiroFilter;
+    }
+
+    @NotNull
+    private static Map<String, String> getFilterMap() {
         Map<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/druid/**", "anon");
+        filterMap.put("/code", "anon");
         filterMap.put("/login", "anon");
+        filterMap.put("/codeLogin", "anon");
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/v2/api-docs", "anon");
         filterMap.put("/doc.html", "anon");
@@ -60,9 +71,7 @@ public class ShiroConfig {
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/", "anon");
         filterMap.put("/**", "oauth2");
-        shiroFilter.setFilterChainDefinitionMap(filterMap);
-
-        return shiroFilter;
+        return filterMap;
     }
 
     @Bean("lifecycleBeanPostProcessor")

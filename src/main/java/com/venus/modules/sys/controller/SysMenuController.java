@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -94,12 +95,13 @@ public class SysMenuController {
         return new Result();
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping
     @ApiOperation("删除")
     @LogOperation("删除")
     @RequiresPermissions("sys:menu:delete")
-    public Result delete(@PathVariable("id") Long id) {
+    public Result delete(@RequestBody Map<String, Long> dataForm) {
         //效验数据
+        Long id = dataForm.get("id");
         AssertUtils.isNull(id, "id");
 
         //判断是否有子菜单或按钮

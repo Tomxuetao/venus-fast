@@ -119,10 +119,9 @@ public class SysParamsServiceImpl extends BaseServiceImpl<SysParamsDao, SysParam
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int updateValueByCode(String paramCode, String paramValue) {
+    public void updateValueByCode(String paramCode, String paramValue) {
         int count = baseDao.updateValueByCode(paramCode, paramValue);
         sysParamsRedis.set(paramCode, paramValue);
-        return count;
     }
 
 }

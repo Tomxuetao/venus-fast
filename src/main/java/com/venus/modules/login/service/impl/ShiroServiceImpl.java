@@ -33,16 +33,16 @@ public class ShiroServiceImpl implements ShiroService {
     public Set<String> getUserPermissions(UserDetail user) {
         //系统管理员，拥有最高权限
         List<String> permissionsList;
-        if(user.getSuperAdmin() == SuperAdminEnum.YES.value()) {
+        if (user.getSuperAdmin() == SuperAdminEnum.YES.value()) {
             permissionsList = sysMenuDao.getPermissionsList();
-        }else{
+        } else {
             permissionsList = sysMenuDao.getUserPermissionsList(user.getId());
         }
 
         //用户权限列表
         Set<String> permsSet = new HashSet<>();
-        for(String permissions : permissionsList){
-            if(StringUtils.isBlank(permissions)){
+        for (String permissions : permissionsList) {
+            if (StringUtils.isBlank(permissions)) {
                 continue;
             }
             permsSet.addAll(Arrays.asList(permissions.trim().split(",")));

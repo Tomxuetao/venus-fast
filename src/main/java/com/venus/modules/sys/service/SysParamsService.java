@@ -45,5 +45,5 @@ public interface SysParamsService extends BaseService<SysParamsEntity> {
      * @param paramCode  参数编码
      * @param paramValue 参数值
      */
-    int updateValueByCode(String paramCode, String paramValue);
+    void updateValueByCode(String paramCode, String paramValue);
 }

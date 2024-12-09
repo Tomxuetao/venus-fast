@@ -1,0 +1,95 @@
+<script setup>
+import { isAuth } from '@/utils'
+import { reactive, ref, toRefs } from 'vue'
+import useCommonView from '@/hooks/useCommonView'
+import AddOrUpdate from "./${pathName}-add-or-update.vue"
+
+const commonView = reactive({
+  ...useCommonView({
+    isPage: true,
+    deleteIsBatch: false,
+    deleteUrl: "/${moduleName}/${pathName}",
+    dataListUrl: "/${moduleName}/${pathName}/page",
+    exportUrl: "/${moduleName}/${pathName}/export"
+  })
+})
+
+const addOrUpdateRef = ref()
+const addOrUpdateHandle = (id) => {
+  addOrUpdateRef.value.init(id)
+}
+</script>
+
+<template>
+  <div class="mod-${moduleName} mod-wrap">
+    <el-form :inline="true" :model="commonView.dataForm" @keyup.enter="commonView.getDataList()">
+      <el-form-item>
+        <el-button
+          v-if="isAuth('${moduleName}:${pathName}:save')"
+          type="primary"
+          @click="addOrUpdateHandle()"
+        >
+          新增
+        </el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          v-if="isAuth('${moduleName}:${pathName}:delete')"
+          type="danger"
+          @click="commonView.deleteHandle()"
+        >
+          删除
+        </el-button>
+      </el-form-item>
+    </el-form>
+    <div class="table-wrap">
+      <el-table
+        border
+        style="width: 100%"
+        :data="commonView.dataList"
+        v-loading="commonView.dataLoading"
+        @selection-change="commonView.dataSelections"
+      >
+        <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
+          #foreach($column in $columns)
+            <el-table-column
+              prop="${column.attrname}"
+              label="${column.comments}"
+              header-align="center"
+              align="center">
+            </el-table-column>
+          #end
+        <el-table-column label="操作" fixed="right" header-align="center" align="center" width="150">
+          <template v-slot="scope">
+            <el-button
+              v-if="isAuth('${moduleName}:${pathName}:update')"
+              type="primary" link
+              @click="addOrUpdateHandle(scope.row.id)"
+            >
+              修改
+            </el-button>
+            <el-button
+              v-if="isAuth('${moduleName}:${pathName}:delete')"
+              type="primary" link
+              @click="commonView.deleteHandle(scope.row.id)"
+            >
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <el-pagination
+      :total="commonView.total"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="commonView.pageSize"
+      :current-page="commonView.pageNum"
+      @size-change="commonView.pageSizeChange"
+      @current-change="commonView.pageNumChange"
+      layout="total, sizes, prev, pager, next, jumper"
+    >
+    </el-pagination>
+    <!-- 弹窗, 新增 / 修改 -->
+    <add-or-update ref="addOrUpdateRef" @refreshDataList="commonView.getDataList()">确定</add-or-update>
+  </div>
+</template>

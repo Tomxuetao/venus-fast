@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class CaptchaServiceImpl implements CaptchaService {
     @Autowired
     private RedisUtils redisUtils;
-    @Value("${renren.redis.open: false}")
+    @Value("${venus.redis.open: false}")
     private boolean open;
     /**
      * Local Cache  5分钟过期
@@ -52,7 +52,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         return code.equalsIgnoreCase(captcha);
     }
 
-    private void setCache(String key, String value){
+    public void setCache(String key, String value){
         if(open){
             key = RedisKeys.getCaptchaKey(key);
             redisUtils.set(key, value, 300);

@@ -21,10 +21,7 @@ public abstract class CrudServiceImpl<M extends BaseMapper<T>, T, D> extends Bas
 
     @Override
     public PageData<D> page(Map<String, Object> params) {
-        IPage<T> page = baseDao.selectPage(
-                getPage(params, null, false),
-                getWrapper(params)
-        );
+        IPage<T> page = baseDao.selectPage(getPage(params, null, false), getWrapper(params));
 
         return getPageData(page, currentDtoClass());
     }

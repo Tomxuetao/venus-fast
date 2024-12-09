@@ -15,7 +15,13 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 
     SysUserEntity getById(Long id);
 
+    SysUserEntity getByAccount(String account);
+
     SysUserEntity getByUsername(String username);
+
+    Integer getByMobile(String mobile);
+
+    Integer getByEmail(String email);
 
     void updatePassword(@Param("id") Long id, @Param("newPassword") String newPassword);
 

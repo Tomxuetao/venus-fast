@@ -5,6 +5,8 @@ import com.venus.common.base.service.impl.BaseServiceImpl;
 import com.venus.common.constant.Constant;
 import com.venus.common.page.PageData;
 import com.venus.common.utils.ConvertUtils;
+import com.venus.common.utils.ExcelUtils;
+import com.venus.common.utils.Result;
 import com.venus.modules.login.password.PasswordUtils;
 import com.venus.modules.login.user.SecurityUser;
 import com.venus.modules.login.user.UserDetail;
@@ -12,6 +14,7 @@ import com.venus.modules.sys.dao.SysUserDao;
 import com.venus.modules.sys.dto.SysUserDTO;
 import com.venus.modules.sys.entity.SysUserEntity;
 import com.venus.modules.sys.enums.SuperAdminEnum;
+import com.venus.modules.sys.excel.SysUserExcel;
 import com.venus.modules.sys.service.SysDeptService;
 import com.venus.modules.sys.service.SysRoleUserService;
 import com.venus.modules.sys.service.SysUserService;
@@ -19,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +31,10 @@ import java.util.Map;
 @Service
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
     @Autowired
-    private SysRoleUserService sysRoleUserService;
-    @Autowired
     private SysDeptService sysDeptService;
+
+    @Autowired
+    private SysRoleUserService sysRoleUserService;
 
     @Override
     public PageData<SysUserDTO> page(Map<String, Object> params) {
@@ -75,6 +80,22 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
     public SysUserDTO getByUsername(String username) {
         SysUserEntity entity = baseDao.getByUsername(username);
         return ConvertUtils.sourceToTarget(entity, SysUserDTO.class);
+    }
+
+    @Override
+    public SysUserDTO getByAccount(String account) {
+        SysUserEntity entity = baseDao.getByAccount(account);
+        return ConvertUtils.sourceToTarget(entity, SysUserDTO.class);
+    }
+
+    @Override
+    public Integer getByEmail(String email) {
+        return baseDao.getByEmail(email);
+    }
+
+    @Override
+    public Integer getByMobile(String mobile) {
+        return baseDao.getByMobile(mobile);
     }
 
     @Override
@@ -139,6 +160,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
     @Override
     public List<Long> getUserIdListByDeptId(List<Long> deptIdList) {
         return baseDao.getUserIdListByDeptId(deptIdList);
+    }
+
+    @Override
+    public List<SysUserEntity> importExcel(MultipartFile file) throws Exception {
+        List<SysUserExcel> list = ExcelUtils.importExcel(file, SysUserExcel.class);
+        return ConvertUtils.sourceToTarget(list, SysUserEntity.class);
     }
 
 }

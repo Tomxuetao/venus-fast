@@ -6,6 +6,10 @@ import java.io.IOException;
 public interface CaptchaService {
 
     /**
+     * 缓存验证码
+     */
+    void setCache(String key, String value);
+    /**
      * 图片验证码
      */
     void create(HttpServletResponse response, String uuid) throws IOException;
@@ -15,7 +19,6 @@ public interface CaptchaService {
      *
      * @param uuid uuid
      * @param code 验证码
-     * @return true：成功  false：失败
      */
     boolean validate(String uuid, String code);
 }

@@ -13,14 +13,14 @@ public class LoginDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "用户名", required = true)
-    @NotBlank(message = "{sysuser.username.require}")
-    private String username;
+    @NotBlank(message = "{sysuser.account.require}")
+    private String account;
 
-    @ApiModelProperty(value = "密码")
-    @NotBlank(message = "{sysuser.password.require}")
-    private String password;
+    @ApiModelProperty(value = "密码", required = true)
+    @NotBlank(message = "{sysuser.secretKey.require}")
+    private String secretKey;
 
-    @ApiModelProperty(value = "验证码")
+    @ApiModelProperty(value = "验证码", required = true)
     @NotBlank(message = "{sysuser.captcha.require}")
     private String captcha;
 

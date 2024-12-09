@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.excel.converters.longconverter.LongStringConverter;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ExcelUtils {
     /**
@@ -57,5 +58,14 @@ public class ExcelUtils {
         }
 
         exportExcel(response, fileName, sheetName, targetList, targetClass);
+    }
+
+    public static boolean isExcel(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        return !StrUtil.isBlank(fileName) && fileName.toLowerCase().endsWith(".xlsx") && fileName.toLowerCase().endsWith(".xls");
+    }
+
+    public static <T> List<T> importExcel(MultipartFile file, Class<T> targetClass) throws Exception {
+        return EasyExcel.read(file.getInputStream()).head(targetClass).sheet().headRowNumber(1).doReadSync();
     }
 }

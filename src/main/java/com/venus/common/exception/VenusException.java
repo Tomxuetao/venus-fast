@@ -1,7 +1,11 @@
 package com.venus.common.exception;
 
 import com.venus.common.utils.MessageUtils;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class VenusException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
@@ -42,19 +46,4 @@ public class VenusException extends RuntimeException {
         this.msg = msg;
     }
 
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
 }

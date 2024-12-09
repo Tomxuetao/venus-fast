@@ -2,8 +2,11 @@ package com.venus.modules.sys.service;
 
 import com.venus.common.page.PageData;
 import com.venus.common.base.service.BaseService;
+import com.venus.common.utils.Result;
 import com.venus.modules.sys.dto.SysUserDTO;
 import com.venus.modules.sys.entity.SysUserEntity;
+import com.venus.modules.sys.excel.SysUserExcel;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,12 @@ public interface SysUserService extends BaseService<SysUserEntity> {
     SysUserDTO get(Long id);
 
     SysUserDTO getByUsername(String username);
+
+    SysUserDTO getByAccount(String account);
+
+    Integer getByEmail(String email);
+
+    Integer getByMobile(String mobile);
 
     void save(SysUserDTO dto);
 
@@ -41,4 +50,6 @@ public interface SysUserService extends BaseService<SysUserEntity> {
      * 根据部门ID,查询用户Id列表
      */
     List<Long> getUserIdListByDeptId(List<Long> deptIdList);
+
+    List<SysUserEntity> importExcel(MultipartFile file) throws Exception;
 }

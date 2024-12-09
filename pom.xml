@@ -36,11 +36,13 @@
         <shiro.version>1.13.0</shiro.version>
         <captcha.version>1.6.2</captcha.version>
         <qiniu.version>7.11.0</qiniu.version>
+        <velocity.version>1.7</velocity.version>
         <easyexcel.version>4.0.3</easyexcel.version>
         <aliyun.oss.version>3.18.1</aliyun.oss.version>
         <aliyun.core.version>4.7.2</aliyun.core.version>
         <qcloud.cos.version>5.6.235</qcloud.cos.version>
         <io.minio.version>8.5.13</io.minio.version>
+        <commons.configuration.version>1.10</commons.configuration.version>
         <org.postgresql.postgresql>42.7.4</org.postgresql.postgresql>
     </properties>
 
@@ -167,6 +169,11 @@
             <version>${aliyun.core.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>alibabacloud-dm20151123</artifactId>
+            <version>1.0.17</version>
+        </dependency>
+        <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>${io.minio.version}</version>
@@ -185,6 +192,16 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>velocity</artifactId>
+            <groupId>org.apache.velocity</groupId>
+            <version>${velocity.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>${commons.configuration.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

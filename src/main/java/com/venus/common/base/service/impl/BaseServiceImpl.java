@@ -141,8 +141,8 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean insertBatch(Collection<T> entityList) {
-        return insertBatch(entityList, 100);
+    public void insertBatch(Collection<T> entityList) {
+        insertBatch(entityList, 100);
     }
 
     /**
@@ -150,9 +150,9 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean insertBatch(Collection<T> entityList, int batchSize) {
+    public void insertBatch(Collection<T> entityList, int batchSize) {
         String sqlStatement = getSqlStatement(SqlMethod.INSERT_ONE);
-        return executeBatch(entityList, batchSize, (sqlSession, entity) -> sqlSession.insert(sqlStatement, entity));
+        executeBatch(entityList, batchSize, (sqlSession, entity) -> sqlSession.insert(sqlStatement, entity));
     }
 
     /**
@@ -196,8 +196,8 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
     }
 
     @Override
-    public boolean deleteById(Serializable id) {
-        return SqlHelper.retBool(baseDao.deleteById(id));
+    public void deleteById(Serializable id) {
+        baseDao.deleteById(id);
     }
 
     @Override

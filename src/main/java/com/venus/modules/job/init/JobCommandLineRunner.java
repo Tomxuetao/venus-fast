@@ -1,5 +1,6 @@
 package com.venus.modules.job.init;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.venus.modules.job.dao.ScheduleJobDao;
 import com.venus.modules.job.entity.ScheduleJobEntity;
 import com.venus.modules.job.utils.ScheduleUtils;
@@ -20,13 +21,13 @@ public class JobCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        List<ScheduleJobEntity> scheduleJobList = scheduleJobDao.selectList(null);
-        for(ScheduleJobEntity scheduleJob : scheduleJobList){
+        List<ScheduleJobEntity> scheduleJobList = scheduleJobDao.selectList(new QueryWrapper<>());
+        for (ScheduleJobEntity scheduleJob : scheduleJobList) {
             CronTrigger cronTrigger = ScheduleUtils.getCronTrigger(scheduler, scheduleJob.getId());
             //如果不存在，则创建
-            if(cronTrigger == null) {
+            if (cronTrigger == null) {
                 ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
-            }else {
+            } else {
                 ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
             }
         }

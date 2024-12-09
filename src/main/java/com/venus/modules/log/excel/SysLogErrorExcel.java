@@ -26,6 +26,9 @@ public class SysLogErrorExcel {
     @ExcelProperty("User-Agent")
     private String userAgent;
 
+    @ExcelProperty("异常详情")
+    private String errorInfo;
+
     @ExcelProperty("操作IP")
     private String ip;
 

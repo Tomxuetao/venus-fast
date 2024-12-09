@@ -71,3 +71,6 @@ mybatis-plus:
     prefix:
     blobType: BLOB
     boolValue: TRUE
+
+venus:
+  database: postgresql

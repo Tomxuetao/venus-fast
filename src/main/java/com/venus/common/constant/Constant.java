@@ -1,5 +1,7 @@
 package com.venus.common.constant;
 
+import lombok.Getter;
+
 public interface Constant {
     /**
      * 成功
@@ -56,6 +58,11 @@ public interface Constant {
     String TOKEN_HEADER = "token";
 
     /**
+     * 邮件配置KEY
+     */
+    String CLOUD_MAIL_CONFIG_KEY = "CLOUD_MAIL_CONFIG_KEY";
+
+    /**
      * 云存储配置KEY
      */
     String CLOUD_STORAGE_CONFIG_KEY = "CLOUD_STORAGE_CONFIG_KEY";
@@ -63,6 +70,7 @@ public interface Constant {
     /**
      * 定时任务状态
      */
+    @Getter
     enum ScheduleStatus {
         /**
          * 暂停
@@ -79,14 +87,12 @@ public interface Constant {
             this.value = value;
         }
 
-        public int getValue() {
-            return value;
-        }
     }
 
     /**
      * 云服务商
      */
+    @Getter
     enum CloudService {
         /**
          * 七牛云
@@ -112,8 +118,18 @@ public interface Constant {
             this.value = value;
         }
 
-        public int getValue() {
-            return value;
+    }
+
+    @Getter
+    enum MsgCloudService {
+        ALIYUN(1),
+        QCLOUD(2);
+
+        private final int value;
+
+        MsgCloudService(int value) {
+            this.value = value;
         }
+
     }
 }

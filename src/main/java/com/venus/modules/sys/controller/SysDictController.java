@@ -9,6 +9,7 @@ import com.venus.common.validator.ValidatorUtils;
 import com.venus.common.validator.group.DefaultGroup;
 import com.venus.common.validator.group.UpdateGroup;
 import com.venus.modules.sys.dto.SysDictDTO;
+import com.venus.modules.sys.entity.SysDictEntity;
 import com.venus.modules.sys.service.SysDictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -44,6 +46,14 @@ public class SysDictController {
         PageData<SysDictDTO> page = sysDictService.page(params);
 
         return new Result<PageData<SysDictDTO>>().ok(page);
+    }
+
+    @GetMapping("list")
+    @ApiOperation("字典列表")
+    @RequiresPermissions("sys:dict:list")
+    public Result<List<SysDictEntity>> list(@ApiIgnore @RequestParam Map<String, Object> params) {
+        List<SysDictEntity> list = sysDictService.list(params);
+        return new Result<List<SysDictEntity>>().ok(list);
     }
 
     @GetMapping("{id}")
