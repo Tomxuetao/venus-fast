@@ -3,6 +3,7 @@ package com.venus.modules.sys.service;
 import com.venus.common.page.PageData;
 import com.venus.common.base.service.BaseService;
 import com.venus.modules.sys.dto.SysRoleDTO;
+import com.venus.modules.sys.dto.SysUserDTO;
 import com.venus.modules.sys.entity.SysRoleEntity;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface SysRoleService extends BaseService<SysRoleEntity> {
     void update(SysRoleDTO dto);
 
     void delete(Long[] ids);
+
+    PageData<SysRoleDTO> getListByUserId(Map<String, Object> params);
 }

@@ -2,12 +2,12 @@ package com.venus.modules.sys.service;
 
 import com.venus.common.page.PageData;
 import com.venus.common.base.service.BaseService;
-import com.venus.common.utils.Result;
 import com.venus.modules.sys.dto.SysUserDTO;
 import com.venus.modules.sys.entity.SysUserEntity;
-import com.venus.modules.sys.excel.SysUserExcel;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +33,8 @@ public interface SysUserService extends BaseService<SysUserEntity> {
 
     void delete(Long[] ids);
 
+    void deleteBatchIds(Long[] ids);
+
     /**
      * 修改密码
      *
@@ -44,12 +46,14 @@ public interface SysUserService extends BaseService<SysUserEntity> {
     /**
      * 根据部门ID，查询用户数
      */
-    int getCountByDeptId(Long deptId);
+    int countByDeptId(Long deptId);
 
     /**
      * 根据部门ID,查询用户Id列表
      */
     List<Long> getUserIdListByDeptId(List<Long> deptIdList);
+
+    PageData<SysUserDTO> getListByRoleId(Map<String, Object> params);
 
     List<SysUserEntity> importExcel(MultipartFile file) throws Exception;
 }

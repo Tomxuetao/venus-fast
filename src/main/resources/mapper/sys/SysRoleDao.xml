@@ -3,4 +3,10 @@
 
 <mapper namespace="com.venus.modules.sys.dao.SysRoleDao">
 
+    <select id="getListByUserId" resultType="com.venus.modules.sys.entity.SysRoleEntity">
+        select * from sys_role where id in (select role_id from sys_role_user where user_id = #{userId})
+        <if test="name != null and name.trim() != ''">
+            and name like #{name}
+        </if>
+    </select>
 </mapper>

@@ -22,11 +22,11 @@ public class AssertUtils {
     }
 
     public static void isBlank(String str, Integer code, String... params) {
-        if(code == null){
+        if(code == null) {
             throw new VenusException(ErrorCode.NOT_NULL, "code");
         }
 
-        if (StringUtils.isBlank(str)) {
+        if(StringUtils.isBlank(str)) {
             throw new VenusException(code, params);
         }
     }
@@ -36,11 +36,11 @@ public class AssertUtils {
     }
 
     public static void isNull(Object object, Integer code, String... params) {
-        if(code == null){
+        if(code == null) {
             throw new VenusException(ErrorCode.NOT_NULL, "code");
         }
 
-        if (object == null) {
+        if(object == null) {
             throw new VenusException(code, params);
         }
     }
@@ -50,11 +50,11 @@ public class AssertUtils {
     }
 
     public static void isArrayEmpty(Object[] array, Integer code, String... params) {
-        if(code == null){
+        if(code == null) {
             throw new VenusException(ErrorCode.NOT_NULL, "code");
         }
 
-        if(ArrayUtil.isEmpty(array)){
+        if(ArrayUtil.isEmpty(array)) {
             throw new VenusException(code, params);
         }
     }
@@ -64,11 +64,11 @@ public class AssertUtils {
     }
 
     public static void isListEmpty(List<?> list, Integer code, String... params) {
-        if(code == null){
+        if(code == null) {
             throw new VenusException(ErrorCode.NOT_NULL, "code");
         }
 
-        if(CollUtil.isEmpty(list)){
+        if(CollUtil.isEmpty(list)) {
             throw new VenusException(code, params);
         }
     }
@@ -78,11 +78,11 @@ public class AssertUtils {
     }
 
     public static void isMapEmpty(Map map, Integer code, String... params) {
-        if(code == null){
+        if(code == null) {
             throw new VenusException(ErrorCode.NOT_NULL, "code");
         }
 
-        if(MapUtil.isEmpty(map)){
+        if(MapUtil.isEmpty(map)) {
             throw new VenusException(code, params);
         }
     }

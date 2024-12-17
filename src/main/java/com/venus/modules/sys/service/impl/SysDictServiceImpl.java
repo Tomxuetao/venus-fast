@@ -7,6 +7,7 @@ import com.venus.common.page.PageData;
 import com.venus.common.utils.ConvertUtils;
 import com.venus.modules.sys.dao.SysDictDao;
 import com.venus.modules.sys.dto.SysDictDTO;
+import com.venus.modules.sys.dto.SysMenuDTO;
 import com.venus.modules.sys.entity.SysDictEntity;
 import com.venus.modules.sys.service.SysDictService;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +37,9 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDictDao, SysDictEntit
     }
 
     @Override
-    public List<SysDictEntity> list(Map<String, Object> params) {
-        return baseDao.selectList(getWrapper(params));
+    public List<SysDictDTO> list(Map<String, Object> params) {
+        List<SysDictEntity> list = baseDao.selectList(getWrapper(params));
+        return ConvertUtils.sourceToTarget(list, SysDictDTO.class);
     }
 
     @Override
@@ -62,14 +65,29 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDictDao, SysDictEntit
         deleteBatchIds(Arrays.asList(ids));
     }
 
-    private QueryWrapper<SysDictEntity> getWrapper(Map<String, Object> params) {;
+    @Override
+    public Long countByPids(Long[] pids) {
+        return baseDao.selectCount(new QueryWrapper<SysDictEntity>().in("pid", Arrays.asList(pids)));
+    }
+
+    private QueryWrapper<SysDictEntity> getWrapper(Map<String, Object> params) {
+        String pidStr = (String) params.get("pid");
         String label = (String) params.get("label");
         String value = (String) params.get("value");
+        String status = (String) params.get("status");
 
         QueryWrapper<SysDictEntity> wrapper = new QueryWrapper<>();
         wrapper.like(StringUtils.isNotBlank(label), "label", label);
         wrapper.like(StringUtils.isNotBlank(value), "value", value);
 
+        if(StringUtils.isNotBlank(status)) {
+            wrapper.eq("status", Integer.parseInt(status));
+        }
+
+        if(StringUtils.isNotEmpty(pidStr)) {
+            wrapper.eq(StringUtils.isNotBlank(pidStr), "pid", Long.valueOf(pidStr));
+        }
+        wrapper.orderByAsc("sort");
         return wrapper;
     }
 }

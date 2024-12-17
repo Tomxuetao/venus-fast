@@ -51,12 +51,16 @@ public class SysUserDTO implements Serializable {
     @Email(message = "{sysuser.email.error}", groups = DefaultGroup.class)
     private String email;
 
-    @ApiModelProperty(value = "手机号")
+    @ApiModelProperty(value = "手机号", required = true)
     private String mobile;
 
     @ApiModelProperty(value = "部门ID", required = true)
     @NotNull(message = "{sysuser.deptId.require}", groups = DefaultGroup.class)
     private Long deptId;
+
+
+    @ApiModelProperty(value = "用户菜单权限列表")
+    private List<SysMenuDTO> menuList;
 
     @ApiModelProperty(value = "状态  0：停用    1：正常", required = true)
     @Range(min = 0, max = 1, message = "{sysuser.status.range}", groups = DefaultGroup.class)

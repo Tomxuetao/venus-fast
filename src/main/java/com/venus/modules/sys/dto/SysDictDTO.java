@@ -7,6 +7,7 @@ import com.venus.common.validator.group.UpdateGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -35,6 +36,10 @@ public class SysDictDTO implements Serializable {
 
     @ApiModelProperty(value = "字典值")
     private String value;
+
+    @ApiModelProperty(value = "状态  0：停用    1：正常", required = true)
+    @Range(min = 0, max = 1, message = "{sysuser.status.range}", groups = DefaultGroup.class)
+    private Integer status;
 
     @ApiModelProperty(value = "备注")
     private String remark;

@@ -1,6 +1,5 @@
 package com.venus.modules.login.controller;
 
-import com.aliyun.core.utils.StringUtils;
 import com.venus.common.constant.Constant;
 import com.venus.common.exception.ErrorCode;
 import com.venus.common.exception.VenusException;
@@ -33,6 +32,7 @@ import com.venus.modules.sys.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -159,7 +159,7 @@ public class LoginController {
         // 短信或邮件验证码是否正确
         boolean codeFlag = captchaService.validate(uuidKey, login.getSecretKey());
         if (!codeFlag) {
-            return new Result().error(login.getAccount().contains("@") ? "邮件验证码错误" : "短信验证码错误");
+            return new Result().error(login.getAccount().contains("@") ? ErrorCode.EMAIL_CODE_ERROR : ErrorCode.SMS_CODE_ERROR);
         }
 
         // 用户信息
@@ -234,6 +234,10 @@ public class LoginController {
     @ApiOperation(value = "检验Token")
     public Result checkToken(HttpServletRequest httpRequest) {
         String token = httpRequest.getHeader(Constant.TOKEN_HEADER);
+        //如果header中不存在token，则从参数中获取token
+        if (StringUtils.isBlank(token)) {
+            token = httpRequest.getParameter(Constant.TOKEN_HEADER);
+        }
         if (StringUtils.isBlank(token)) {
             return new Result().error(ErrorCode.TOKEN_NOT_EMPTY);
         }

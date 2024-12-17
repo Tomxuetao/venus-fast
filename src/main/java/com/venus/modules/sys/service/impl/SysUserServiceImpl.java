@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
         paramsToLike(params, "username");
 
         //分页
-        IPage<SysUserEntity> page = getPage(params, Constant.CREATE_DATE, false);
+        IPage<SysUserEntity> page = getPage(params, Constant.CREATE_DATE, true);
 
         //普通管理员，只能查询所属部门及子部门的数据
         UserDetail user = SecurityUser.getUser();
@@ -136,7 +137,18 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Long[] ids) {
+        //删除用户
+        baseDao.deleteBatchIds(Arrays.asList(ids));
+
+        //删除角色用户关系
+        sysRoleUserService.deleteByUserIds(ids);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteBatchIds(Long[] ids) {
         //删除用户
         baseDao.deleteBatchIds(Arrays.asList(ids));
 
@@ -153,13 +165,26 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
     }
 
     @Override
-    public int getCountByDeptId(Long deptId) {
-        return baseDao.getCountByDeptId(deptId);
+    public int countByDeptId(Long deptId) {
+        return baseDao.countByDeptId(deptId);
     }
 
     @Override
     public List<Long> getUserIdListByDeptId(List<Long> deptIdList) {
         return baseDao.getUserIdListByDeptId(deptIdList);
+    }
+
+    @Override
+    public PageData<SysUserDTO> getListByRoleId(Map<String, Object> params) {
+        //转换成like
+        paramsToLike(params, "username");
+        //分页
+        IPage<SysUserEntity> page = getPage(params, Constant.CREATE_DATE, false);
+
+        //查询
+        List<SysUserEntity> list = baseDao.getListByRoleId(params);
+
+        return getPageData(list, page.getTotal(), SysUserDTO.class);
     }
 
     @Override

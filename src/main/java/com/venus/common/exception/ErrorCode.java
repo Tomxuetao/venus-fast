@@ -26,5 +26,8 @@ public interface ErrorCode {
     int REDIS_ERROR = 10027;
     int JOB_ERROR = 10028;
     int INVALID_SYMBOL = 10029;
-    int CODE_ERROR = 10030;
+    int EMAIL_CODE_ERROR = 10030;
+    int SMS_CODE_ERROR = 10031;
+    int SUB_DATA_EXIST = 10032;
+    int ROLE_USER_EXIST = 10033;
 }

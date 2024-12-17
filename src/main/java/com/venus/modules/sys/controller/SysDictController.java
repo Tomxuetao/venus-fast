@@ -2,6 +2,7 @@ package com.venus.modules.sys.controller;
 
 import com.venus.common.annotation.LogOperation;
 import com.venus.common.constant.Constant;
+import com.venus.common.exception.ErrorCode;
 import com.venus.common.page.PageData;
 import com.venus.common.utils.Result;
 import com.venus.common.validator.AssertUtils;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,14 +35,7 @@ public class SysDictController {
     @GetMapping("page")
     @ApiOperation("字典数据")
     @RequiresPermissions("sys:dict:page")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
-            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "label", value = "字典标签", paramType = "query", dataType = "String", dataTypeClass = String.class),
-            @ApiImplicitParam(name = "value", value = "字典值", paramType = "query", dataType = "String", dataTypeClass = String.class)
-    })
+    @ApiImplicitParams({@ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class), @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class), @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String", dataTypeClass = String.class), @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String", dataTypeClass = String.class), @ApiImplicitParam(name = "label", value = "字典标签", paramType = "query", dataType = "String", dataTypeClass = String.class), @ApiImplicitParam(name = "value", value = "字典值", paramType = "query", dataType = "String", dataTypeClass = String.class)})
     public Result<PageData<SysDictDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         //字典类型
         PageData<SysDictDTO> page = sysDictService.page(params);
@@ -48,12 +43,21 @@ public class SysDictController {
         return new Result<PageData<SysDictDTO>>().ok(page);
     }
 
+    @GetMapping("all")
+    @ApiOperation("字典列表")
+    public Result<List<SysDictDTO>> all() {
+        Map<String, Object> dataForm = new HashMap<>();
+        dataForm.put("status", "1");
+        List<SysDictDTO> list = sysDictService.list(dataForm);
+        return new Result<List<SysDictDTO>>().ok(list);
+    }
+
     @GetMapping("list")
     @ApiOperation("字典列表")
     @RequiresPermissions("sys:dict:list")
-    public Result<List<SysDictEntity>> list(@ApiIgnore @RequestParam Map<String, Object> params) {
-        List<SysDictEntity> list = sysDictService.list(params);
-        return new Result<List<SysDictEntity>>().ok(list);
+    public Result<List<SysDictDTO>> list(@ApiIgnore @RequestParam Map<String, Object> params) {
+        List<SysDictDTO> list = sysDictService.list(params);
+        return new Result<List<SysDictDTO>>().ok(list);
     }
 
     @GetMapping("{id}")
@@ -99,6 +103,11 @@ public class SysDictController {
         Long[] ids = dataForm.get("ids");
         //效验数据
         AssertUtils.isArrayEmpty(ids, "id");
+
+        Long count = sysDictService.countByPids(ids);
+        if(count > 0) {
+            return new Result().error(ErrorCode.SUB_DATA_EXIST);
+        }
 
         sysDictService.delete(ids);
 

@@ -47,7 +47,7 @@
 		update sys_user set password = #{newPassword} where id = #{id}
 	</update>
 
-	<select id="getCountByDeptId" resultType="int">
+	<select id="countByDeptId" resultType="int">
 		select count(*) from sys_user where dept_id = #{value}
 	</select>
 
@@ -56,6 +56,15 @@
 		<foreach item="deptId" collection="list" open="(" separator="," close=")">
 			#{deptId}
 		</foreach>
+	</select>
+
+	<select id="getListByRoleId" resultType="com.venus.modules.sys.entity.SysUserEntity">
+		select *
+		from sys_user
+		where id in (select user_id from sys_role_user where role_id = #{roleId})
+		<if test="username != null and username.trim() != ''">
+			and username like #{username}
+		</if>
 	</select>
 
 </mapper>

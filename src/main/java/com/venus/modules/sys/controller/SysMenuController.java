@@ -55,7 +55,7 @@ public class SysMenuController {
     @ApiImplicitParam(name = "type", value = "菜单类型 0：菜单 1：按钮  null：全部", paramType = "query", dataType = "int", dataTypeClass = Integer.class)
     @RequiresPermissions("sys:menu:list")
     public Result<List<SysMenuDTO>> list(Integer type) {
-        List<SysMenuDTO> list = sysMenuService.getAllMenuList(type);
+        List<SysMenuDTO> list = sysMenuService.getUserMenuList(SecurityUser.getUser(), type);
 
         return new Result<List<SysMenuDTO>>().ok(list);
     }

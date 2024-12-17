@@ -28,10 +28,12 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
     /**
      * 根据部门ID，查询用户数
      */
-    int getCountByDeptId(Long deptId);
+    int countByDeptId(Long deptId);
 
     /**
      * 根据部门ID,查询用户ID列表
      */
     List<Long> getUserIdListByDeptId(List<Long> deptIdList);
+
+    List<SysUserEntity> getListByRoleId(Map<String, Object> params);
 }

@@ -35,10 +35,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRoleEntit
 
     @Override
     public PageData<SysRoleDTO> page(Map<String, Object> params) {
-        IPage<SysRoleEntity> page = baseDao.selectPage(
-                getPage(params, Constant.CREATE_DATE, false),
-                getWrapper(params)
-        );
+        IPage<SysRoleEntity> page = baseDao.selectPage(getPage(params, Constant.CREATE_DATE, false), getWrapper(params));
 
         return getPageData(page, SysRoleDTO.class);
     }
@@ -58,7 +55,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRoleEntit
 
         //普通管理员，只能查询所属部门及子部门的数据
         UserDetail user = SecurityUser.getUser();
-        if (user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
+        if(user.getSuperAdmin() == SuperAdminEnum.NO.value()) {
             List<Long> deptIdList = sysDeptService.getSubDeptIdList(user.getDeptId());
             wrapper.in(deptIdList != null, "dept_id", deptIdList);
         }
@@ -117,6 +114,19 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRoleEntit
 
         //删除角色数据权限关系
         sysRoleDataScopeService.deleteByRoleIds(ids);
+    }
+
+    @Override
+    public PageData<SysRoleDTO> getListByUserId(Map<String, Object> params) {
+        paramsToLike(params, "name");
+
+        //分页
+        IPage<SysRoleEntity> page = getPage(params, Constant.CREATE_DATE, false);
+
+        //查询
+        List<SysRoleEntity> list = baseDao.getListByUserId(params);
+
+        return getPageData(list, page.getTotal(), SysRoleDTO.class);
     }
 
 }

@@ -96,7 +96,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDeptDao, SysDeptEntit
         }
 
         //判断部门下面是否有用户
-        int count = sysUserDao.getCountByDeptId(id);
+        int count = sysUserDao.countByDeptId(id);
         if (count > 0) {
             throw new VenusException(ErrorCode.DEPT_USER_DELETE_ERROR);
         }

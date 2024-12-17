@@ -13,11 +13,13 @@ public interface SysDictService extends BaseService<SysDictEntity> {
 
     SysDictDTO get(Long id);
 
-    List<SysDictEntity> list(Map<String, Object> params);
+    List<SysDictDTO> list(Map<String, Object> params);
 
     void save(SysDictDTO dto);
 
     void update(SysDictDTO dto);
 
     void delete(Long[] ids);
+
+    Long countByPids(Long[] pidList);
 }

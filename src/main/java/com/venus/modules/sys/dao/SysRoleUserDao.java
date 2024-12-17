@@ -2,6 +2,7 @@ package com.venus.modules.sys.dao;
 
 import com.venus.common.base.dao.BaseDao;
 import com.venus.modules.sys.entity.SysRoleUserEntity;
+import com.venus.modules.sys.entity.SysUserEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -26,7 +27,6 @@ public interface SysRoleUserDao extends BaseDao<SysRoleUserEntity> {
      * 角色ID列表
      *
      * @param userId 用户ID
-     * @return
      */
     List<Long> getRoleIdList(Long userId);
 }

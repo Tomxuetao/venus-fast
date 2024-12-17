@@ -14,15 +14,15 @@ public class DBConfig {
     @Value("${venus.database: postgresql}")
     private String database;
     @Resource
+    private DmGenDao dmGeneratorDao;
+    @Resource
     private MySQLGenDao mySQLGenDao;
     @Resource
     private OracleGenDao oracleGenDao;
     @Resource
-    private SQLServerGenDao sqlServerGenDao;
-    @Resource
     private PostgreGenDao postgreGenDao;
     @Resource
-    private DmGenDao dmGeneratorDao;
+    private SQLServerGenDao sqlServerGenDao;
 
     @Bean
     @Primary

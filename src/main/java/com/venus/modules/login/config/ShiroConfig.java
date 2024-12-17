@@ -62,6 +62,7 @@ public class ShiroConfig {
         filterMap.put("/druid/**", "anon");
         filterMap.put("/code", "anon");
         filterMap.put("/login", "anon");
+        filterMap.put("/checkToken", "anon");
         filterMap.put("/codeLogin", "anon");
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/v2/api-docs", "anon");

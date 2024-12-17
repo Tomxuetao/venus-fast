@@ -8,4 +8,5 @@ import java.util.List;
 
 @Mapper
 public interface SysDictDao extends BaseDao<SysDictEntity> {
+    List<SysDictEntity> getListPids(Long[] pids);
 }

@@ -27,6 +27,10 @@ public class SysDictEntity extends BaseEntity {
      */
     private String value;
     /**
+     * 状态  0：停用   1：正常
+     */
+    private Integer status;
+    /**
      * 备注
      */
     private String remark;
