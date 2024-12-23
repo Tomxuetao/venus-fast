@@ -36,7 +36,7 @@
         <shiro.version>1.13.0</shiro.version>
         <captcha.version>1.6.2</captcha.version>
         <qiniu.version>7.11.0</qiniu.version>
-        <velocity.version>1.7</velocity.version>
+        <velocity.version>2.4.1</velocity.version>
         <easyexcel.version>4.0.3</easyexcel.version>
         <aliyun.oss.version>3.18.1</aliyun.oss.version>
         <aliyun.core.version>4.7.2</aliyun.core.version>
@@ -194,8 +194,8 @@
             <version>${hutool.version}</version>
         </dependency>
         <dependency>
-            <artifactId>velocity</artifactId>
             <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
             <version>${velocity.version}</version>
         </dependency>
         <dependency>

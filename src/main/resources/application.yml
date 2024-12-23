@@ -7,7 +7,7 @@ server:
       min-spare: 30
   port: 8888
   servlet:
-    context-path: /venus-admin
+    context-path: /
     session:
       cookie:
         http-only: true
