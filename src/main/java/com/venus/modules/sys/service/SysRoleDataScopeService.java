@@ -22,7 +22,7 @@ public interface SysRoleDataScopeService extends BaseService<SysRoleDataScopeEnt
     /**
      * 根据角色id，删除角色数据权限关系
      *
-     * @param roleId 角色ids
+     * @param roleIds 角色ids
      */
-    void deleteByRoleIds(Long[] roleId);
+    void deleteByRoleIds(Long[] roleIds);
 }

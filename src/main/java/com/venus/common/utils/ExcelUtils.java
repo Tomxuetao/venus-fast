@@ -2,7 +2,7 @@ package com.venus.common.utils;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
-import com.alibaba.excel.EasyExcel;
+import cn.idev.excel.FastExcel;
 
 import java.util.Date;
 import java.util.List;
@@ -14,8 +14,8 @@ import org.springframework.beans.BeanUtils;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.excel.converters.longconverter.LongStringConverter;
 import org.springframework.web.multipart.MultipartFile;
+import cn.idev.excel.converters.longconverter.LongStringConverter;
 
 public class ExcelUtils {
     /**
@@ -37,7 +37,7 @@ public class ExcelUtils {
         response.setCharacterEncoding("UTF-8");
         fileName = URLUtil.encode(fileName, StandardCharsets.UTF_8);
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
-        EasyExcel.write(response.getOutputStream(), targetClass).registerConverter(new LongStringConverter()).sheet(sheetName).doWrite(list);
+        FastExcel.write(response.getOutputStream(), targetClass).registerConverter(new LongStringConverter()).sheet(sheetName).doWrite(list);
     }
 
     /**
@@ -66,6 +66,6 @@ public class ExcelUtils {
     }
 
     public static <T> List<T> importExcel(MultipartFile file, Class<T> targetClass) throws Exception {
-        return EasyExcel.read(file.getInputStream()).head(targetClass).sheet().headRowNumber(1).doReadSync();
+        return FastExcel.read(file.getInputStream()).head(targetClass).sheet().headRowNumber(1).doReadSync();
     }
 }

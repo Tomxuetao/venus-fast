@@ -1,12 +1,9 @@
 package com.venus.modules.sys.service;
 
 import com.venus.common.base.service.BaseService;
-import com.venus.common.page.PageData;
-import com.venus.modules.sys.dto.SysUserDTO;
 import com.venus.modules.sys.entity.SysRoleUserEntity;
 
 import java.util.List;
-import java.util.Map;
 
 public interface SysRoleUserService extends BaseService<SysRoleUserEntity> {
     /**

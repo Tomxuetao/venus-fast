@@ -15,7 +15,7 @@ public interface ShiroService {
     /**
      * 根据用户ID，查询用户
      *
-     * @param userId
+     * @param userId 用户ID
      */
     SysUserEntity getUser(Long userId);
 

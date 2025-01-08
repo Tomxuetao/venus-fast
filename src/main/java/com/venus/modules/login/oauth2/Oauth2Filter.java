@@ -70,7 +70,7 @@ public class Oauth2Filter extends AuthenticatingFilter {
 
             String json = new Gson().toJson(r);
             httpResponse.getWriter().print(json);
-        } catch (IOException e1) {
+        } catch (IOException ignored) {
 
         }
 

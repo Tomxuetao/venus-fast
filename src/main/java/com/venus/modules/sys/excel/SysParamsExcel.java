@@ -1,6 +1,6 @@
 package com.venus.modules.sys.excel;
 
-import com.alibaba.excel.annotation.ExcelProperty;
+import cn.idev.excel.annotation.ExcelProperty;
 import lombok.Data;
 
 @Data

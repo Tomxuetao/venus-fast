@@ -1,10 +1,10 @@
 package com.venus.modules.log.excel;
 
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.alibaba.excel.annotation.write.style.ColumnWidth;
-import com.alibaba.excel.annotation.write.style.ContentRowHeight;
-import com.alibaba.excel.annotation.write.style.HeadRowHeight;
+import cn.idev.excel.annotation.ExcelProperty;
+import cn.idev.excel.annotation.format.DateTimeFormat;
+import cn.idev.excel.annotation.write.style.ColumnWidth;
+import cn.idev.excel.annotation.write.style.ContentRowHeight;
+import cn.idev.excel.annotation.write.style.HeadRowHeight;
 import com.venus.modules.log.excel.converter.SysLogOperationConverter;
 import com.venus.modules.log.excel.converter.SysLogStatusConverter;
 import lombok.Data;

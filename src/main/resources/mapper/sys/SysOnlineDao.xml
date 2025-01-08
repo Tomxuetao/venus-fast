@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.venus.modules.sys.dao.SysUserOnlineDao">
+<mapper namespace="com.venus.modules.sys.dao.SysOnlineDao">
+    <delete id="deleteBySessionId">
+        delete from sys_online where session_id = #{sessionId}
+    </delete>
+    <select id="selectBySessionId" resultType="com.venus.modules.sys.entity.SysOnlineEntity">
+        select * from sys_online where status = 1 and session_id = #{sessionId}
+    </select>
+    <select id="selectListByExpired" resultType="com.venus.modules.sys.entity.SysOnlineEntity">
+        select *
+        from sys_online
+        where update_date <![CDATA[ <= ]]> #{expireTime}
+    </select>
 </mapper>

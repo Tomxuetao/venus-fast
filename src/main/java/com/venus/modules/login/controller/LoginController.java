@@ -5,6 +5,7 @@ import com.venus.common.exception.ErrorCode;
 import com.venus.common.exception.VenusException;
 import com.venus.common.utils.IpUtils;
 import com.venus.common.utils.Result;
+import com.venus.common.utils.SpringContextUtils;
 import com.venus.common.utils.StrUtils;
 import com.venus.common.validator.AssertUtils;
 import com.venus.common.validator.ValidatorUtils;
@@ -28,6 +29,7 @@ import com.venus.modules.msg.service.SysMsgMailService;
 import com.venus.modules.sys.dto.SysUserDTO;
 import com.venus.modules.sys.enums.LoginTypeEnum;
 import com.venus.modules.sys.enums.UserStatusEnum;
+import com.venus.modules.sys.service.SysOnlineService;
 import com.venus.modules.sys.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -212,8 +214,9 @@ public class LoginController {
     public Result logout(HttpServletRequest request) {
         UserDetail user = SecurityUser.getUser();
 
+        Long userId = user.getId();
         //退出
-        sysUserTokenService.logout(user.getId());
+        sysUserTokenService.logout(userId);
 
         //用户信息
         SysLogLoginEntity log = new SysLogLoginEntity();
@@ -222,10 +225,13 @@ public class LoginController {
         log.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
         log.setIp(IpUtils.getIpAddr(request));
         log.setStatus(LoginStatusEnum.SUCCESS.value());
-        log.setCreator(user.getId());
+        log.setCreator(userId);
         log.setCreatorName(user.getUsername());
         log.setCreateDate(new Date());
         sysLogLoginService.save(log);
+
+        SysOnlineService sysOnlineService = SpringContextUtils.getBean(SysOnlineService.class);
+        sysOnlineService.removeUserCache(userId);
 
         return new Result();
     }

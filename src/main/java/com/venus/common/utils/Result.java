@@ -4,8 +4,6 @@ import com.venus.common.exception.ErrorCode;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -14,7 +12,7 @@ import java.io.Serializable;
 public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
-     * 编码：0表示成功，其他值表示失败
+     * 编码：200表示成功，其他值表示失败
      */
     @ApiModelProperty(value = "编码：200表示成功，其他值表示失败")
     private int code = 200;

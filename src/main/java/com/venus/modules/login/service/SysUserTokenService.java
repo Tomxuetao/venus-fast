@@ -4,6 +4,8 @@ import com.venus.common.base.service.BaseService;
 import com.venus.common.utils.Result;
 import com.venus.modules.login.entity.SysUserTokenEntity;
 
+import java.util.List;
+
 public interface SysUserTokenService extends BaseService<SysUserTokenEntity> {
 
     /**
@@ -19,5 +21,4 @@ public interface SysUserTokenService extends BaseService<SysUserTokenEntity> {
      * @param userId 用户ID
      */
     void logout(Long userId);
-
 }

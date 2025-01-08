@@ -10,17 +10,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("sys_user_online")
-public class SysUserOnlineEntity implements Serializable {
+@TableName("sys_online")
+public class SysOnlineEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId
     private Long id;
     /**
+     * sessionId
+     */
+    private String sessionId;
+
+    /**
      * 用户ID
      */
     private Long userId;
-
     /**
      * 用户名称
      */
@@ -29,7 +33,7 @@ public class SysUserOnlineEntity implements Serializable {
     /**
      * 部门名称
      */
-    private String deptName;
+    private Long deptId;
 
     /**
      * 登录IP地址
@@ -52,9 +56,16 @@ public class SysUserOnlineEntity implements Serializable {
     private Integer status;
 
     /**
+     * 过期时间
+     */
+    private Long expireTime;
+
+    /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateDate;
+
     /**
      * 创建时间
      */

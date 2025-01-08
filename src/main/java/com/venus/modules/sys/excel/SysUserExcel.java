@@ -1,7 +1,7 @@
 package com.venus.modules.sys.excel;
 
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.format.DateTimeFormat;
+import cn.idev.excel.annotation.ExcelProperty;
+import cn.idev.excel.annotation.format.DateTimeFormat;
 
 import com.venus.modules.sys.excel.converter.GenderConverter;
 import com.venus.modules.sys.excel.converter.StatusConverter;

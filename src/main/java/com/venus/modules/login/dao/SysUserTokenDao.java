@@ -5,6 +5,8 @@ import com.venus.modules.login.entity.SysUserTokenEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface SysUserTokenDao extends BaseDao<SysUserTokenEntity> {
 

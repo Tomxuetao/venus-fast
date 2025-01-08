@@ -24,7 +24,7 @@ public class JobCommandLineRunner implements CommandLineRunner {
         List<ScheduleJobEntity> scheduleJobList = scheduleJobDao.selectList(new QueryWrapper<>());
         for (ScheduleJobEntity scheduleJob : scheduleJobList) {
             CronTrigger cronTrigger = ScheduleUtils.getCronTrigger(scheduler, scheduleJob.getId());
-            //如果不存在，则创建
+            // 如果不存在，则创建
             if (cronTrigger == null) {
                 ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
             } else {

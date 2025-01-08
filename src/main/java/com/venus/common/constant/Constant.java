@@ -33,6 +33,10 @@ public interface Constant {
     String CREATE_DATE = "create_date";
 
     /**
+     * 系统缓存
+     */
+    String SYS_CACHE = "sys_cache";
+    /**
      * 数据权限过滤
      */
     String SQL_FILTER = "sqlFilter";
@@ -58,6 +62,20 @@ public interface Constant {
     String TOKEN_HEADER = "token";
 
     /**
+     * 在线用户session
+     */
+    String ONLINE_SESSION = "online_session";
+
+    /**
+     * session过期时间
+     */
+    Long DEFAULT_SESSION_TIMEOUT = 30 * 60 * 1000L;
+    /**
+     * 最后同步数据库时间
+     */
+    String LAST_SYNC_DB_TIMESTAMP = "LAST_SYNC_DB_TIMESTAMP";
+
+    /**
      * 邮件配置KEY
      */
     String CLOUD_MAIL_CONFIG_KEY = "CLOUD_MAIL_CONFIG_KEY";
@@ -67,6 +85,23 @@ public interface Constant {
      */
     String CLOUD_STORAGE_CONFIG_KEY = "CLOUD_STORAGE_CONFIG_KEY";
 
+    @Getter
+    enum OnlineStatus {
+        /**
+         * 离线
+         */
+        OFFLINE(0),
+        /**
+         * 在线
+         */
+        ONLINE(1);
+
+        private final int value;
+
+        OnlineStatus(int value) {
+            this.value = value;
+        }
+    }
     /**
      * 定时任务状态
      */
@@ -86,7 +121,6 @@ public interface Constant {
         ScheduleStatus(int value) {
             this.value = value;
         }
-
     }
 
     /**

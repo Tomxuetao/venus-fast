@@ -2,8 +2,8 @@ package com.venus.modules.sys.redis;
 
 import com.venus.common.redis.RedisKeys;
 import com.venus.common.redis.RedisUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class SysParamsRedis {

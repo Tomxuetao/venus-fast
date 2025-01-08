@@ -95,7 +95,6 @@ public class SysOssController {
         if (file.isEmpty()) {
             return new Result<Map<String, Object>>().error(ErrorCode.UPLOAD_FILE_EMPTY);
         }
-
         return new Result<Map<String, Object>>().ok(sysOssService.upload(file));
     }
 
