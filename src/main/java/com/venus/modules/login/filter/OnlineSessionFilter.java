@@ -71,6 +71,4 @@ public class OnlineSessionFilter extends AccessControlFilter {
         saveRequestAndRedirectToLogin(request, response);
         return false;
     }
-
-
 }

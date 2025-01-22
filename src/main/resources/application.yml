@@ -12,6 +12,10 @@ server:
       cookie:
         http-only: true
         secure: true
+  compression:
+    enabled: true
+    min-response-size: 10240
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml
 
 knife4j:
   enable: true
@@ -37,6 +41,8 @@ spring:
       max-file-size: 500MB
       max-request-size: 500MB
       enabled: true
+  backgroundpreinitializer:
+    enabled: true
   redis:
     database: 0
     host: 127.0.0.1
@@ -74,3 +80,5 @@ mybatis-plus:
 
 venus:
   database: postgresql
+  redis:
+    open: true

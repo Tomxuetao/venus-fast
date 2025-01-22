@@ -1,7 +1,6 @@
 package com.venus.modules.login.config;
 
 import com.venus.common.constant.Constant;
-import com.venus.common.utils.SpringContextUtils;
 import com.venus.modules.login.filter.KickoutSessionFilter;
 import com.venus.modules.login.filter.OnlineSessionFilter;
 import com.venus.modules.login.filter.SyncOnlineSessionFilter;
@@ -10,18 +9,15 @@ import com.venus.modules.login.oauth2.Oauth2Realm;
 import com.venus.modules.login.session.CustomSessionDAO;
 import com.venus.modules.login.session.CustomSessionFactory;
 import com.venus.modules.login.session.CustomWebSessionManager;
-import com.venus.modules.sys.service.SysSseService;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 
 import javax.servlet.Filter;
 import java.util.HashMap;
@@ -48,7 +44,7 @@ public class ShiroConfig {
         return ehCacheManager;
     }
 
-    @Bean
+    @Bean("sessionManager")
     public CustomWebSessionManager sessionManager() {
         CustomWebSessionManager sessionManager = new CustomWebSessionManager();
 

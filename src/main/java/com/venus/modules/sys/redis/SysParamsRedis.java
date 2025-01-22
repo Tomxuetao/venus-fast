@@ -20,7 +20,7 @@ public class SysParamsRedis {
             return;
         }
         String key = RedisKeys.getSysParamsKey();
-        redisUtils.hSet(key, paramCode, paramValue);
+        redisUtils.hSet(key, paramCode, paramValue, RedisUtils.NOT_EXPIRE);
     }
 
     public String get(String paramCode) {

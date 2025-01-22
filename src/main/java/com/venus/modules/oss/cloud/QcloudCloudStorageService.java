@@ -75,4 +75,14 @@ public class QcloudCloudStorageService extends AbstractCloudStorageService {
     public String uploadSuffix(InputStream inputStream, String suffix) {
         return upload(inputStream, getPath(config.getQcloudPrefix(), suffix));
     }
+
+    @Override
+    public InputStream readStream(String path) {
+        return null;
+    }
+
+    @Override
+    public boolean exists(String url) {
+        return false;
+    }
 }

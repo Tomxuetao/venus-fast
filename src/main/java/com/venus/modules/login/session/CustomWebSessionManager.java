@@ -80,6 +80,7 @@ public class CustomWebSessionManager extends DefaultWebSessionManager {
             try {
                 Session session = retrieveSession(sessionKey);
                 if(session != null) {
+                    session.stop();
                     throw new InvalidSessionException();
                 }
             } catch (InvalidSessionException e) {
@@ -92,7 +93,7 @@ public class CustomWebSessionManager extends DefaultWebSessionManager {
 
                 needRemoveList.add(sysOnlineEntity.getId());
 
-                sysOnlineService.removeUserCache(sysOnlineEntity.getUserId());
+                sysOnlineService.removeUserCache(sysOnlineEntity.getUserId(), sysOnlineEntity.getSessionId());
             }
         }
 

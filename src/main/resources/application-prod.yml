@@ -2,7 +2,7 @@ spring:
   datasource:
     druid:
       driver-class-name: org.postgresql.Driver
-      url: jdbc:postgresql://101.35.244.65:5432/venus?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      url: jdbc:postgresql://127.0.0.1:5432/venus?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: postgres
       password: Wang#645678
       initial-size: 10
@@ -19,6 +19,8 @@ spring:
       stat-view-servlet:
         enabled: true
         url-pattern: /druid/*
+        login-username: venus-admin
+        login-password: Wang#645678
       filter:
         stat:
           log-slow-sql: true
@@ -29,5 +31,6 @@ spring:
             multi-statement-allow: true
 
 venus:
+  database: postgresql
   redis:
     open: true

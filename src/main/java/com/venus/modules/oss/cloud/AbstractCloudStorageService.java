@@ -70,4 +70,18 @@ public abstract class AbstractCloudStorageService {
      * @return 返回http地址
      */
     public abstract String uploadSuffix(InputStream inputStream, String suffix);
+
+    /**
+     * 读取文件
+     *
+     * @param path 文件路径，包含文件名
+     * @return 返回http地址
+     */
+    public abstract InputStream readStream(String path);
+
+    /**
+     * 判断文件是否存在
+     * @param url 文件路径，包含文件名
+     */
+    public abstract boolean exists(String url);
 }

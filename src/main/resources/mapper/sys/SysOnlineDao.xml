@@ -11,6 +11,6 @@
     <select id="selectListByExpired" resultType="com.venus.modules.sys.entity.SysOnlineEntity">
         select *
         from sys_online
-        where update_date <![CDATA[ <= ]]> #{expireTime}
+        where update_date <![CDATA[ <= ]]> #{expireTime} or status = 0
     </select>
 </mapper>

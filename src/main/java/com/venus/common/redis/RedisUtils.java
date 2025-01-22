@@ -1,11 +1,19 @@
 package com.venus.common.redis;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
+import com.google.gson.reflect.TypeToken;
+import com.venus.common.convert.TimestampDateDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +21,12 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtils {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    private static final Gson gson = new GsonBuilder()
+            .disableHtmlEscaping()
+            .setStrictness(Strictness.LENIENT)
+            .registerTypeAdapter(Date.class, new TimestampDateDeserializer())
+            .create();
 
     /**
      * 默认过期时长为24小时，单位：秒
@@ -33,7 +47,7 @@ public class RedisUtils {
 
     public void set(String key, Object value, long expire) {
         redisTemplate.opsForValue().set(key, value);
-        if (expire != NOT_EXPIRE) {
+        if(expire != NOT_EXPIRE) {
             expire(key, expire);
         }
     }
@@ -42,16 +56,30 @@ public class RedisUtils {
         set(key, value, DEFAULT_EXPIRE);
     }
 
+    public Object get(String key) {
+        return get(key, NOT_EXPIRE);
+    }
+
     public Object get(String key, long expire) {
         Object value = redisTemplate.opsForValue().get(key);
-        if (expire != NOT_EXPIRE) {
+        if(expire != NOT_EXPIRE) {
             expire(key, expire);
         }
         return value;
     }
 
-    public Object get(String key) {
-        return get(key, NOT_EXPIRE);
+    public <T> T get(String key, Class<T> clazz) {
+        Object value = get(key);
+        return value == null ? null : gson.fromJson(value.toString(), clazz);
+    }
+
+    public <T> List<T> getList(String key, Class<T> clazz) {
+        Object value = get(key);
+        if(value == null) {
+            return null;
+        }
+        Type listType = TypeToken.getParameterized(List.class, clazz).getType();
+        return gson.fromJson(value.toString(), listType);
     }
 
     public void delete(String key) {
@@ -78,7 +106,7 @@ public class RedisUtils {
     public void hMSet(String key, Map<String, Object> map, long expire) {
         redisTemplate.opsForHash().putAll(key, map);
 
-        if (expire != NOT_EXPIRE) {
+        if(expire != NOT_EXPIRE) {
             expire(key, expire);
         }
     }
@@ -90,7 +118,7 @@ public class RedisUtils {
     public void hSet(String key, String field, Object value, long expire) {
         redisTemplate.opsForHash().put(key, field, value);
 
-        if (expire != NOT_EXPIRE) {
+        if(expire != NOT_EXPIRE) {
             expire(key, expire);
         }
     }
@@ -110,7 +138,7 @@ public class RedisUtils {
     public void leftPush(String key, Object value, long expire) {
         redisTemplate.opsForList().leftPush(key, value);
 
-        if (expire != NOT_EXPIRE) {
+        if(expire != NOT_EXPIRE) {
             expire(key, expire);
         }
     }

@@ -68,4 +68,14 @@ public class QiniuCloudStorageService extends AbstractCloudStorageService {
     public String uploadSuffix(InputStream inputStream, String suffix) {
         return upload(inputStream, getPath(config.getQiniuPrefix(), suffix));
     }
+
+    @Override
+    public InputStream readStream(String path) {
+        return null;
+    }
+
+    @Override
+    public boolean exists(String url) {
+        return false;
+    }
 }

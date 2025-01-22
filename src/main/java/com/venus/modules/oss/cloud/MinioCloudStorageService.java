@@ -30,7 +30,7 @@ public class MinioCloudStorageService extends AbstractCloudStorageService {
         try {
             MinioClient minioClient = MinioClient.builder().endpoint(config.getMinioEndPoint()).credentials(config.getMinioAccessKey(), config.getMinioSecretKey()).build();
             boolean hasBucket = minioClient.bucketExists(BucketExistsArgs.builder().bucket(config.getMinioBucketName()).build());
-            if (!hasBucket) {
+            if(!hasBucket) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(config.getMinioBucketName()).build());
             }
             minioClient.putObject(PutObjectArgs.builder().bucket(config.getMinioBucketName()).object(path).stream(inputStream, inputStream.available(), -1).build());
@@ -43,5 +43,25 @@ public class MinioCloudStorageService extends AbstractCloudStorageService {
     @Override
     public String uploadSuffix(InputStream inputStream, String suffix) {
         return upload(inputStream, getPath(config.getMinioPrefix(), suffix));
+    }
+
+    @Override
+    public InputStream readStream(String path) {
+        try {
+            MinioClient minioClient = MinioClient.builder().endpoint(config.getMinioEndPoint()).credentials(config.getMinioAccessKey(), config.getMinioSecretKey()).build();
+            return minioClient.getObject(GetObjectArgs.builder().bucket(config.getMinioBucketName()).object(path).build());
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | MinioException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean exists(String url) {
+        try {
+            MinioClient minioClient = MinioClient.builder().endpoint(config.getMinioEndPoint()).credentials(config.getMinioAccessKey(), config.getMinioSecretKey()).build();
+            return minioClient.bucketExists(BucketExistsArgs.builder().bucket(config.getMinioBucketName()).build());
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | MinioException e) {
+            throw new RuntimeException(e);
+       }
     }
 }

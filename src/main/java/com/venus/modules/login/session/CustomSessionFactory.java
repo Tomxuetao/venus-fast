@@ -33,8 +33,6 @@ public class CustomSessionFactory implements SessionFactory {
             }
         }
 
-        System.out.println(session);
-
         return session;
     }
 }

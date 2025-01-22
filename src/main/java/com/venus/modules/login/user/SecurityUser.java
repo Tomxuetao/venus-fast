@@ -1,5 +1,6 @@
 package com.venus.modules.login.user;
 
+import com.venus.common.exception.VenusException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
@@ -8,7 +9,7 @@ public class SecurityUser {
         try {
             return SecurityUtils.getSubject();
         } catch (Exception e) {
-            return null;
+            throw new VenusException("获取用户信息失败", e);
         }
     }
 

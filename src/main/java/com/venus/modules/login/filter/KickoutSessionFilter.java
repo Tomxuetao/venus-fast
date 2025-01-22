@@ -84,14 +84,12 @@ public class KickoutSessionFilter extends AccessControlFilter {
     }
 
     public void setCacheManager(CacheManager cacheManager) {
-        this.cache = cacheManager.getCache(Constant.SYS_CACHE);
+        this.cache = cacheManager.getCache(Constant.SYS_ONLINE_USER_CACHE);
     }
 
     public void actionKickout(Long userId) {
         sysSseService = sysSseService == null ? SpringContextUtils.getBean(SysSseService.class) : sysSseService;
-        SseMsg<String> msg = new SseMsg<>();
-        msg.setType(0);
-        msg.setBody("您已在别处登录，请您修改密码或重新登录");
+        SseMsg<String> msg = new SseMsg<>(0, "您已在别处登录，请您修改密码或重新登录");
         sysSseService.sendMsg(userId, msg);
     }
 }

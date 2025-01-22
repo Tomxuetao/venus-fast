@@ -231,7 +231,7 @@ public class LoginController {
         sysLogLoginService.save(log);
 
         SysOnlineService sysOnlineService = SpringContextUtils.getBean(SysOnlineService.class);
-        sysOnlineService.removeUserCache(userId);
+        sysOnlineService.removeUserCache(userId, Objects.requireNonNull(SecurityUser.getSubject()).getSession().getId().toString());
 
         return new Result();
     }

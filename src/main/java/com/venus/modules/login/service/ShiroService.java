@@ -17,7 +17,7 @@ public interface ShiroService {
      *
      * @param userId 用户ID
      */
-    SysUserEntity getUser(Long userId);
+     SysUserEntity getUser(Long userId);
 
     /**
      * 获取用户对应的部门数据权限

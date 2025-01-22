@@ -1,5 +1,6 @@
 package com.venus.common.config;
 
+import org.locationtech.jts.geom.Geometry;
 import org.springframework.context.annotation.Bean;
 import com.venus.common.interceptor.DataFilterInterceptor;
 import org.springframework.context.annotation.Configuration;
@@ -32,5 +33,12 @@ public class MybatisPlusConfig {
         mybatisPlusInterceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
 
         return mybatisPlusInterceptor;
+    }
+
+    @Bean
+    public org.apache.ibatis.session.Configuration configuration() {
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.getTypeHandlerRegistry().register(Geometry.class, GeometryTypeHandler.class);
+        return configuration;
     }
 }

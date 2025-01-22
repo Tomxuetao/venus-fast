@@ -1,7 +1,10 @@
 package com.venus.modules.login.password;
 
+import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.Base64;
+
 public class PasswordUtils {
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     /**
      * 加密
@@ -10,7 +13,7 @@ public class PasswordUtils {
      * @return 返回加密字符串
      */
     public static String encode(String str) {
-        return passwordEncoder.encode(str);
+        return Base64.getEncoder().encodeToString(BCrypt.hashpw(str, BCrypt.gensalt()).getBytes());
     }
 
 
@@ -22,12 +25,12 @@ public class PasswordUtils {
      * @return true：成功    false：失败
      */
     public static boolean matches(String str, String password) {
-        return passwordEncoder.matches(str, password);
+        return BCrypt.checkpw(str, new String(Base64.getDecoder().decode(password)));
     }
 
 
     public static void main(String[] args) {
-        String str = "admin";
+        String str = "Wang#645678";
         String password = encode(str);
 
         System.out.println(password);

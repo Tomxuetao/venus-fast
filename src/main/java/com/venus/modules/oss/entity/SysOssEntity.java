@@ -19,4 +19,5 @@ public class SysOssEntity extends BaseEntity {
 
     private String url;
     private String name;
+    private Integer source;
 }

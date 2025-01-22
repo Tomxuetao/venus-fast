@@ -8,6 +8,7 @@ import com.venus.common.constant.Constant;
 import com.venus.common.page.PageData;
 import com.venus.common.utils.Result;
 import com.venus.common.utils.SpringContextUtils;
+import com.venus.common.utils.SseMsg;
 import com.venus.modules.login.service.SysUserTokenService;
 import com.venus.modules.login.session.CustomSession;
 import com.venus.modules.login.user.SecurityUser;
@@ -17,20 +18,26 @@ import com.venus.modules.sys.entity.SysOnlineEntity;
 import com.venus.modules.sys.enums.SuperAdminEnum;
 import com.venus.modules.sys.service.SysDeptService;
 import com.venus.modules.sys.service.SysOnlineService;
+import com.venus.modules.sys.service.SysSseService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.Serializable;
 import java.util.*;
 
 @Service
 public class SysOnlineServiceImpl extends BaseServiceImpl<SysOnlineDao, SysOnlineEntity> implements SysOnlineService {
+
+    @Autowired
+    private SysSseService sysSseService;
 
     @Autowired
     private SysDeptService sysDeptService;
@@ -74,6 +81,7 @@ public class SysOnlineServiceImpl extends BaseServiceImpl<SysOnlineDao, SysOnlin
         if(sysOnlineEntity == null) {
             baseDao.insert(entity);
         } else {
+            entity.setStatus(Constant.OnlineStatus.ONLINE.getValue());
             baseDao.update(entity, new UpdateWrapper<SysOnlineEntity>().eq("session_id", entity.getSessionId()));
         }
     }
@@ -91,27 +99,38 @@ public class SysOnlineServiceImpl extends BaseServiceImpl<SysOnlineDao, SysOnlin
             }
         }
 
+        SseMsg<String> msg = new SseMsg<>(0, "你已被管理员强制下线");
+        // 更新用户Token、删除用户缓存、发送消息
         for (SysOnlineEntity sysOnlineEntity : list) {
+            Long userId = sysOnlineEntity.getUserId();
+            sysUserTokenService.logout(userId);
+            sysSseService.sendMsg(userId, msg);
             sysOnlineEntity.setStatus(Constant.OnlineStatus.OFFLINE.getValue());
             baseDao.updateById(sysOnlineEntity);
-            sysUserTokenService.logout(sysOnlineEntity.getUserId());
-            this.removeUserCache(sysOnlineEntity.getUserId());
         }
 
-        return new Result();
+        DefaultWebSessionManager sessionManager = SpringContextUtils.getBean(DefaultWebSessionManager.class);
+        sessionManager.validateSessions();
+
+        return new Result<>().ok("强制退出成功");
     }
 
     @Override
-    public void removeUserCache(Long userId) {
+    public void removeUserCache(Long userId, String sessionId) {
         EhCacheManager ehCacheManager = SpringContextUtils.getBean(EhCacheManager.class);
 
-        Cache<Long, Deque<Serializable>> cache = ehCacheManager.getCache(Constant.SYS_CACHE);
+        Cache<Long, SseEmitter> emitterCache = ehCacheManager.getCache(Constant.SYS_SSE_USER_CACHE);
+        if(emitterCache.get(userId) != null) {
+            emitterCache.remove(userId);
+        }
+        Cache<Long, Deque<Serializable>> cache = ehCacheManager.getCache(Constant.SYS_ONLINE_USER_CACHE);
         Deque<Serializable> deque = cache.get(userId);
 
         if(deque == null || deque.isEmpty()) {
             return;
         }
-        deque.remove(Objects.requireNonNull(SecurityUser.getSubject()).getSession().getId());
+
+        deque.remove(sessionId);
     }
 
     @Override

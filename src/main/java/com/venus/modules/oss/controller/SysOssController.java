@@ -47,6 +47,7 @@ public class SysOssController {
     @ApiOperation(value = "分页")
     @RequiresPermissions("sys:oss:page")
     public Result<PageData<SysOssEntity>> page(@ApiIgnore @RequestParam Map<String, Object> params) {
+        params.put("source", Constant.OssSource.DEFAULT.getValue());
         PageData<SysOssEntity> page = sysOssService.page(params);
 
         return new Result<PageData<SysOssEntity>>().ok(page);
@@ -111,4 +112,9 @@ public class SysOssController {
         return new Result();
     }
 
+    @GetMapping("exists")
+    @ApiOperation(value = "文件是否存在")
+    public Result<Boolean> exists(@RequestParam("url") String url) {
+        return new Result<Boolean>().ok(sysOssService.exists(url));
+    }
 }

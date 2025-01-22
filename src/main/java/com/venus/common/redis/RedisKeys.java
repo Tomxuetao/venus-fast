@@ -9,6 +9,13 @@ public class RedisKeys {
     }
 
     /**
+     * 登录Token Key
+     */
+    public static String getTokenKey(String token) {
+        return "sys:token:" + token;
+    }
+
+    /**
      * 验证码Key
      */
     public static String getCaptchaKey(String uuid) {
@@ -16,10 +23,17 @@ public class RedisKeys {
     }
 
     /**
+     * 数据权限Key
+     */
+    public static String getDataScopeKey(Long userId) {
+        return "sys:data:" + userId;
+    }
+
+    /**
      * 登录用户Key
      */
     public static String getSecurityUserKey(Long id) {
-        return "sys:security:user:" + id;
+        return "sys:user:" + id;
     }
 
     /**

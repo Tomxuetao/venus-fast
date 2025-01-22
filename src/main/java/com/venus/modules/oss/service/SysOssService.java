@@ -6,6 +6,7 @@ import com.venus.modules.oss.entity.SysOssEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -14,8 +15,13 @@ import java.util.Map;
  * @author Tomxuetao
  */
 public interface SysOssService extends BaseService<SysOssEntity> {
+    boolean exists(String url);
+
+    InputStream readStream(String url);
+
+    Map<String, Object> upload(MultipartFile file);
 
     PageData<SysOssEntity> page(Map<String, Object> params);
 
-    Map<String, Object> upload(MultipartFile file) throws IOException;
+    Map<String, Object> upload(MultipartFile file, Integer source);
 }

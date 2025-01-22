@@ -22,7 +22,7 @@ public interface SysOnlineService extends BaseService<SysOnlineEntity> {
 
     Result batchForceLogout(List<Long> ids);
 
-    void removeUserCache(Long userId);
+    void removeUserCache(Long userId, String sessionId);
 
     List<SysOnlineEntity> selectListByExpired(Date expiredDate);
 }

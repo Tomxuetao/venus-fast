@@ -26,10 +26,10 @@ public class ScheduleJob extends QuartzJobBean {
 
         //数据库保存执行记录
         ScheduleJobLogEntity log = new ScheduleJobLogEntity();
-        log.setJobId(scheduleJob.getId());
-        log.setBeanName(scheduleJob.getBeanName());
-        log.setParams(scheduleJob.getParams());
         log.setCreateDate(new Date());
+        log.setJobId(scheduleJob.getId());
+        log.setParams(scheduleJob.getParams());
+        log.setBeanName(scheduleJob.getBeanName());
 
         //任务开始时间
         long startTime = System.currentTimeMillis();

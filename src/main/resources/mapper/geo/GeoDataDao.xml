@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.venus.modules.geo.dao.GeoDataDao">
+    <delete id="deleteBySourceIds" parameterType="java.lang.Long">
+        delete from geo_data where source_id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getListBySourceId" resultType="com.venus.modules.geo.dto.GeoDataDTO">
+        select id, props, st_asgeojson(geom, 5) as geom from geo_data where source_id = #{sourceId};
+    </select>
+    
+    <select id="getWkbBySourceId" resultType="com.venus.modules.geo.dto.GeoDataDTO">
+        select id, props, st_asbinary(ST_SimplifyPreserveTopology(geom, #{dilution})) as geom from geo_data where source_id = #{sourceId};
+    </select>
+
+    <select id="dilutionBySourceId" resultType="com.venus.modules.geo.dto.GeoDataDTO">
+        select id, props, ST_AsGeoJSON(ST_SimplifyPreserveTopology(geom, #{dilution}), 5) as geom from geo_data where source_id = #{sourceId};
+    </select>
+</mapper>

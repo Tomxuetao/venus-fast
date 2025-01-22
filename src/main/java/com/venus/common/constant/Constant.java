@@ -33,10 +33,6 @@ public interface Constant {
     String CREATE_DATE = "create_date";
 
     /**
-     * 系统缓存
-     */
-    String SYS_CACHE = "sys_cache";
-    /**
      * 数据权限过滤
      */
     String SQL_FILTER = "sqlFilter";
@@ -67,6 +63,21 @@ public interface Constant {
     String ONLINE_SESSION = "online_session";
 
     /**
+     * 系统SSE用户缓存
+     */
+    String SYS_SSE_USER_CACHE = "sys_sse_user_cache";
+
+    /**
+     * GeoServer 配置KEY
+     */
+    String GEOSERVER_CONFIG_KEY = "GEOSERVER_CONFIG_KEY";
+
+    /**
+     * 系统在线用户缓存
+     */
+    String SYS_ONLINE_USER_CACHE = "sys_online_user_cache";
+
+    /**
      * session过期时间
      */
     Long DEFAULT_SESSION_TIMEOUT = 30 * 60 * 1000L;
@@ -84,6 +95,37 @@ public interface Constant {
      * 云存储配置KEY
      */
     String CLOUD_STORAGE_CONFIG_KEY = "CLOUD_STORAGE_CONFIG_KEY";
+
+    /**
+     * 云存储数据源 说明
+     */
+    @Getter
+    enum OssSource {
+        /**
+         * 默认的
+         */
+        DEFAULT(0),
+        /**
+         * 地理数据 插入到 geo_data 表
+         */
+        GEODATA(1),
+        /**
+         * GeoServer 上传到Geoserver 服务器
+         */
+        GEOSERVER(3),
+
+        /**
+         * 其他
+         */
+        OTHERS(4);
+
+        private final int value;
+
+        OssSource(int value) {
+            this.value = value;
+        }
+
+    }
 
     @Getter
     enum OnlineStatus {
