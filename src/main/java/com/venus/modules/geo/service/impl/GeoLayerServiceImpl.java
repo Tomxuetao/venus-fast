@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,12 @@ public class GeoLayerServiceImpl extends BaseServiceImpl<GeoLayerDao, GeoLayerEn
     @Override
     public void update(GeoLayerDTO dto) {
 
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteByIds(Long[] ids) {
+        baseDao.deleteBatchIds(Arrays.asList(ids));
     }
 
     @Override

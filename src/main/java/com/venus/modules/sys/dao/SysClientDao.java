@@ -1,7 +1,7 @@
-package com.venus.modules.oauth.dao;
+package com.venus.modules.sys.dao;
 
 import com.venus.common.base.dao.BaseDao;
-import com.venus.modules.oauth.entity.SysClientEntity;
+import com.venus.modules.sys.entity.SysClientEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

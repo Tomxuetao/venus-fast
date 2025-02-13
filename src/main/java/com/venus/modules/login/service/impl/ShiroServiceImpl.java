@@ -21,7 +21,6 @@ import java.util.*;
 public class ShiroServiceImpl implements ShiroService {
     @Autowired
     private RedisUtils redisUtils;
-
     @Autowired
     private SysMenuDao sysMenuDao;
     @Autowired

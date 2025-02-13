@@ -151,6 +151,7 @@ public class ShiroConfig {
         filterMap.put("/checkToken", "anon");
         filterMap.put("/codeLogin", "anon");
         filterMap.put("/swagger/**", "anon");
+        filterMap.put("/open-api/oauth/**", "anon");
         filterMap.put("/v2/api-docs", "anon");
         filterMap.put("/doc.html", "anon");
         filterMap.put("/swagger-resources/**", "anon");

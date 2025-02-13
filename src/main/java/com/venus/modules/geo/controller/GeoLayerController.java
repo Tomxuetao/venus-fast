@@ -8,6 +8,7 @@ import com.venus.common.page.PageData;
 import com.venus.common.utils.GeoDataUtils;
 import com.venus.common.utils.Result;
 import com.venus.common.utils.ZipFileUtils;
+import com.venus.common.validator.AssertUtils;
 import com.venus.common.validator.ValidatorUtils;
 import com.venus.common.validator.group.AddGroup;
 import com.venus.common.validator.group.DefaultGroup;
@@ -83,10 +84,8 @@ public class GeoLayerController {
         try {
             List<String> fileNames = ZipFileUtils.extractZipToFolder(zipFile, tempDir);
             if(!GeoDataUtils.containsRequiredFiles(fileNames)) {
-                FileUtils.deleteDirectory(tempDir);
                 return new Result<Map<String, Object>>().error("Shp数据不完整");
             }
-            FileUtils.deleteDirectory(tempDir);
         } catch (IOException e) {
             logger.error("上传文件失败", e);
             throw new VenusException("上传文件失败", e);
@@ -94,6 +93,25 @@ public class GeoLayerController {
             FileUtils.deleteDirectory(tempDir);
         }
 
-        return new Result<Map<String, Object>>().ok(sysOssService.upload(zipFile, Constant.OssSource.GEOSERVER.getValue()));
+        Map<String, Object> uploadResult = sysOssService.upload(zipFile, Constant.OssSource.GEOSERVER.getValue());
+        if(uploadResult == null || uploadResult.isEmpty()) {
+            return new Result<Map<String, Object>>().error("上传失败");
+        }
+
+        return new Result<Map<String, Object>>().ok(uploadResult);
+    }
+
+
+    @DeleteMapping("delete")
+    @ApiOperation("删除")
+    @LogOperation("删除")
+    @RequiresPermissions("geo:layer:delete")
+    public Result delete(@RequestBody Map<String, Long[]> dataForm) {
+        Long[] ids = dataForm.get("ids");
+        //效验数据
+        AssertUtils.isArrayEmpty(ids, "ids");
+
+        geoLayerService.deleteByIds(ids);
+        return new Result();
     }
 }

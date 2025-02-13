@@ -59,33 +59,34 @@ public class GeoDataController {
         }
         File tempDir = null;
         try {
-            try {
-                tempDir = Files.createTempDirectory("shp-zip-data").toFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                ZipFileUtils.extractZipToFolder(zipFile, tempDir);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            tempDir = Files.createTempDirectory("shp-zip-data").toFile();
+            ZipFileUtils.extractZipToFolder(zipFile, tempDir);
             Map<String, Object> ossResMap = sysOssService.upload(zipFile, Constant.OssSource.GEODATA.getValue());
+
+            // Check for null in ossResMap.get("id")
+            if(ossResMap == null || ossResMap.get("id") == null) {
+                throw new VenusException("Upload failed: No ID returned from OSS service.");
+            }
+
             List<GeoDataEntity> list = GeoDataUtils.createFromShpDir(tempDir);
             list.forEach(item -> {
                 item.setSourceId(Long.parseLong(ossResMap.get("id").toString()));
             });
             geoDataService.create(list);
             return new Result<Map<String, Object>>().ok(ossResMap);
+        } catch (IOException e) {
+            throw new VenusException("Failed to process the uploaded file.", e);
         } finally {
             if(tempDir != null && tempDir.exists()) {
                 try {
                     FileUtils.deleteDirectory(tempDir);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    System.err.println("Failed to delete temporary directory: " + e.getMessage());
                 }
             }
         }
     }
+
 
     @GetMapping("toShp")
     @ApiOperation("导出")

@@ -1,4 +1,4 @@
-package com.venus.modules.oauth.dto;
+package com.venus.modules.sys.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.venus.common.validator.group.AddGroup;
@@ -31,7 +31,7 @@ public class SysClientDTO implements Serializable {
 
     @ApiModelProperty(value = "应用类型", required = true)
     @Range(min = 0, max = 1, message = "类型值范围0~1", groups = DefaultGroup.class)
-    private String appType;
+    private Integer appType;
 
     @ApiModelProperty(value = "应用名称", required = true)
     @NotBlank(message = "应用名称不能为空", groups = DefaultGroup.class)
@@ -42,7 +42,7 @@ public class SysClientDTO implements Serializable {
     private String redirectUri;
 
     @ApiModelProperty(value = "应用分类", required = true)
-    @NotBlank(message = "应用地址不能为空", groups = DefaultGroup.class)
+    @Min(value = 0, message = "{sort.number}", groups = DefaultGroup.class)
     private Integer classify;
 
     @ApiModelProperty(value = "排序")
@@ -55,7 +55,6 @@ public class SysClientDTO implements Serializable {
     @ApiModelProperty(value = "状态  0：停用    1：正常", required = true)
     @Range(min = 0, max = 1, message = "状态取值范围0~1", groups = DefaultGroup.class)
     private Integer status;
-
 
     @ApiModelProperty(value = "创建时间")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

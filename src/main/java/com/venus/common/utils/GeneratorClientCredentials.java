@@ -4,7 +4,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.UUID;
 
-public class ClientCredentialsGenerator {
+public class GeneratorClientCredentials {
     // 生成 ClientId（唯一标识）
     public static String generateClientId() {
         // 使用 UUID 并移除连字符，生成 32 位唯一字符串

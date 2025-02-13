@@ -1,7 +1,6 @@
 package com.venus.modules.login.oauth2;
 
 import com.google.gson.Gson;
-import com.venus.common.constant.Constant;
 import com.venus.common.exception.ErrorCode;
 import com.venus.common.utils.HttpContextUtils;
 import com.venus.common.utils.Result;
@@ -18,12 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
 public class Oauth2Filter extends AuthenticatingFilter {
 
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
         //获取请求token
-        String token = getRequestToken((HttpServletRequest) request);
+        String token = HttpContextUtils.getRequestToken((HttpServletRequest) request);
 
         if (StringUtils.isBlank(token)) {
             return null;
@@ -40,7 +40,7 @@ public class Oauth2Filter extends AuthenticatingFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         //获取请求token，如果token不存在，直接返回401
-        String token = getRequestToken((HttpServletRequest) request);
+        String token = HttpContextUtils.getRequestToken((HttpServletRequest) request);
         if (StringUtils.isBlank(token)) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.setContentType("application/json;charset=utf-8");
@@ -76,20 +76,4 @@ public class Oauth2Filter extends AuthenticatingFilter {
 
         return false;
     }
-
-    /**
-     * 获取请求的token
-     */
-    private String getRequestToken(HttpServletRequest httpRequest) {
-        //从header中获取token
-        String token = httpRequest.getHeader(Constant.TOKEN_HEADER);
-
-        //如果header中不存在token，则从参数中获取token
-        if (StringUtils.isBlank(token)) {
-            token = httpRequest.getParameter(Constant.TOKEN_HEADER);
-        }
-
-        return token;
-    }
-
 }

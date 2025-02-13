@@ -57,6 +57,8 @@ public interface Constant {
      */
     String TOKEN_HEADER = "token";
 
+    String Authorization_HEADER = "Authorization";
+
     /**
      * 在线用户session
      */
@@ -161,6 +163,27 @@ public interface Constant {
         private final int value;
 
         ScheduleStatus(int value) {
+            this.value = value;
+        }
+    }
+
+    /**
+     * 用户状态
+     */
+    @Getter
+    enum UserStatus {
+        /**
+         * 正常
+         */
+        NORMAL(1),
+        /**
+         * 禁用
+         */
+        DISABLE(0);
+
+        private final int value;
+
+        UserStatus(int value) {
             this.value = value;
         }
     }

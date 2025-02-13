@@ -9,6 +9,20 @@ public class RedisKeys {
     }
 
     /**
+     * 授权验证码Key
+     */
+    public static String getAuthCodeKey(String code) {
+        return "auth:code:" + code;
+    }
+
+    /**
+     * 授权Token Key
+     */
+    public static String getAuthTokenKey(String accessToken) {
+        return "auth:token:" + accessToken;
+    }
+
+    /**
      * 登录Token Key
      */
     public static String getTokenKey(String token) {

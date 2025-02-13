@@ -58,7 +58,6 @@ public class SysUserDTO implements Serializable {
     @NotNull(message = "{sysuser.deptId.require}", groups = DefaultGroup.class)
     private Long deptId;
 
-
     @ApiModelProperty(value = "用户菜单权限列表")
     private List<SysMenuDTO> menuList;
 

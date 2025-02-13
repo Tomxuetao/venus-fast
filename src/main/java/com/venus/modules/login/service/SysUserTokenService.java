@@ -7,7 +7,6 @@ import com.venus.modules.login.entity.SysUserTokenEntity;
 import java.util.List;
 
 public interface SysUserTokenService extends BaseService<SysUserTokenEntity> {
-
     /**
      * 生成token
      *

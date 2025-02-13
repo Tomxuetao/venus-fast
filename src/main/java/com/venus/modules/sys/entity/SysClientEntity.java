@@ -1,4 +1,4 @@
-package com.venus.modules.oauth.entity;
+package com.venus.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 @Data
-@TableName("oauth_client")
+@TableName("sys_client")
 @EqualsAndHashCode(callSuper = true)
 public class SysClientEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;

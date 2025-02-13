@@ -15,5 +15,7 @@ public interface GeoLayerService extends BaseService<GeoLayerEntity> {
 
     void update(GeoLayerDTO dto);
 
+    void deleteByIds(Long[] ids);
+
     List<GeoLayerEntity> list(Map<String, Object> params);
 }
