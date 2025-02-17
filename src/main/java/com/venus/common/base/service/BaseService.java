@@ -62,7 +62,7 @@ public interface BaseService<T> {
      *
      * @param entityList 实体对象集合
      */
-    boolean updateBatchById(Collection<T> entityList);
+    void updateBatchById(Collection<T> entityList);
 
     /**
      * <p>
@@ -72,7 +72,7 @@ public interface BaseService<T> {
      * @param entityList 实体对象集合
      * @param batchSize  更新批次数量
      */
-    boolean updateBatchById(Collection<T> entityList, int batchSize);
+    void updateBatchById(Collection<T> entityList, int batchSize);
 
     /**
      * <p>

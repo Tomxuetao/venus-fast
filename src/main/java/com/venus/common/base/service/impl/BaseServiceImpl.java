@@ -158,8 +158,8 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
     /**
      * 执行批量操作
      */
-    protected <E> boolean executeBatch(Collection<E> list, int batchSize, BiConsumer<SqlSession, E> consumer) {
-        return SqlHelper.executeBatch(this.currentModelClass(), this.log, list, batchSize, consumer);
+    protected <E> void executeBatch(Collection<E> list, int batchSize, BiConsumer<SqlSession, E> consumer) {
+        SqlHelper.executeBatch(this.currentModelClass(), this.log, list, batchSize, consumer);
     }
 
 
@@ -175,15 +175,15 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> implements Bas
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateBatchById(Collection<T> entityList) {
-        return updateBatchById(entityList, 30);
+    public void updateBatchById(Collection<T> entityList) {
+        updateBatchById(entityList, 30);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateBatchById(Collection<T> entityList, int batchSize) {
+    public void updateBatchById(Collection<T> entityList, int batchSize) {
         String sqlStatement = getSqlStatement(SqlMethod.UPDATE_BY_ID);
-        return executeBatch(entityList, batchSize, (sqlSession, entity) -> {
+        executeBatch(entityList, batchSize, (sqlSession, entity) -> {
             MapperMethod.ParamMap<T> param = new MapperMethod.ParamMap<>();
             param.put(Constants.ENTITY, entity);
             sqlSession.update(sqlStatement, param);

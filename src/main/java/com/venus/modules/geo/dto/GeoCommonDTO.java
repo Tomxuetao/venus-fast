@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @ApiModel(value = "Geoserver Rest Layer")
 @EqualsAndHashCode(callSuper = false)
-public class GeoRestLayerDTO {
+public class GeoCommonDTO {
     private String name;
     private String href;
 }

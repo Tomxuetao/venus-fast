@@ -9,12 +9,16 @@ import java.io.Serializable;
 @Data
 @ApiModel(value = "地理要素")
 @EqualsAndHashCode(callSuper = false)
-public class FeatureType implements Serializable {
+public class GeoFeatureDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String srs;
     private String name;
     private String title;
-    private String enabled;
+    private boolean enabled;
+    private String datastore;
     private String nativeName;
+    private String workspace;
+    private GeoCommonDTO store;
+    private GeoCommonDTO namespace;
 }

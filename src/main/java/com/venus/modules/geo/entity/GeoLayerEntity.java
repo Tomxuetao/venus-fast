@@ -1,15 +1,22 @@
 package com.venus.modules.geo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.venus.common.base.entity.BaseEntity;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.util.Date;
+
 @Data
-@EqualsAndHashCode(callSuper = false)
 @TableName("geo_layer")
-public class GeoLayerEntity extends BaseEntity {
+@EqualsAndHashCode(callSuper = false)
+public class GeoLayerEntity implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    @TableId
+    private Long id;
 
     private String name;
 
@@ -26,4 +33,10 @@ public class GeoLayerEntity extends BaseEntity {
     private String workspace;
 
     private String datastore;
+
+    private Long creator;
+
+    private Date createDate;
+
+    private Date updateDate;
 }

@@ -29,8 +29,7 @@ public class GeoLayerUtils {
 
         // 4. 构建 PUT 请求
         String url = config.getServerUrl() + "/rest/workspaces/" + config.getWorkspace() + "/datastores/" + config.getDatastore() + "/file.shp";
-        Request request = new Request.Builder().url(url).put(requestBody)  // 使用 PUT 方法
-                .addHeader("Authorization", Credentials.basic(config.getAccessKey(), config.getSecretKey())).build();
+        Request request = buildRequest(config, url);
 
         // 5. 发送请求并获取响应
         try (Response response = client.newCall(request).execute()) {
@@ -46,6 +45,29 @@ public class GeoLayerUtils {
     }
 
     /**
+     * 获取图层列表
+     * @param config Geoserver 配置
+     * @return String
+     */
+    public static String getRestLayerList(GeoServerConfig config) {
+        // 1. 创建 OkHttpClient 实例
+        OkHttpClient client = new OkHttpClient();
+        String url = config.getServerUrl() + "/rest/layers.json";
+        Request request = buildRequest(config, url);
+        logger.info("Get layers list url: {}", url);
+        try (Response response = client.newCall(request).execute()) {
+            if(response.isSuccessful()) {
+                assert response.body() != null;
+                return response.body().string();
+            } else {
+                throw new VenusException("获取图层列表失败: " + response.code() + " " + response.message());
+            }
+        } catch (IOException e) {
+            throw new VenusException("获取图层列表失败", e);
+        }
+    }
+
+    /**
      * 获取图层详情
      * @param config Geoserver 配置
      * @return String
@@ -53,10 +75,9 @@ public class GeoLayerUtils {
     public static String getLayerDetail(GeoServerConfig config) {
         // 1. 创建 OkHttpClient 实例
         OkHttpClient client = new OkHttpClient();
-        String url = config.getServerUrl() + "/rest/workspaces/" + config.getWorkspace() + "/datastores/" + config.getDatastore() + "/featuretypes/" + config.getLayerName() + ".json";
+        String url = config.getServerUrl() + "/rest/workspaces/" + config.getWorkspace() + "/featuretypes/" + config.getLayerName() + ".json";
         logger.info("Get layer detail url: {}", url);
-        Request request = new Request.Builder().url(url)
-                .addHeader("Authorization", Credentials.basic(config.getAccessKey(), config.getSecretKey())).build();
+        Request request = buildRequest(config, url);
         try (Response response = client.newCall(request).execute()) {
             if(response.isSuccessful()) {
                 assert response.body() != null;
@@ -67,5 +88,10 @@ public class GeoLayerUtils {
         } catch (IOException e) {
             throw new VenusException("获取图层详情失败", e);
         }
+    }
+
+    private static Request buildRequest(GeoServerConfig config, String url) {
+        return new Request.Builder().url(url)
+                .addHeader("Authorization", Credentials.basic(config.getAccessKey(), config.getSecretKey())).build();
     }
 }
