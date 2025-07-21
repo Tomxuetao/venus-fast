@@ -1,6 +1,5 @@
 package com.venus.modules.job.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.venus.common.base.dao.BaseDao;
 import com.venus.modules.job.entity.ScheduleJobLogEntity;
 import org.apache.ibatis.annotations.Mapper;

@@ -9,13 +9,13 @@ spring:
       max-active: 100
       min-idle: 10
       max-wait: 60000
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 20
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+      min-evictable-idle-time-millis: 300000
+      time-between-eviction-runs-millis: 60000
       stat-view-servlet:
         enabled: true
         url-pattern: /druid/*
@@ -23,9 +23,9 @@ spring:
         login-password: Wang#645678
       filter:
         stat:
+          merge-sql: false
           log-slow-sql: true
           slow-sql-millis: 1000
-          merge-sql: false
         wall:
           config:
             multi-statement-allow: true

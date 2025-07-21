@@ -58,7 +58,15 @@ public class SysUserController {
 
     @GetMapping("list")
     @ApiOperation("用户列表")
-    @ApiImplicitParams({@ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class), @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class), @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String", dataTypeClass = String.class), @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String", dataTypeClass = String.class), @ApiImplicitParam(name = "username", value = "用户名", paramType = "query", dataType = "String", dataTypeClass = String.class), @ApiImplicitParam(name = "gender", value = "性别", paramType = "query", dataType = "String", dataTypeClass = String.class), @ApiImplicitParam(name = "deptId", value = "部门ID", paramType = "query", dataType = "String", dataTypeClass = String.class)})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = Constant.PAGE, value = "当前页码，从1开始", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = Constant.LIMIT, value = "每页显示记录数", paramType = "query", required = true, dataType = "int", dataTypeClass = Integer.class),
+            @ApiImplicitParam(name = Constant.ORDER_FIELD, value = "排序字段", paramType = "query", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = Constant.ORDER, value = "排序方式，可选值(asc、desc)", paramType = "query", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "username", value = "用户名", paramType = "query", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "gender", value = "性别", paramType = "query", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "deptId", value = "部门ID", paramType = "query", dataType = "String", dataTypeClass = String.class)
+    })
     @RequiresPermissions("sys:user:page")
     public Result<PageData<SysUserDTO>> page(@ApiIgnore @RequestParam Map<String, Object> params) {
         PageData<SysUserDTO> page = sysUserService.page(params);

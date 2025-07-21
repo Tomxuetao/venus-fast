@@ -34,8 +34,6 @@ public class GeoLayerEntity implements Serializable {
 
     private String datastore;
 
-    private Long creator;
-
     private Date createDate;
 
     private Date updateDate;

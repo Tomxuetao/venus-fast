@@ -20,7 +20,7 @@
         <java.version>1.8</java.version>
         <gson.version>2.11.0</gson.version>
         <jedis.version>5.2.0</jedis.version>
-        <druid.version>1.2.23</druid.version>
+        <druid.version>1.2.24</druid.version>
         <jsoup.version>1.15.3</jsoup.version>
         <shiro.version>1.13.0</shiro.version>
         <qiniu.version>7.11.0</qiniu.version>
@@ -32,7 +32,6 @@
         <knife4j.version>3.0.3</knife4j.version>
         <captcha.version>1.6.2</captcha.version>
         <guava.version>33.4.0-jre</guava.version>
-        <velocity.version>2.4.1</velocity.version>
         <io.minio.version>8.5.13</io.minio.version>
         <fastexcel.version>1.1.0</fastexcel.version>
         <joda.time.version>2.13.0</joda.time.version>
@@ -205,11 +204,6 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-engine-core</artifactId>
-            <version>${velocity.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-configuration</groupId>

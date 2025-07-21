@@ -126,7 +126,6 @@ public interface Constant {
         OssSource(int value) {
             this.value = value;
         }
-
     }
 
     @Getter
@@ -229,6 +228,5 @@ public interface Constant {
         MsgCloudService(int value) {
             this.value = value;
         }
-
     }
 }

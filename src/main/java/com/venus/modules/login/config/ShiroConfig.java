@@ -146,7 +146,6 @@ public class ShiroConfig {
         Map<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/druid/**", "anon");
-        filterMap.put("/code", "anon");
         filterMap.put("/login", "anon");
         filterMap.put("/checkToken", "anon");
         filterMap.put("/codeLogin", "anon");
@@ -156,6 +155,7 @@ public class ShiroConfig {
         filterMap.put("/doc.html", "anon");
         filterMap.put("/swagger-resources/**", "anon");
         filterMap.put("/captcha", "anon");
+        filterMap.put("/city/site/**", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/", "anon");
         filterMap.put("/**", "oauth2,kickout,onlineSession,syncOnlineSession");

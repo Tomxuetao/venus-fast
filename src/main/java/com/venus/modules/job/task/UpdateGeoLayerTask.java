@@ -39,41 +39,27 @@ public class UpdateGeoLayerTask implements ITask {
 
         String geoServerConfig = sysParamsRedis.get(Constant.GEOSERVER_CONFIG_KEY);
         GeoServerConfig config = new Gson().fromJson(geoServerConfig, GeoServerConfig.class);
-
         String bodyString = GeoLayerUtils.getRestLayerList(config);
-        logger.info("layerListStr: {}", bodyString);
-
         String tempStr = bodyString.replace("{\"layers\":{\"layer\":", "");
         String restLayerListStr = tempStr.substring(0, tempStr.length() - 2);
-
         Type mapType = new TypeToken<List<GeoCommonDTO>>() {
         }.getType();
         List<GeoCommonDTO> geoRestLayers = new Gson().fromJson(restLayerListStr, mapType);
-
-        logger.info("geoLayerList: {}", geoRestLayers);
         List<GeoFeatureDTO> geoFeatureDTOList = this.getLayerDetailList(config, geoRestLayers);
-        logger.info("geoFeatureDTOList: {}", geoFeatureDTOList);
-
         List<GeoLayerEntity> geoLayerList = geoLayerService.list(new HashMap<>());
-
-        logger.info("geoLayerList: {}", geoLayerList);
 
         List<GeoLayerEntity> needAddList = new ArrayList<>();
         List<GeoLayerEntity> needUpdateList = new ArrayList<>();
         Date now = new Date();
-
         for (GeoFeatureDTO geoFeatureDTO : geoFeatureDTOList) {
             if(geoLayerList.isEmpty()) {
                 GeoLayerEntity addLayerEntity = this.getGeoLayerEntity(geoFeatureDTO);
                 needAddList.add(addLayerEntity);
             } else {
-                List<GeoLayerEntity> list = geoLayerList
-                        .stream()
-                        .filter(item ->
-                                item.getName().equals(geoFeatureDTO.getName())
-                                        && item.getDatastore().equals(geoFeatureDTO.getDatastore())
-                                        && item.getWorkspace().equals(geoFeatureDTO.getWorkspace()))
-                        .collect(Collectors.toList());
+                List<GeoLayerEntity> list = geoLayerList.stream().filter(item ->
+                        item.getName().equals(geoFeatureDTO.getName())
+                                && item.getDatastore().equals(geoFeatureDTO.getDatastore())
+                                && item.getWorkspace().equals(geoFeatureDTO.getWorkspace())).collect(Collectors.toList());
                 if(!list.isEmpty()) {
                     list.forEach(geoLayerEntity -> {
                         geoLayerEntity.setUpdateDate(now);
@@ -107,6 +93,7 @@ public class UpdateGeoLayerTask implements ITask {
 
     /**
      * 获取图层实体
+     *
      * @param geoFeatureDTO 图层详情
      */
     private GeoLayerEntity getGeoLayerEntity(GeoFeatureDTO geoFeatureDTO) {

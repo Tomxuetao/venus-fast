@@ -23,8 +23,7 @@ public class AliyunCloudStorageService extends AbstractCloudStorageService {
     @Override
     public String upload(InputStream inputStream, String path) {
         ClientBuilderConfiguration conf = new ClientBuilderConfiguration();
-        OSS client = new OSSClientBuilder().build(config.getAliyunEndPoint(), config.getAliyunAccessKeyId(),
-                config.getAliyunAccessKeySecret(), conf);
+        OSS client = new OSSClientBuilder().build(config.getAliyunEndPoint(), config.getAliyunAccessKeyId(), config.getAliyunAccessKeySecret(), conf);
         try {
             client.putObject(config.getAliyunBucketName(), path, inputStream);
             client.shutdown();
