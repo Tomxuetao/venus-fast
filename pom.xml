@@ -41,7 +41,7 @@
         <qcloud.cos.version>5.6.235</qcloud.cos.version>
         <geotools.version>28-SNAPSHOT</geotools.version>
         <mybatisplus.version>3.5.3.1</mybatisplus.version>
-        <commons.lang.version>3.17.0</commons.lang.version>
+        <commons.lang.version>3.18.0</commons.lang.version>
         <commons.codec.version>1.17.1</commons.codec.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
         <org.postgresql.postgresql>42.7.4</org.postgresql.postgresql>
