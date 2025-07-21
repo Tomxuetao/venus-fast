@@ -44,7 +44,7 @@
         <commons.lang.version>3.17.0</commons.lang.version>
         <commons.codec.version>1.17.1</commons.codec.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
-        <org.postgresql.postgresql>42.7.4</org.postgresql.postgresql>
+        <org.postgresql.postgresql>42.7.7</org.postgresql.postgresql>
         <commons.configuration.version>1.10</commons.configuration.version>
     </properties>
 
