@@ -22,7 +22,7 @@
         <jedis.version>5.2.0</jedis.version>
         <druid.version>1.2.24</druid.version>
         <jsoup.version>1.15.3</jsoup.version>
-        <shiro.version>1.13.0</shiro.version>
+        <shiro.version>2.1.0</shiro.version>
         <qiniu.version>7.11.0</qiniu.version>
         <jbcrypt.version>0.4</jbcrypt.version>
         <quartz.version>2.3.2</quartz.version>
